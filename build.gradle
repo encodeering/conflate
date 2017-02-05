@@ -1,8 +1,11 @@
 buildscript {
-    ext.kotlinversion = '1.0.4'
+    ext.kotlinversion = '1.1.0-beta-37'
     ext.junitversion  = '1.0.0-M2'
 
     repositories {
+        maven {
+            url "https://dl.bintray.com/kotlin/kotlin-dev"
+        }
         mavenCentral ()
     }
 
@@ -23,6 +26,9 @@ group 'com.encodeering'
 version '0.0.1-SNAPSHOT'
 
 repositories {
+    maven {
+        url "https://dl.bintray.com/kotlin/kotlin-dev"
+    }
     mavenCentral ()
     mavenLocal ()
 }
