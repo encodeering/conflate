@@ -39,6 +39,7 @@ repositories {
 }
 
 dependencies {
+    compile     "org.slf4j:slf4j-api:1.7.22"
     compile     "org.jetbrains.kotlin:kotlin-reflect:$kotlinversion"
     testCompile "org.junit.platform:junit-platform-runner:$junitversion"
     testCompile "com.winterbe:expekt:0.5.0"
