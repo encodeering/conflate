@@ -1,4 +1,4 @@
-package com.encodeering.conflate.fixture
+package com.encodeering.conflate.test.fixture
 
 import org.mockito.Mockito
 

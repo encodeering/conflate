@@ -1,7 +1,7 @@
 package com.encodeering.conflate.util
 
-import com.encodeering.conflate.fixture.mock
-import com.encodeering.conflate.fixture.whenever
+import com.encodeering.conflate.test.fixture.mock
+import com.encodeering.conflate.test.fixture.whenever
 import com.winterbe.expekt.expect
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe

@@ -2,12 +2,12 @@ package com.encodeering.conflate.middleware
 
 import com.encodeering.conflate.api.Action
 import com.encodeering.conflate.api.Storage
-import com.encodeering.conflate.fixture.Act
-import com.encodeering.conflate.fixture.Middleware.connection
-import com.encodeering.conflate.fixture.co
-import com.encodeering.conflate.fixture.eq
-import com.encodeering.conflate.fixture.mock
-import com.encodeering.conflate.fixture.throws
+import com.encodeering.conflate.test.fixture.Act
+import com.encodeering.conflate.test.fixture.Middleware.connection
+import com.encodeering.conflate.test.fixture.co
+import com.encodeering.conflate.test.fixture.eq
+import com.encodeering.conflate.test.fixture.mock
+import com.encodeering.conflate.test.fixture.throws
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it

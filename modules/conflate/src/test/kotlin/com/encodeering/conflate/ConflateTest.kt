@@ -4,11 +4,11 @@ import com.encodeering.conflate.api.Action
 import com.encodeering.conflate.api.Middleware
 import com.encodeering.conflate.api.Reducer
 import com.encodeering.conflate.api.Storage
-import com.encodeering.conflate.fixture.Add
-import com.encodeering.conflate.fixture.any
-import com.encodeering.conflate.fixture.eq
-import com.encodeering.conflate.fixture.mock
-import com.encodeering.conflate.fixture.whenever
+import com.encodeering.conflate.test.fixture.Add
+import com.encodeering.conflate.test.fixture.any
+import com.encodeering.conflate.test.fixture.eq
+import com.encodeering.conflate.test.fixture.mock
+import com.encodeering.conflate.test.fixture.whenever
 import com.winterbe.expekt.expect
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe

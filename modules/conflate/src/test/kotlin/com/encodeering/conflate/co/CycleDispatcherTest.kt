@@ -2,8 +2,8 @@ package com.encodeering.conflate.co
 
 import com.encodeering.conflate.api.Action
 import com.encodeering.conflate.api.Dispatcher
-import com.encodeering.conflate.fixture.Act
-import com.encodeering.conflate.fixture.mock
+import com.encodeering.conflate.test.fixture.Act
+import com.encodeering.conflate.test.fixture.mock
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
