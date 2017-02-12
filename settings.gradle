@@ -1,1 +1,5 @@
 rootProject.name='conflate'
+
+include 'conflate'
+
+project (":conflate").projectDir = file ("modules/conflate")

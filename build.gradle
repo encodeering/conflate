@@ -16,19 +16,19 @@ buildscript {
 }
 
 apply plugin: 'idea'
-apply plugin: 'java'
-apply plugin: 'kotlin'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
+
+subprojects {
+apply plugin: 'java'
+apply plugin: 'kotlin'
 apply plugin: 'org.junit.platform.gradle.plugin'
 
 group 'com.encodeering'
 version '0.0.1-SNAPSHOT'
 
-allprojects {
-    sourceCompatibility = 1.6
-    targetCompatibility = 1.6
-}
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
 
 repositories {
     maven {
@@ -68,4 +68,9 @@ junitPlatform {
     engines {
         include 'spek'
     }
+}
+}
+
+task wrapper (type: Wrapper) {
+    gradleVersion = '3.1'
 }
