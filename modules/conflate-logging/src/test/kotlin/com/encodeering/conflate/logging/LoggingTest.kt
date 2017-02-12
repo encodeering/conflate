@@ -5,7 +5,7 @@ import com.encodeering.conflate.api.Storage
 import com.encodeering.conflate.test.co
 import com.encodeering.conflate.test.eq
 import com.encodeering.conflate.test.fixture.Act
-import com.encodeering.conflate.test.fixture.Middleware.connection
+import com.encodeering.conflate.test.fixture.Middlewares.connection
 import com.encodeering.conflate.test.mock
 import com.encodeering.conflate.test.throws
 import org.jetbrains.spek.api.Spek

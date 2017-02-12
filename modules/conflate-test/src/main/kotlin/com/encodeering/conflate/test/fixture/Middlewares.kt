@@ -7,7 +7,7 @@ import com.encodeering.conflate.api.Storage
 /**
  * @author Michael Clausen - encodeering@gmail.com
  */
-object Middleware {
+object Middlewares {
 
     fun connection (begin : (Action) -> Unit = { }, proceed : (Action) -> Unit = { }) = object : Middleware.Connection {
 
