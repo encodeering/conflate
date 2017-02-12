@@ -1,4 +1,4 @@
-package com.encodeering.conflate.test.fixture
+package com.encodeering.conflate.test
 
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit

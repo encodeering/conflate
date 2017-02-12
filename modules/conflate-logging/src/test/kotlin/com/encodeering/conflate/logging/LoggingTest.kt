@@ -2,12 +2,12 @@ package com.encodeering.conflate.logging
 
 import com.encodeering.conflate.api.Action
 import com.encodeering.conflate.api.Storage
+import com.encodeering.conflate.test.co
+import com.encodeering.conflate.test.eq
 import com.encodeering.conflate.test.fixture.Act
 import com.encodeering.conflate.test.fixture.Middleware.connection
-import com.encodeering.conflate.test.fixture.co
-import com.encodeering.conflate.test.fixture.eq
-import com.encodeering.conflate.test.fixture.mock
-import com.encodeering.conflate.test.fixture.throws
+import com.encodeering.conflate.test.mock
+import com.encodeering.conflate.test.throws
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it

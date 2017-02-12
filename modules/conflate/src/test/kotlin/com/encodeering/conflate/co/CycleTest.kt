@@ -1,10 +1,10 @@
 package com.encodeering.conflate.co
 
-import com.encodeering.conflate.test.fixture.any
-import com.encodeering.conflate.test.fixture.co
-import com.encodeering.conflate.test.fixture.eq
-import com.encodeering.conflate.test.fixture.mock
-import com.encodeering.conflate.test.fixture.whenever
+import com.encodeering.conflate.test.any
+import com.encodeering.conflate.test.co
+import com.encodeering.conflate.test.eq
+import com.encodeering.conflate.test.mock
+import com.encodeering.conflate.test.whenever
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it

@@ -1,4 +1,4 @@
-package com.encodeering.conflate.test.fixture
+package com.encodeering.conflate.test
 
 /**
  * @author Michael Clausen - encodeering@gmail.com
