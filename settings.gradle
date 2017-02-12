@@ -3,7 +3,9 @@ rootProject.name='conflate'
 include 'conflate'
 include 'conflate-api'
 include 'conflate-test'
+include 'conflate-logging'
 
 project (":conflate").projectDir = file ("modules/conflate")
 project (":conflate-api").projectDir = file ("modules/conflate-api")
 project (":conflate-test").projectDir = file ("modules/conflate-test")
+project (":conflate-logging").projectDir = file ("modules/conflate-logging")
