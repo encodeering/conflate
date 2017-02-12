@@ -1,4 +1,4 @@
-package com.encodeering.conflate.middleware
+package com.encodeering.conflate.logging
 
 import com.encodeering.conflate.api.Action
 import com.encodeering.conflate.api.Storage
