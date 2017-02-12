@@ -4,9 +4,11 @@ import com.encodeering.conflate.api.Action
 import com.encodeering.conflate.api.Middleware
 import com.encodeering.conflate.api.Reducer
 import com.encodeering.conflate.api.Storage
-import com.encodeering.conflate.test.fixture.Add
 import com.encodeering.conflate.test.any
 import com.encodeering.conflate.test.eq
+import com.encodeering.conflate.test.fixture.Add
+import com.encodeering.conflate.test.fixture.Middlewares
+import com.encodeering.conflate.test.fixture.Reducers
 import com.encodeering.conflate.test.mock
 import com.encodeering.conflate.test.whenever
 import com.winterbe.expekt.expect
@@ -37,30 +39,11 @@ class ConflateTest : Spek({
     describe ("Conflate") {
 
         fun accumulator (spy : (Action, Int) -> Unit = { _, _ -> Unit }) =
-            object : Reducer<Int> {
-
-                override fun reduce (action : Action, state : Int) : Int {
-                    spy             (action, state)
-
-                    return when     (action) {
-                        is Add ->    action.number + state
-                        else   ->                    state
-                    }
-                }
-
-            }
+            Reducers.accumulator (spy)
 
         fun middleware (before : (Action, Storage<Int>, Middleware.Connection) -> Unit = { _, _, _ -> Unit },
                         after  : (Action, Storage<Int>, Middleware.Connection) -> Unit = { _, _, _ -> Unit }) =
-            object : Middleware<Int> {
-
-                suspend override fun dispatch (action : Action, storage : Storage<Int>, connection : Middleware.Connection) {
-                    before                    (action,          storage,                connection)
-                    connection.proceed        (action)
-                    after                     (action,          storage,                connection)
-                }
-
-            }
+            Middlewares.middleware (before, after)
 
         fun interceptor (spy : (Continuation<*>) -> Unit = { }) =
             object : AbstractCoroutineContextElement (ContinuationInterceptor), ContinuationInterceptor {
