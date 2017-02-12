@@ -5,7 +5,7 @@ import org.mockito.Mockito
 /**
  * @author Michael Clausen - encodeering@gmail.com
  */
-inline fun         <T> eq (value : T) : T = Mockito.eq (value)
+       fun         <T> eq (value : T) : T = Mockito.eq (value)
 
 inline fun <reified T> any () : T = Mockito.any (T::class.java)
 
