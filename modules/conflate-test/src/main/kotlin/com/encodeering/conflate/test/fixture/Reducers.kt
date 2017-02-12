@@ -15,6 +15,7 @@ object Reducers {
                 spy             (action, state)
 
                 return when     (action) {
+                    is Sub ->    action.number - state
                     is Add ->    action.number + state
                     else   ->                    state
                 }
