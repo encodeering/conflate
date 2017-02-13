@@ -4,6 +4,7 @@ include 'conflate-jvm'
 include 'conflate-api'
 include 'conflate-android'
 include 'conflate-test'
+include 'conflate-epic'
 include 'conflate-jfx'
 include 'conflate-logging'
 
@@ -11,5 +12,6 @@ project (":conflate-jvm").projectDir = file ("modules/conflate-jvm")
 project (":conflate-api").projectDir = file ("modules/conflate-api")
 project (":conflate-android").projectDir = file ("modules/conflate-android")
 project (":conflate-test").projectDir = file ("modules/conflate-test")
+project (":conflate-epic").projectDir = file ("modules/conflate-epic")
 project (":conflate-jfx").projectDir = file ("modules/conflate-jfx")
 project (":conflate-logging").projectDir = file ("modules/conflate-logging")

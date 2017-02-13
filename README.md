@@ -21,6 +21,7 @@ repositories {
 
 dependencies {
     compile "com.encodeering.conflate:conflate-android:0.1.0"
+    compile "com.encodeering.conflate:conflate-epic:0.1.0"
     compile "com.encodeering.conflate:conflate-jfx:0.1.0"
     compile "com.encodeering.conflate:conflate-logging:0.1.0"
 }
