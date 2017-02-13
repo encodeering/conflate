@@ -12,6 +12,7 @@ buildscript {
     ext.junitversion   = project.ext['junit.version']
     ext.slf4jversion   = project.ext['slf4j.version']
     ext.spekversion    = project.ext['spek.version']
+    ext.rxjavaversion  = project.ext['rxjava.version']
     ext.mockitoversion = project.ext['mockito.version']
     ext.expektversion  = project.ext['expekt.version']
     ext.bintrayversion = project.ext['bintray.version']
