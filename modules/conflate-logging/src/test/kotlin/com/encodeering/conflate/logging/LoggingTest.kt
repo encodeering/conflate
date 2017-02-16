@@ -40,7 +40,7 @@ class LoggingTest : Spek({
             val logging = logging (before = true, log = log)
 
             co {
-                logging.dispatch (action, mock<Storage<Unit>> (), connection ())
+                logging.dispatch (action, connection ())
 
                 verify (log).invoke (">> {}", action)
                 verifyNoMoreInteractions (log)
@@ -54,7 +54,7 @@ class LoggingTest : Spek({
             val logging = logging (after = true, log = log)
 
             co {
-                logging.dispatch (action, mock<Storage<Unit>> (), connection ())
+                logging.dispatch (action, connection ())
 
                 verify (log).invoke ("-- {}", action)
                 verifyNoMoreInteractions (log)
@@ -70,7 +70,7 @@ class LoggingTest : Spek({
             throws<IllegalStateException> {
                 co {
                     try {
-                        logging.dispatch (action, mock<Storage<Unit>> (), connection (next = { throw IllegalStateException () }))
+                        logging.dispatch (action, connection (next = { throw IllegalStateException () }))
                     } finally {
                         verify (log).invoke ("!! {}", action)
                         verifyNoMoreInteractions (log)
@@ -86,7 +86,7 @@ class LoggingTest : Spek({
             val logging = logging (exception = true, log = log ())
 
             co {
-                logging.dispatch (action, mock<Storage<Unit>> (), connection (next = next))
+                logging.dispatch (action, connection (next = next))
 
                 verify (next).invoke (action)
             }
@@ -100,7 +100,7 @@ class LoggingTest : Spek({
             val logging = logging (before = true, after = true, log = log)
 
             co {
-                logging.dispatch (action, mock<Storage<Unit>> (), connection (next = next))
+                logging.dispatch (action, connection (next = next))
 
                 val ordered = Mockito.inOrder (log, next)
                     ordered.verify (log).invoke (eq (">> {}"), eq (action))

@@ -26,16 +26,19 @@ class Conflate<out State> (
     private val conflation = AtomicReference<State> (initial)
     private val subscriptions = ConcurrentHashMap<Int, () -> Unit> ()
 
-    private val connection = pipeline (reducer, * middleware).foldRight (Stop as Middleware.Connection) {
+    private val connection = pipeline (reducer, * middleware).foldRight (Stop (initial) as Middleware.Connection<State>) {
         middleware, connection ->
-            object : Middleware.Connection {
+            object : Middleware.Connection<State> {
+
+                override val state : State
+                    get () = conflation.get()
 
                 suspend override fun initial (action : Action) {
                     dispatcher.dispatch      (action).await ()
                 }
 
                 suspend override fun next    (action : Action) {
-                    middleware.dispatch      (action, this@Conflate, connection)
+                    middleware.dispatch      (action, connection)
                 }
 
             }
@@ -67,15 +70,16 @@ class Conflate<out State> (
 
     private class Delegate<in State> (private val block : (Action, State) -> Unit) : Middleware<State> {
 
-        suspend override fun dispatch (action : Action, storage : Storage<State>, connection : Middleware.Connection) {
+        suspend override fun dispatch (action : Action, connection : Middleware.Connection<State>) {
             connection.apply {
-                block   (action, storage.state)
+                block   (action, connection.state)
                 next    (action)
             }
         }
 
     }
-    private object Stop : Middleware.Connection {
+
+    private class Stop<out State> (override val state : State) : Middleware.Connection<State> {
 
         suspend override fun initial (action : Action) {}
 

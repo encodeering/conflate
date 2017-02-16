@@ -2,9 +2,11 @@ package com.encodeering.conflate.api
 
 interface Middleware<in State> {
 
-    suspend fun dispatch (action : Action, storage : Storage<State>, connection : Connection)
+    suspend fun dispatch (action : Action, connection : Connection<State>)
 
-    interface Connection {
+    interface Connection<out State> {
+
+        val state : State
 
         suspend fun initial (action : Action)
 

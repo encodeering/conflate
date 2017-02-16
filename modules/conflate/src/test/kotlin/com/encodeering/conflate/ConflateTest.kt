@@ -3,7 +3,6 @@ package com.encodeering.conflate
 import com.encodeering.conflate.api.Action
 import com.encodeering.conflate.api.Middleware
 import com.encodeering.conflate.api.Reducer
-import com.encodeering.conflate.api.Storage
 import com.encodeering.conflate.test.any
 import com.encodeering.conflate.test.eq
 import com.encodeering.conflate.test.fixture.Add
@@ -41,8 +40,8 @@ class ConflateTest : Spek({
         fun accumulator (spy : (Action, Int) -> Unit = { _, _ -> Unit }) =
             Reducers.accumulator (spy)
 
-        fun middleware (before : (Action, Storage<Int>, Middleware.Connection) -> Unit = { _, _, _ -> Unit },
-                        after  : (Action, Storage<Int>, Middleware.Connection) -> Unit = { _, _, _ -> Unit }) =
+        fun middleware (before : (Action, Middleware.Connection<Int>) -> Unit = { _, _ -> Unit },
+                        after  : (Action, Middleware.Connection<Int>) -> Unit = { _, _ -> Unit }) =
             Middlewares.middleware (before, after)
 
         fun interceptor (spy : (Continuation<*>) -> Unit = { }) =
@@ -112,19 +111,19 @@ class ConflateTest : Spek({
         describe ("middleware") {
 
             it ("should be called once a cycle") {
-                val spy = mock<(Action, Storage<Int>, Middleware.Connection) -> Unit> ()
+                val spy = mock<(Action, Middleware.Connection<Int>) -> Unit> ()
 
                 val conflate = conflate (middleware = middleware (before = spy))
 
                 conflate.dispatcher.dispatch (Add (0))
 
-                verify (spy).invoke  (eq (Add (0)), eq (conflate), any ())
+                verify (spy).invoke  (eq (Add (0)), any ())
                 verifyNoMoreInteractions (spy)
             }
 
             it ("should preserve the given middleware order") {
-                val first  = mock<(Action, Storage<Int>, Middleware.Connection) -> Unit> ()
-                val second = mock<(Action, Storage<Int>, Middleware.Connection) -> Unit> ()
+                val first  = mock<(Action, Middleware.Connection<Int>) -> Unit> ()
+                val second = mock<(Action, Middleware.Connection<Int>) -> Unit> ()
 
                 val conflate = conflate (middleware = * arrayOf (
                         middleware (before = first),
@@ -134,8 +133,8 @@ class ConflateTest : Spek({
                 conflate.dispatcher.dispatch (Add (0))
 
                 val ordered = inOrder (first, second)
-                    ordered.verify (first).invoke  (eq (Add (0)), eq (conflate), any ())
-                    ordered.verify (second).invoke (eq (Add (0)), eq (conflate), any ())
+                    ordered.verify (first).invoke  (eq (Add (0)), any ())
+                    ordered.verify (second).invoke (eq (Add (0)), any ())
             }
 
         }

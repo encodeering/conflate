@@ -2,7 +2,6 @@ package com.encodeering.conflate.logging
 
 import com.encodeering.conflate.api.Action
 import com.encodeering.conflate.api.Middleware
-import com.encodeering.conflate.api.Storage
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -16,7 +15,7 @@ class Logging<in State> (
         val exception : () -> Boolean = { true  }
 ) : Middleware<State> {
 
-    suspend override fun dispatch (action : Action, storage : Storage<State>, connection : Middleware.Connection) {
+    suspend override fun dispatch (action : Action, connection : Middleware.Connection<State>) {
         if (before ()) debug (">>", action)
 
         try {
