@@ -26,7 +26,7 @@ class Conflate<out State> (
     private val conflation = AtomicReference<State> (initial)
     private val subscriptions = ConcurrentHashMap<Int, () -> Unit> ()
 
-    private val connection = connect (initial, * middleware, conflation (reducer), notification ())
+    private val connection = connect (initial, * middleware, conflation (reducer::reduce, conflation::compareAndSet), notification (subscriptions::values))
 
     override val dispatcher : Dispatcher = CycleDispatcher (context) { connection.next (it) }
 
@@ -61,16 +61,16 @@ class Conflate<out State> (
         }
     }
 
-    private fun conflation (reducer : Reducer<State>) = Codeblock<State> { action, state ->
-                            reducer.reduce                                (action, state).let {
-                                conflation.compareAndSet (state, it).let {
-                                    if (!it) { /* warning, interleaving reductions */
+    private fun conflation (conflate : (Action, State) -> State, persist : (State, State) -> Boolean) = Codeblock<State> { action, state ->
+                            conflate                                                                                      (action, state).let {
+                                persist (state, it).let {
+                                    if (! it) { /* warning, interleaving reductions */
                                     }
                                 }
                             }
     }
 
-    private fun notification () = Codeblock<State> { _, _ -> subscriptions.values.forEach { it () } }
+    private fun notification (subscriptions : () -> Collection<() -> Unit>) = Codeblock<State> { _, _ -> subscriptions ().forEach { it () } }
 
     private class Stop<out State> (override val state : State) : Middleware.Connection<State> {
 
