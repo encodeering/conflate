@@ -58,7 +58,7 @@ class Conflate<out State> (
 
     private fun pipeline (reducer : Reducer<State>, vararg middleware : Middleware<State>) =
             middleware.toList () +
-                    Delegate {          action, state ->
+                    Codeblock { action, state ->
                         reducer.reduce (action, state).let {
                             conflation.compareAndSet(state, it).let {
                                 if (!it) { /* warning, interleaving reductions */
@@ -66,18 +66,7 @@ class Conflate<out State> (
                             }
                         }
                     } +
-                    Delegate { _, _  -> subscriptions.values.forEach { it () } }
-
-    private class Delegate<in State> (private val block : (Action, State) -> Unit) : Middleware<State> {
-
-        suspend override fun dispatch (action : Action, connection : Middleware.Connection<State>) {
-            connection.apply {
-                block   (action, connection.state)
-                next    (action)
-            }
-        }
-
-    }
+                    Codeblock { _, _ -> subscriptions.values.forEach { it() } }
 
     private class Stop<out State> (override val state : State) : Middleware.Connection<State> {
 
