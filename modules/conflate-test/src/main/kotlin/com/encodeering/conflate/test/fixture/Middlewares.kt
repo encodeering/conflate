@@ -9,14 +9,14 @@ import com.encodeering.conflate.api.Storage
  */
 object Middlewares {
 
-    fun connection (begin : (Action) -> Unit = { }, proceed : (Action) -> Unit = { }) = object : Middleware.Connection {
+    fun connection (initial : (Action) -> Unit = { }, next : (Action) -> Unit = { }) = object : Middleware.Connection {
 
-        suspend override fun begin (action : Action) {
-            begin (action)
+        suspend override fun initial (action : Action) {
+            initial                  (action)
         }
 
-        suspend override fun proceed (action : Action) {
-            proceed (action)
+        suspend override fun next    (action : Action) {
+            next                     (action)
         }
 
     }
@@ -27,7 +27,7 @@ object Middlewares {
 
             suspend override fun dispatch (action : Action, storage : Storage<T>, connection : Middleware.Connection) {
                 before                    (action,          storage,              connection)
-                connection.proceed        (action)
+                connection.next           (action)
                 after                     (action,          storage,              connection)
             }
 

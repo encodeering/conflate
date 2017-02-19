@@ -20,7 +20,7 @@ class Logging<in State> (
         if (before ()) debug (">>", action)
 
         try {
-            connection.proceed (action)
+            connection.next (action)
 
             if (after ())     debug ("--", action)
         } catch (e : Exception) {

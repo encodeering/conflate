@@ -1,7 +1,6 @@
 package com.encodeering.conflate.logging
 
 import com.encodeering.conflate.api.Action
-import com.encodeering.conflate.api.Storage
 import com.encodeering.conflate.test.co
 import com.encodeering.conflate.test.eq
 import com.encodeering.conflate.test.fixture.Act
@@ -71,7 +70,7 @@ class LoggingTest : Spek({
             throws<IllegalStateException> {
                 co {
                     try {
-                        logging.dispatch (action, mock<Storage<Unit>> (), connection (proceed = { throw IllegalStateException () }))
+                        logging.dispatch (action, mock<Storage<Unit>> (), connection (next = { throw IllegalStateException () }))
                     } finally {
                         verify (log).invoke ("!! {}", action)
                         verifyNoMoreInteractions (log)
@@ -83,29 +82,29 @@ class LoggingTest : Spek({
         it ("should call the next middleware") {
             val action = Act ("scott")
 
-            val proceed = mock<(Action)-> Unit> ()
+            val next    = mock<(Action)-> Unit> ()
             val logging = logging (exception = true, log = log ())
 
             co {
-                logging.dispatch (action, mock<Storage<Unit>> (), connection (proceed = proceed))
+                logging.dispatch (action, mock<Storage<Unit>> (), connection (next = next))
 
-                verify (proceed).invoke (action)
+                verify (next).invoke (action)
             }
         }
 
         it ("should call before, proceed and after in the correct order") {
             val action = Act ("scott")
 
-            val proceed = mock<(Action)-> Unit> ()
+            val next    = mock<(Action)-> Unit> ()
             val log     = log ()
             val logging = logging (before = true, after = true, log = log)
 
             co {
-                logging.dispatch (action, mock<Storage<Unit>> (), connection (proceed = proceed))
+                logging.dispatch (action, mock<Storage<Unit>> (), connection (next = next))
 
-                val ordered = Mockito.inOrder (log, proceed)
+                val ordered = Mockito.inOrder (log, next)
                     ordered.verify (log).invoke (eq (">> {}"), eq (action))
-                    ordered.verify (proceed).invoke (action)
+                    ordered.verify (next).invoke (action)
                     ordered.verify (log).invoke (eq ("-- {}"), eq (action))
             }
         }

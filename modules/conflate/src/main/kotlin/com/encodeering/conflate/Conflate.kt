@@ -30,18 +30,18 @@ class Conflate<out State> (
         middleware, connection ->
             object : Middleware.Connection {
 
-                suspend override fun begin   (action : Action) {
+                suspend override fun initial (action : Action) {
                     dispatcher.dispatch      (action).await ()
                 }
 
-                suspend override fun proceed (action : Action) {
+                suspend override fun next    (action : Action) {
                     middleware.dispatch      (action, this@Conflate, connection)
                 }
 
             }
     }
 
-    override val dispatcher : Dispatcher = CycleDispatcher (context) { connection.proceed (it) }
+    override val dispatcher : Dispatcher = CycleDispatcher (context) { connection.next (it) }
 
     override val state : State
         get () = conflation.get ()
@@ -70,16 +70,16 @@ class Conflate<out State> (
         suspend override fun dispatch (action : Action, storage : Storage<State>, connection : Middleware.Connection) {
             connection.apply {
                 block   (action, storage.state)
-                proceed (action)
+                next    (action)
             }
         }
 
     }
     private object Stop : Middleware.Connection {
 
-        suspend override fun begin   (action : Action) {}
+        suspend override fun initial (action : Action) {}
 
-        suspend override fun proceed (action : Action) {}
+        suspend override fun next    (action : Action) {}
 
     }
 

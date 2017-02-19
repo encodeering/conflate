@@ -6,9 +6,9 @@ interface Middleware<in State> {
 
     interface Connection {
 
-        suspend fun begin   (action : Action)
+        suspend fun initial (action : Action)
 
-        suspend fun proceed (action : Action)
+        suspend fun next    (action : Action)
 
     }
 
