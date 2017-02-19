@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.coroutines.experimental.Continuation
 import kotlin.coroutines.experimental.CoroutineContext
+import kotlin.coroutines.experimental.startCoroutine
 
 class Cycle<out Scope, V> (override val context : CoroutineContext, val scope : Scope) : Completable<Scope, V>, Continuation<V> {
 
@@ -45,6 +46,17 @@ class Cycle<out Scope, V> (override val context : CoroutineContext, val scope : 
         if (state.get () == 0) // memory read barrier
             error?.let { e -> success.clear (); failure.forPoll { trylog { it.invoke (scope, e) } } } ?:
             offer?.let { v -> failure.clear (); success.forPoll { trylog { it.invoke (scope, v) } } }
+    }
+
+    companion object {
+
+        fun <Scope> co (context : CoroutineContext, scope : Scope, block : suspend () -> Unit)  : Completable<Scope, Unit> {
+            val                                completable = Cycle<Scope, Unit> (context, scope)
+            block.startCoroutine (completion = completable)
+
+            return completable
+        }
+
     }
 
 }
