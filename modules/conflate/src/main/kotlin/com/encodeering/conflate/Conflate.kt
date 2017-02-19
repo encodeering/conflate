@@ -26,8 +26,24 @@ class Conflate<out State> (
     private val conflation = AtomicReference<State> (initial)
     private val subscriptions = ConcurrentHashMap<Int, () -> Unit> ()
 
-    private val connection = pipeline (reducer, * middleware).foldRight (Stop (initial) as Middleware.Connection<State>) {
-        middleware, connection ->
+    private val connection = connect (initial, * middleware, conflation (reducer), notification ())
+
+    override val dispatcher : Dispatcher = CycleDispatcher (context) { connection.next (it) }
+
+    override val state : State
+        get () = conflation.get ()
+
+    override fun subscribe                (listener : () -> Unit) : () -> Unit {
+        val key = System.identityHashCode (listener)
+
+                 subscriptions.putIfAbsent (key,  { trylog { listener () } })
+        return { subscriptions.remove      (key); }
+    }
+
+    private fun connect (initial : State, vararg middleware : Middleware<State>) : Middleware.Connection<State> {
+        val last = Stop (initial)
+
+        return middleware.foldRight (last as Middleware.Connection<State>) { middleware, connection ->
             object : Middleware.Connection<State> {
 
                 override val state : State
@@ -42,31 +58,19 @@ class Conflate<out State> (
                 }
 
             }
+        }
     }
 
-    override val dispatcher : Dispatcher = CycleDispatcher (context) { connection.next (it) }
-
-    override val state : State
-        get () = conflation.get ()
-
-    override fun subscribe                (listener : () -> Unit) : () -> Unit {
-        val key = System.identityHashCode (listener)
-
-                 subscriptions.putIfAbsent (key,  { trylog { listener () } })
-        return { subscriptions.remove      (key); }
-    }
-
-    private fun pipeline (reducer : Reducer<State>, vararg middleware : Middleware<State>) =
-            middleware.toList () +
-                    Codeblock { action, state ->
-                        reducer.reduce (action, state).let {
-                            conflation.compareAndSet(state, it).let {
-                                if (!it) { /* warning, interleaving reductions */
+    private fun conflation (reducer : Reducer<State>) = Codeblock<State> { action, state ->
+                            reducer.reduce                                (action, state).let {
+                                conflation.compareAndSet (state, it).let {
+                                    if (!it) { /* warning, interleaving reductions */
+                                    }
                                 }
                             }
-                        }
-                    } +
-                    Codeblock { _, _ -> subscriptions.values.forEach { it() } }
+    }
+
+    private fun notification () = Codeblock<State> { _, _ -> subscriptions.values.forEach { it () } }
 
     private class Stop<out State> (override val state : State) : Middleware.Connection<State> {
 
