@@ -16,7 +16,7 @@ inline fun <reified T : Throwable> throws (block : () -> Unit) {
         thrown  = true
 
     } finally {
-        if (! matches && ex != null) throw AssertionError ("block should have thrown a ${T::class.simpleName}, but threw a ${ex.javaClass.simpleName}")
+        if (! matches && ex != null) throw AssertionError ("block should have thrown a ${T::class.simpleName}, but threw a ${ex::class.java.simpleName}")
         if (! thrown) throw AssertionError ("block should have thrown a ${T::class.simpleName}")
     }
 }
