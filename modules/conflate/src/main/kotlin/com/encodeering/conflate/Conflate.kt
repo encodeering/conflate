@@ -51,6 +51,7 @@ class Conflate<out State> (
                             conflate                                                                                      (action, state).let {
                                 persist (state, it).let {
                                     if (! it) { /* warning, interleaving reductions */
+                                        throw IllegalStateException ("Could not persist the state of $action due an interleaving reduction step")
                                     }
                                 }
                             }
