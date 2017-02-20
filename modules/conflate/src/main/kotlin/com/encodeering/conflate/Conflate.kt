@@ -26,7 +26,7 @@ class Conflate<out State> (
     private val conflation = AtomicReference<State> (initial)
     private val subscriptions = ConcurrentHashMap<Int, () -> Unit> ()
 
-    private val connection = connect (initial, * middleware, conflation (reducer::reduce, conflation::compareAndSet), notification (subscriptions::values))
+    private val connection = connect (* middleware, conflation (reducer::reduce, conflation::compareAndSet), notification (subscriptions::values))
 
     override val dispatcher : Dispatcher = CycleDispatcher (context) { connection.next (it) }
 
@@ -40,25 +40,11 @@ class Conflate<out State> (
         return { subscriptions.remove      (key); }
     }
 
-    private fun connect (initial : State, vararg middleware : Middleware<State>) : Middleware.Connection<State> {
-        val last = Stop (initial)
+    private fun connect (vararg middleware : Middleware<State>) : Middleware.Connection<State> {
+        val              dispatch : suspend (Action) -> Unit =
+            { dispatcher.dispatch (it).await () }
 
-        return middleware.foldRight (last as Middleware.Connection<State>) { middleware, connection ->
-            object : Middleware.Connection<State> {
-
-                override val state : State
-                    get () = conflation.get()
-
-                suspend override fun initial (action : Action) {
-                    dispatcher.dispatch      (action).await ()
-                }
-
-                suspend override fun next    (action : Action) {
-                    middleware.dispatch      (action, connection)
-                }
-
-            }
-        }
+        return middleware.foldRight (Stop (conflation::get) as Middleware.Connection<State>) { mw, con -> Next (conflation::get, dispatch, mw, con) }
     }
 
     private fun conflation (conflate : (Action, State) -> State, persist : (State, State) -> Boolean) = Codeblock<State> { action, state ->
@@ -72,11 +58,29 @@ class Conflate<out State> (
 
     private fun notification (subscriptions : () -> Collection<() -> Unit>) = Codeblock<State> { _, _ -> subscriptions ().forEach { it () } }
 
-    private class Stop<out State> (override val state : State) : Middleware.Connection<State> {
+    private class Stop<out State> (private var resolve : () -> State) : Middleware.Connection<State> {
+
+        override val state : State
+            get() = resolve ()
 
         suspend override fun initial (action : Action) {}
 
         suspend override fun next    (action : Action) {}
+
+    }
+
+    private class Next<out State> (private var resolve : () -> State, private val dispatch : suspend (Action) -> Unit, private val middleware : Middleware<State>, private val next : Middleware.Connection<State>) : Middleware.Connection<State> {
+
+        override val state : State
+            get () = resolve ()
+
+        suspend override fun initial (action : Action) {
+            dispatch                 (action)
+        }
+
+        suspend override fun next    (action : Action) {
+            middleware.dispatch      (action, next)
+        }
 
     }
 
