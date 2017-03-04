@@ -3,13 +3,10 @@ apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
 buildscript {
-    ext.kotlinversion = '1.1.0-rc-91'
+    ext.kotlinversion = '1.1.1'
     ext.junitversion  = '1.0.0-M2'
 
     repositories {
-        maven {
-            url "http://dl.bintray.com/kotlin/kotlin-eap-1.1"
-        }
         mavenCentral ()
     }
 
@@ -31,9 +28,6 @@ subprojects {
     targetCompatibility = 1.6
 
     repositories {
-        maven {
-            url "http://dl.bintray.com/kotlin/kotlin-eap-1.1"
-        }
         mavenCentral ()
         mavenLocal ()
     }
