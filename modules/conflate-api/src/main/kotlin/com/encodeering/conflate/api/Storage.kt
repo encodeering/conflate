@@ -9,7 +9,7 @@ interface Storage<out State> {
 
     val dispatcher : Dispatcher
 
-    fun subscribe (listener : () -> Unit) : () -> Unit
+    fun subscribe (listener : () -> Unit) : Runnable
 
 }
 

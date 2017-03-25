@@ -33,11 +33,11 @@ class Conflate<out State> (
     override val state : State
         get () = conflation.get ()
 
-    override fun subscribe                (listener : () -> Unit) : () -> Unit {
+    override fun subscribe                (listener : () -> Unit) : Runnable {
         val key = System.identityHashCode (listener)
 
                  subscriptions.putIfAbsent (key,  { trylog { listener () } })
-        return { subscriptions.remove      (key); }
+        return Runnable { subscriptions.remove      (key); }
     }
 
     private fun connect (vararg middleware : Middleware<State>) : Middleware.Connection<State> {

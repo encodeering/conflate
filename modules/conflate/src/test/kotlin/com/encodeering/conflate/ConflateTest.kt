@@ -180,7 +180,7 @@ class ConflateTest : Spek({
                 verify (one, times (2)).invoke ()
                 verify (two, times (2)).invoke ()
 
-                unregister ()
+                unregister.run ()
 
                 conflate.dispatcher.run {
                     dispatch (Add (0))
