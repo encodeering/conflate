@@ -27,10 +27,16 @@ object Middlewares {
                         after  : (Action, Middleware.Connection<T>) -> Unit = { _, _ -> Unit }) =
         object : Middleware<T> {
 
-            suspend override fun dispatch (action : Action, connection : Middleware.Connection<T>) {
+            override fun interceptor(connection : Middleware.Connection<T>) : Middleware.Interceptor {
+                return object : Middleware.Interceptor {
+
+                    suspend override fun dispatch (action : Action) {
                 before                    (action,          connection)
                 connection.next           (action)
                 after                     (action,          connection)
+                    }
+
+                }
             }
 
         }

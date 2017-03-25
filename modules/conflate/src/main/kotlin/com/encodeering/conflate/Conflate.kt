@@ -72,6 +72,8 @@ class Conflate<out State> (
 
     private class Next<out State> (private var resolve : () -> State, private val dispatch : suspend (Action) -> Unit, private val middleware : Middleware<State>, private val next : Middleware.Connection<State>) : Middleware.Connection<State> {
 
+        val interceptor = middleware.interceptor (next)
+
         override val state : State
             get () = resolve ()
 
@@ -80,7 +82,7 @@ class Conflate<out State> (
         }
 
         suspend override fun next    (action : Action) {
-            middleware.dispatch      (action, next)
+            interceptor.dispatch     (action)
         }
 
     }

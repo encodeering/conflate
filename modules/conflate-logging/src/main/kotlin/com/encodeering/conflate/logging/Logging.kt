@@ -15,7 +15,10 @@ class Logging<in State> (
         val exception : () -> Boolean = { true  }
 ) : Middleware<State> {
 
-    suspend override fun dispatch (action : Action, connection : Middleware.Connection<State>) {
+    override fun interceptor (connection : Middleware.Connection<State>) : Middleware.Interceptor {
+        return object : Middleware.Interceptor {
+
+            suspend override fun dispatch (action : Action) {
         if (before ()) debug (">>", action)
 
         try {
@@ -27,9 +30,12 @@ class Logging<in State> (
 
             throw e
         }
-    }
+            }
 
     private fun debug (prefix : CharSequence, action : Action) = log ("$prefix {}", action)
+
+        }
+    }
 
     companion object {
 

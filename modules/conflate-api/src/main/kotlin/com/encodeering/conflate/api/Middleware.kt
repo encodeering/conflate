@@ -2,7 +2,7 @@ package com.encodeering.conflate.api
 
 interface Middleware<in State> {
 
-    suspend fun dispatch (action : Action, connection : Connection<State>)
+    fun interceptor (connection : Connection<State>) : Interceptor
 
     interface Connection<out State> {
 
@@ -11,6 +11,12 @@ interface Middleware<in State> {
         suspend fun initial (action : Action)
 
         suspend fun next    (action : Action)
+
+    }
+
+    interface Interceptor {
+
+        suspend fun dispatch (action : Action)
 
     }
 

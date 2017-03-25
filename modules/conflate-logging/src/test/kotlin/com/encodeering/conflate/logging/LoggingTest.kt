@@ -40,7 +40,7 @@ class LoggingTest : Spek({
             val logging = logging (before = true, log = log)
 
             co {
-                logging.dispatch (action, connection ())
+                logging.interceptor (connection ()).dispatch (action)
 
                 verify (log).invoke (">> {}", action)
                 verifyNoMoreInteractions (log)
@@ -54,7 +54,7 @@ class LoggingTest : Spek({
             val logging = logging (after = true, log = log)
 
             co {
-                logging.dispatch (action, connection ())
+                logging.interceptor (connection ()).dispatch (action)
 
                 verify (log).invoke ("-- {}", action)
                 verifyNoMoreInteractions (log)
@@ -70,7 +70,7 @@ class LoggingTest : Spek({
             throws<IllegalStateException> {
                 co {
                     try {
-                        logging.dispatch (action, connection (next = { throw IllegalStateException () }))
+                        logging.interceptor (connection (next = { throw IllegalStateException () })).dispatch (action)
                     } finally {
                         verify (log).invoke ("!! {}", action)
                         verifyNoMoreInteractions (log)
@@ -86,7 +86,7 @@ class LoggingTest : Spek({
             val logging = logging (exception = true, log = log ())
 
             co {
-                logging.dispatch (action, connection (next = next))
+                logging.interceptor (connection (next = next)).dispatch (action)
 
                 verify (next).invoke (action)
             }
@@ -100,7 +100,7 @@ class LoggingTest : Spek({
             val logging = logging (before = true, after = true, log = log)
 
             co {
-                logging.dispatch (action, connection (next = next))
+                logging.interceptor (connection (next = next)).dispatch (action)
 
                 val ordered = Mockito.inOrder (log, next)
                     ordered.verify (log).invoke (eq (">> {}"), eq (action))
