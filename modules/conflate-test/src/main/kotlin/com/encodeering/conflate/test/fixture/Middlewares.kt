@@ -31,9 +31,9 @@ object Middlewares {
                 return object : Middleware.Interceptor {
 
                     suspend override fun dispatch (action : Action) {
-                before                    (action,          connection)
-                connection.next           (action)
-                after                     (action,          connection)
+                        before                    (action,          connection)
+                        connection.next           (action)
+                        after                     (action,          connection)
                     }
 
                 }

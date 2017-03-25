@@ -19,20 +19,20 @@ class Logging<in State> (
         return object : Middleware.Interceptor {
 
             suspend override fun dispatch (action : Action) {
-        if (before ()) debug (">>", action)
+                if (before ()) debug (">>", action)
 
-        try {
-            connection.next (action)
+                try {
+                    connection.next (action)
 
-            if (after ())     debug ("--", action)
-        } catch (e : Exception) {
-            if (exception ()) debug ("!!", action)
+                    if (after ())     debug ("--", action)
+                } catch (e : Exception) {
+                    if (exception ()) debug ("!!", action)
 
-            throw e
-        }
+                    throw e
+                }
             }
 
-    private fun debug (prefix : CharSequence, action : Action) = log ("$prefix {}", action)
+            private fun debug (prefix : CharSequence, action : Action) = log ("$prefix {}", action)
 
         }
     }

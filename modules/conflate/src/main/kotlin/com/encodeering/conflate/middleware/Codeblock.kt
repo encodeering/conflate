@@ -9,10 +9,10 @@ internal class Codeblock<in State> (private val block : (Action, State) -> Unit)
         return object : Middleware.Interceptor {
 
             suspend override fun dispatch (action : Action) {
-        connection.apply {
-            block   (action, connection.state)
-            next    (action)
-        }
+                connection.apply {
+                    block   (action, connection.state)
+                    next    (action)
+                }
             }
 
         }

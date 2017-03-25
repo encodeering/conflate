@@ -36,7 +36,7 @@ class Conflate<out State> (
     override fun subscribe                (listener : () -> Unit) : Runnable {
         val key = System.identityHashCode (listener)
 
-                 subscriptions.putIfAbsent (key,  { trylog { listener () } })
+                          subscriptions.putIfAbsent (key,  { trylog { listener () } })
         return Runnable { subscriptions.remove      (key); }
     }
 
