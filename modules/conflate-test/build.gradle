@@ -1,0 +1,4 @@
+dependencies {
+    compile project (":conflate-api")
+    compile "org.mockito:mockito-core:2.7.5"
+}

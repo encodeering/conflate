@@ -1,11 +1,12 @@
+apply plugin: 'idea'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+
 buildscript {
-    ext.kotlinversion = '1.1.0-beta-37'
+    ext.kotlinversion = '1.1.1'
     ext.junitversion  = '1.0.0-M2'
 
     repositories {
-        maven {
-            url "https://dl.bintray.com/kotlin/kotlin-dev"
-        }
         mavenCentral ()
     }
 
@@ -15,55 +16,55 @@ buildscript {
     }
 }
 
-apply plugin: 'idea'
-apply plugin: 'java'
-apply plugin: 'kotlin'
-apply plugin: 'maven'
-apply plugin: 'maven-publish'
-apply plugin: 'org.junit.platform.gradle.plugin'
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'kotlin'
+    apply plugin: 'org.junit.platform.gradle.plugin'
 
-group 'com.encodeering'
-version '0.0.1-SNAPSHOT'
+    group 'com.encodeering'
+    version '0.0.1-SNAPSHOT'
 
-allprojects {
     sourceCompatibility = 1.6
     targetCompatibility = 1.6
-}
 
-repositories {
-    maven {
-        url "https://dl.bintray.com/kotlin/kotlin-dev"
+    repositories {
+        mavenCentral ()
+        mavenLocal ()
     }
-    mavenCentral ()
-    mavenLocal ()
-}
 
-dependencies {
-    compile     "org.jetbrains.kotlin:kotlin-reflect:$kotlinversion"
-    testCompile "org.junit.platform:junit-platform-runner:$junitversion"
-    testCompile "com.winterbe:expekt:0.5.0"
-    testCompile "org.jetbrains.spek:spek-api:1.0.89"
-    testRuntime "org.jetbrains.spek:spek-junit-platform-engine:1.0.89"
-}
-
-sourceSets {
-    main.kotlin.srcDirs += 'src/main/kotlin'
-    test.kotlin.srcDirs += 'src/test/kotlin'
-}
-
-idea {
-    module {
-        downloadJavadoc = true
-        downloadSources = true
+    dependencies {
+        compile     "org.slf4j:slf4j-api:1.7.22"
+        compile     "org.jetbrains.kotlin:kotlin-reflect:$kotlinversion"
+        testCompile "org.junit.platform:junit-platform-runner:$junitversion"
+        testCompile "com.winterbe:expekt:0.5.0"
+        testCompile "org.jetbrains.spek:spek-api:1.0.89"
+        testRuntime "org.jetbrains.spek:spek-junit-platform-engine:1.0.89"
+        testCompile "org.mockito:mockito-core:2.7.5"
     }
-    project {
-        languageLevel = sourceCompatibility
+
+    sourceSets {
+        main.kotlin.srcDirs += 'src/main/kotlin'
+        test.kotlin.srcDirs += 'src/test/kotlin'
+    }
+
+    idea {
+        module {
+            downloadJavadoc = true
+            downloadSources = true
+        }
+        project {
+            languageLevel = sourceCompatibility
+        }
+    }
+
+    junitPlatform {
+        platformVersion "$junitversion"
+        engines {
+            include 'spek'
+        }
     }
 }
 
-junitPlatform {
-    platformVersion "$junitversion"
-    engines {
-        include 'spek'
-    }
+task wrapper (type: Wrapper) {
+    gradleVersion = '3.1'
 }

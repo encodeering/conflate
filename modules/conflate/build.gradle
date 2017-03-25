@@ -1,0 +1,4 @@
+dependencies {
+    compile project (":conflate-api")
+    testCompile project (":conflate-test")
+}
