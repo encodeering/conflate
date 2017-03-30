@@ -1,6 +1,4 @@
 apply plugin: 'idea'
-apply plugin: 'maven'
-apply plugin: 'maven-publish'
 
 buildscript {
     ext.kotlinversion = '1.1.1'
@@ -26,6 +24,9 @@ subprojects {
 
     sourceCompatibility = 1.6
     targetCompatibility = 1.6
+
+    apply plugin: 'maven'
+    apply plugin: 'maven-publish'
 
     repositories {
         mavenCentral ()
@@ -61,6 +62,15 @@ subprojects {
         platformVersion "$junitversion"
         engines {
             include 'spek'
+        }
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                artifactId jar.baseName
+                from components.java
+            }
         }
     }
 }
