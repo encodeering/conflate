@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory
  * @author Michael Clausen - encodeering@gmail.com
  */
 class Logging<in State> (
-        val log       : (String, Action) -> Unit = Logging.logger::debug,
+        val log       : (String, Action) -> Unit = { prefix, action -> Logging.logger.debug ("{} {}", prefix, action) } ,
         val before    : () -> Boolean = { true  },
         val after     : () -> Boolean = { false },
         val exception : () -> Boolean = { true  }
@@ -32,7 +32,7 @@ class Logging<in State> (
                 }
             }
 
-            private fun debug (prefix : CharSequence, action : Action) = log ("$prefix {}", action)
+            private fun debug (prefix : String, action : Action) = log (prefix, action)
 
         }
     }
