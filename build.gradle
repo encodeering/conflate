@@ -5,6 +5,7 @@ buildscript {
     ext.junitversion  = '1.0.0-M2'
 
     repositories {
+        jcenter ()
         mavenCentral ()
     }
 
@@ -29,6 +30,7 @@ subprojects {
     apply plugin: 'maven-publish'
 
     repositories {
+        jcenter ()
         mavenCentral ()
         mavenLocal ()
     }
