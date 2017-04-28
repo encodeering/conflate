@@ -54,7 +54,7 @@ subprojects {
             downloadSources = true
         }
         project {
-            languageLevel = sourceCompatibility
+            languageLevel = 1.6
         }
     }
 
