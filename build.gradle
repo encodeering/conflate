@@ -73,6 +73,12 @@ subprojects {
                 artifactId jar.baseName
                 from components.java
             }
+
+            maven (MavenPublication) {
+                pom.withXml {
+                    asNode ().appendNode ("description", "$project.description")
+                }
+            }
         }
     }
 }
