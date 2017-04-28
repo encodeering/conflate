@@ -79,6 +79,7 @@ subprojects {
 
         dependencies {
             compile "org.slf4j:slf4j-api:1.7.22"
+            compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinversion"
             compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinversion"
         }
 
@@ -95,6 +96,7 @@ subprojects {
     plugins.withType (com.android.build.gradle.LibraryPlugin) {
         dependencies {
             compile "org.slf4j:slf4j-api:1.7.22"
+            compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinversion"
             compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinversion"
 
             testCompile "org.junit.platform:junit-platform-runner:$junitversion"
