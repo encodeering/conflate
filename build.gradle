@@ -23,9 +23,6 @@ subprojects {
     group 'com.encodeering.conflate'
     version '0.0.1-SNAPSHOT'
 
-    sourceCompatibility = 1.6
-    targetCompatibility = 1.6
-
     apply plugin: 'maven'
     apply plugin: 'maven-publish'
 
@@ -33,11 +30,6 @@ subprojects {
         jcenter ()
         mavenCentral ()
         mavenLocal ()
-    }
-
-    dependencies {
-        compile     "org.slf4j:slf4j-api:1.7.22"
-        compile     "org.jetbrains.kotlin:kotlin-reflect:$kotlinversion"
     }
 
     idea {
@@ -53,13 +45,27 @@ subprojects {
     publishing {
         publications {
             maven (MavenPublication) {
-                artifactId jar.baseName
-                from components.java
-            }
-
-            maven (MavenPublication) {
                 pom.withXml {
                     asNode ().appendNode ("description", "$project.description")
+                }
+            }
+        }
+    }
+
+    plugins.withType (JavaPlugin) {
+        sourceCompatibility = 1.6
+        targetCompatibility = 1.6
+
+        dependencies {
+            compile "org.slf4j:slf4j-api:1.7.22"
+            compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinversion"
+        }
+
+        publishing {
+            publications {
+                maven (MavenPublication) {
+                    artifactId jar.baseName
+                    from components.java
                 }
             }
         }
