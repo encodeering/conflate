@@ -67,7 +67,7 @@ subprojects {
 
     publishing {
         publications {
-            mavenJava(MavenPublication) {
+            maven (MavenPublication) {
                 artifactId jar.baseName
                 from components.java
             }
