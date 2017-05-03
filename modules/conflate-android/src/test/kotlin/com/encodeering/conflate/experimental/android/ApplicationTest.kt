@@ -5,6 +5,8 @@ import android.content.pm.ApplicationInfo
 import com.encodeering.conflate.experimental.android.co.Looper
 import com.encodeering.conflate.experimental.api.Dispatcher
 import com.encodeering.conflate.experimental.co.CycleDispatcher
+import com.encodeering.conflate.experimental.logging.Logging
+import com.encodeering.conflate.experimental.middleware.Noop
 import com.encodeering.conflate.experimental.test.fixture.Reducers
 import com.encodeering.conflate.experimental.test.whenever
 import com.winterbe.expekt.expect
@@ -54,6 +56,27 @@ class ApplicationTest : Spek ({
             it ("shall inject a proper interceptor otherwise") {
                 expect (conflate ().dispatcher.context ()[ContinuationInterceptor]).to.equal (Looper)
                 expect (conflate (EmptyCoroutineContext).dispatcher.context ()[ContinuationInterceptor]).to.equal (Looper)
+            }
+
+        }
+
+        describe ("Logging") {
+
+            it ("shall return a logger if the application is debuggable") {
+                expect (application { flags = ApplicationInfo.FLAG_DEBUGGABLE }.logging<Any> ()).to.satisfy { it is Logging }
+            }
+
+            it ("shall return a noop otherwise") {
+                expect (application { flags = 0 }.logging<Any> ()).to.satisfy { it is Noop }
+            }
+
+        }
+
+        describe ("Debuggable") {
+
+            it ("shall read the application info flag") {
+                expect (application { flags = ApplicationInfo.FLAG_DEBUGGABLE }.debuggable ()).to.equal (true)
+                expect (application { flags = 0 }.debuggable ()).to.equal (false)
             }
 
         }

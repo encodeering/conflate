@@ -25,5 +25,6 @@ android {
 dependencies {
     compile project (":conflate")
     compile project (":conflate-api")
+    compile project (":conflate-logging")
     testCompile project (":conflate-test")
 }
