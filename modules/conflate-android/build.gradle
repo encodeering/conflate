@@ -16,6 +16,10 @@ android {
             minifyEnabled false
         }
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
