@@ -1,3 +1,4 @@
+apply from: 'version.gradle'
 apply plugin: 'idea'
 
 buildscript {
@@ -17,7 +18,7 @@ buildscript {
 
 subprojects {
     group 'com.encodeering.conflate'
-    version '0.0.1-SNAPSHOT'
+    version versioncode ()
 
     apply plugin: 'maven'
     apply plugin: 'maven-publish'
