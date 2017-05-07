@@ -1,3 +1,4 @@
+apply from: 'version.gradle'
 apply plugin: 'idea'
 
 buildscript {
@@ -12,15 +13,17 @@ buildscript {
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinversion"
         classpath "org.junit.platform:junit-platform-gradle-plugin:$junitversion"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3"
     }
 }
 
 subprojects {
     group 'com.encodeering.conflate'
-    version '0.0.1-SNAPSHOT'
+    version versioncode ()
 
     apply plugin: 'maven'
     apply plugin: 'maven-publish'
+    apply plugin: 'com.jfrog.bintray'
 
     repositories {
         jcenter ()
@@ -44,6 +47,27 @@ subprojects {
                 pom.withXml {
                     asNode ().appendNode ("description", "$project.description")
                 }
+            }
+        }
+    }
+
+    bintray {
+        user = System.getenv ('BINTRAY_USER')
+        key  = System.getenv ('BINTRAY_UKEY')
+        publications = ['maven']
+        pkg {
+            repo = 'maven'
+            name = rootProject.name
+            licenses = ['Apache-2.0']
+            labels   = ['redux']
+            websiteUrl      = 'http://www.encodeering.com'
+            issueTrackerUrl = 'https://github.com/encodeering/conflate/issues'
+            vcsUrl          = 'https://github.com/encodeering/conflate'
+            description     = 'An alternative redux implementation'
+            version {
+                name     = project.version
+                vcsTag   = project.version
+                released = new Date()
             }
         }
     }
