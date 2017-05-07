@@ -8,3 +8,11 @@ env:
 
 script:
 - ./gradlew clean build
+
+deploy:
+  script: ./gradlew bintrayUpload
+  provider: script
+  skip_cleanup: true
+  on:
+    tags: true
+    all_branches: true
