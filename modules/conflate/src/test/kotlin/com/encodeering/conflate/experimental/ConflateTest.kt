@@ -59,6 +59,14 @@ class ConflateTest : Spek({
                     middleware = * middleware
                 )
 
+        describe ("construction") {
+
+            it ("provides a context free solution") {
+                expect (Conflate (42, accumulator ()).state).to.equal (42)
+            }
+
+        }
+
         describe ("state") {
 
             it ("should return the initial state") {

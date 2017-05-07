@@ -18,11 +18,17 @@ import kotlin.coroutines.experimental.EmptyCoroutineContext
  * @author Michael Clausen - encodeering@gmail.com
  */
 class Conflate<out State> (
-           context    : CoroutineContext = EmptyCoroutineContext,
            initial    : State,
            reducer    : Reducer<State>,
+           context    : CoroutineContext,
     vararg middleware : Middleware<State>
 ) : Storage<State> {
+
+    constructor (
+               initial    : State,
+               reducer    : Reducer<State>,
+        vararg middleware : Middleware<State>
+    ) : this (initial, reducer, EmptyCoroutineContext, * middleware)
 
     private val conflation = AtomicReference<State> (initial)
     private val subscriptions = ConcurrentHashMap<Int, () -> Unit> ()
