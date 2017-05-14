@@ -18,6 +18,16 @@ buildscript {
     }
 }
 
+allprojects {
+
+    repositories {
+        jcenter ()
+        mavenCentral ()
+        mavenLocal ()
+    }
+
+}
+
 subprojects {
     group 'com.encodeering.conflate'
     version versioncode ()
@@ -25,12 +35,6 @@ subprojects {
     apply plugin: 'maven'
     apply plugin: 'maven-publish'
     apply plugin: 'com.jfrog.bintray'
-
-    repositories {
-        jcenter ()
-        mavenCentral ()
-        mavenLocal ()
-    }
 
     idea {
         module {
