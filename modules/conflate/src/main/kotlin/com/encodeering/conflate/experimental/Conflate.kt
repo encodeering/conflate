@@ -15,6 +15,8 @@ import kotlin.coroutines.experimental.CoroutineContext
 import kotlin.coroutines.experimental.EmptyCoroutineContext
 
 /**
+ * A storage implementation of Redux
+ *
  * @author Michael Clausen - encodeering@gmail.com
  */
 class Conflate<out State> (

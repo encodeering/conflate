@@ -6,6 +6,15 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 /**
+ * A logging middleware for debugging purposes.
+ *
+ * Middleware is `thread-safe`, if the underlying callbacks are thread-safe, and supports `linearization`.
+ *
+ * @property log specifies the logging facility, default uses sl4j with debug level
+ * @property before specifies if a log statement shall be made before any call to the next middleware, default is `true`
+ * @property after specifies if a log statement shall be made after a call to the next middleware, default if `false`
+ * @property exception specifies if a log statement shall be made if an exception occurred, default is `true`
+ * @param State defines the type of the state container
  * @author Michael Clausen - encodeering@gmail.com
  */
 class Logging<in State> (
