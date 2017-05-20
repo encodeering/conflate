@@ -2,12 +2,12 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion project.ext["android.platform"].toInteger ()
     buildToolsVersion "24.0.0"
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 23
+        targetSdkVersion project.ext["android.platform"].toInteger ()
         multiDexEnabled true
     }
 
