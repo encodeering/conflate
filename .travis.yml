@@ -21,9 +21,9 @@ script:
 - ./gradlew clean build
 
 deploy:
-  script: ./gradlew bintrayUpload
-  provider: script
-  skip_cleanup: true
-  on:
-    tags: true
-    all_branches: true
+  - provider: script
+    skip_cleanup: true
+    script: ./gradlew bintrayUpload
+    on:
+      tags: true
+      all_branches: true
