@@ -189,6 +189,19 @@ subprojects {
                 suffix = "#L"
             }
         }
+
+        task dokkajar (type: Jar, dependsOn: dokka) {
+            classifier = 'javadoc'
+            from dokka.outputDirectory
+        }
+
+        publishing {
+            publications {
+                maven (MavenPublication) {
+                    artifact dokkajar
+                }
+            }
+        }
     }
 
     plugins.withType (org.jetbrains.dokka.gradle.DokkaAndroidPlugin) {
@@ -201,6 +214,19 @@ subprojects {
                 dir = "src/main/kotlin"
                 url = "https://github.com/encodeering/conflate/blob/master/modules/${project.name}/src/main/kotlin"
                 suffix = "#L"
+            }
+        }
+
+        task dokkajar (type: Jar, dependsOn: dokka) {
+            classifier = 'javadoc'
+            from dokka.outputDirectory
+        }
+
+        publishing {
+            publications {
+                maven (MavenPublication) {
+                    artifact dokkajar
+                }
             }
         }
     }
