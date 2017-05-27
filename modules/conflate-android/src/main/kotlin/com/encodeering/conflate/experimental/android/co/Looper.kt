@@ -9,6 +9,10 @@ import kotlin.coroutines.experimental.Continuation
 import kotlin.coroutines.experimental.ContinuationInterceptor
 
 /**
+ * A requeue continuation implementation using Android's main looper.
+ *
+ * @property continuation specifies the intercepted continuation
+ * @param T specifies the coroutine's value-type.
  * @author Michael Clausen - encodeering@gmail.com
  */
 class LooperContinuation<in T> (continuation : Continuation<T>) : RequeueContinuation<T> (continuation) {
@@ -21,6 +25,11 @@ class LooperContinuation<in T> (continuation : Continuation<T>) : RequeueContinu
 
 }
 
+/**
+ * A coroutine interceptor to reschedule resumptions on Android's main looper.
+ *
+ * @author Michael Clausen - encodeering@gmail.com
+ */
 object Looper : AbstractCoroutineContextElement (ContinuationInterceptor), ContinuationInterceptor {
 
     override fun <T> interceptContinuation (continuation : Continuation<T>) = LooperContinuation (continuation)

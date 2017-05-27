@@ -9,6 +9,9 @@ import kotlin.coroutines.experimental.Continuation
 import kotlin.coroutines.experimental.CoroutineContext
 import kotlin.coroutines.experimental.startCoroutine
 
+/**
+ * @author Michael Clausen - encodeering@gmail.com
+ */
 class Cycle<out Scope, V> (override val context : CoroutineContext, val scope : Scope) : Completable<Scope, V>, Continuation<V> {
 
     private var offer : V? = null

@@ -16,14 +16,25 @@ env:
   global:
   - secure: BlJ9nXmkEH4Odb/m6tNpTe1ZHVyrXjHhfQ7rDHpkF6+v1DqR/gZgCijzyMbSRuXZ0m7+hRp7ZnVKiEULndUetWAsidMtK3gNkb9/j3JXkzZIfpAQ16u0Ht/OuaV4VUlqFab4lyqWpiLXDGVXd2kPsBN/mn6zzPDkYBrSOZE9dbv59jsg94kT7J7XErWVMItZKz6etEgX11HWAIARz6xLP5OzwtK5fTXTwRS3Hk8zy0Jn86XvZpmjwmupEnfToHqTdP4Wb6k96lVngCWkQ/3gDt2wDcGSyRnzSnxOSf7fIkga8c1c82ge1UcB4u3LodHgu1SVs8Ix/iEq/Q0d94pVbSuHrnQI4DhpKXMjGtHLbWTLiKJfXYH6fI5wroSw2bPbTWavFmA+VWtu6NOaFH9rS7d3Rf0uFmsollSHy/a9u7Rn6pa2yb88luyKh+HV7B7NasoQaNyw8yxHvaDLtL9xy5OPsaJOWV7y5OGaTCYzQDrNHROmpyAIX76u+rlekaVFNgLInmsLDEWuPD7lU8fnKwEqnXR0iSkSuYg9VwzqPABJoCx0G3J0Ffn2Gf+TO/pP3ULI8qmtD2Ecl33wMce2I+LS8u99o3UTuHM7+3uxt8PkplwlSih0uTC/H/Ts8cDulFw2skI2mJvptVxeTJflMF/wJA2G9z4MHulSukFhGw4=
   - secure: LcY4gp6cvdGQ4HNJ3m8VnOgT3EbbXQ+JmwFYxP4tmnTbc+fYsDN/Qg2fD6zfQOxaV3ygGtC9XpLZUJHvAuudpZc6a9p1B7qkPY5Aksi7144AgM+dsq5NMYNVbtzErUlEoMbD+3y4f1RrsXpHzlUJgW3lDQ/0Aa3QsxHAfdGlSouhKYtl4T6lSCyfuS+SDpbUlK8OK3P4Qi6qp6ZLjRWtD8HBbP+/iDzFvLMyIySMeqUZUiMvpxD2+7yfml/5hwkCRz09s2ssMyg2b7zMeeJNHiq3+52QlaM/L+yikU7tvATh1tkipZ4rM23fWTQaWat0y9mb8kLZd7a/toZ45O1Obmf8gJa+XRPQz5iBjFux8yRI8Dcy86aLDdbee9Qvfz9CYLXsmLdMZLtU4pG/cztAovMBLUV9ZgmwSiiulmPbk4tQLpS5OnGkhp31nzmHmp+SWEhIfEQHcI5UjJ7ZfXRoEBP/Plru8fx7QQXr3Mwm25ApmdWaZu1mpKJJiRVGT0cQqhiD1Diqflf0fXsdfEDFhpEiezy4igbNWj6HfYQRvVxNQTRu3Y2XROXSkn5D8Jxb7aeB/9xrxQbyxm2jxqtQZ+g6xBsaFVrz1eJcXuNkb3cJmPgHvH20pkz4Z9aZjPAo/rZnbTVtVZWeM1PUB4FFz4EMOEYi9LFqREjB/YiokQQ=
+  - secure: nC94wjliORfq+1ia9oAGhDEu7/jpI7vdankNIm/m7VEYUwno1HvmjHexzVZXxgwJfUBmI4nlSaJYyf3ESfDCk9vxxhJSHtD95+pyMlH4B4NMiKFi4aJ6ti6VfmLKbBC8RFWUNu8G/fEali6vful10Qr33dTJhPf0r8TIH0k8viprZs+KWbGrGZ35N2/X+2WuxxjqlyXlLN/MuFAdb1HXqvMcvsF/SMCZq/fL9wrLBXYrxon2dSmfzpx9/9frSP3qGjDdhHW/jB/i/3xsBZXs8SHROBvwu0IAZFeNWtxxlTi6BPxtHj0rL0Sm1rp5GJzl2pWWzPvbOA4qbi+5dP2HbdbKcbUoqaCDmi1lge6pCK/whgRVlav5uNoCP0le8LcjrkQWGG7fqh0tOf1DS5ivkUipYdrdOJCThXjMLQPXJAyDMgnhCOBB5+BiXzQ8iYx6NjLO9ppP+rDkj7nJyc+5wZigWs107e/lFYqOkGcYUm9uWLmfx0t8vLUPRXKVDKgmGk03M1zJFyuKnZhEnaDyoj3NTtctozfb1ks4jHbyvWdaA8IueAOX17+8AGCY6eVKWTxMxp6mEjHHVIwtQGZEpoOmqkjRx3z4PIZVWfzazlzHBxdxwJb1I0C0aSPgXMRMb2ARvBiyLqr0emmha85CzYNJnpo5pn+5XjP0EgzTScs=
 
 script:
 - ./gradlew clean build
 
+after_success:
+- ./gradlew dokka
+
 deploy:
-  script: ./gradlew bintrayUpload
-  provider: script
-  skip_cleanup: true
-  on:
-    tags: true
-    all_branches: true
+  - provider: script
+    skip_cleanup: true
+    script: ./gradlew bintrayUpload
+    on:
+      tags: true
+      all_branches: true
+  - provider: pages
+    skip_cleanup: true
+    local_dir: ./build/javadoc
+    github_token: $GITHUB_TOKEN
+    on:
+      tags: true
+      all_branches: true
