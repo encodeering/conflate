@@ -4,14 +4,26 @@ An alternative [Redux](http://redux.js.org/) implementation written in [Kotlin](
 
 ## Setup
 
+### Bintray
+
 ``` gradle
 // build.gradle
 
 repositories {
-    jcenter ()
+    maven {
+        url "http://dl.bintray.com/encodeering/maven"
+    }
 }
 
 dependencies {
-    compile "com.encodeering.conflate:conflate[-module]?:[version]"
+    compile "com.encodeering.conflate:conflate-android:0.1.0"
+    compile "com.encodeering.conflate:conflate-jfx:0.1.0"
+    compile "com.encodeering.conflate:conflate-logging:0.1.0"
 }
 ```
+
+## Sample
+
+### Android
+
+* [Calenope](https://github.com/synyx/calenope) - A calendar application showing events from available Google accounts. 
