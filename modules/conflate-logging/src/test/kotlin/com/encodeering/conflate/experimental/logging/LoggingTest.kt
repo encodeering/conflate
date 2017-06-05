@@ -33,15 +33,6 @@ class LoggingTest : Spek({
                 log = log
         )
 
-        it ("should use slf4j by default") {
-            val action = Act ("scott")
-            val logging = Logging<Unit> ()
-
-            co {
-                logging.interceptor (connection ()).dispatch (action)
-            }
-        }
-
         it ("should log before") {
             val action = Act ("scott")
 
