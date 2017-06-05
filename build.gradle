@@ -5,7 +5,7 @@ apply plugin: 'org.jetbrains.dokka'
 buildscript {
     ext.kotlinversion = '1.1.2'
     ext.junitversion  = '1.0.0-M2'
-    ext.dokkaversion  = '0.9.13'
+    ext.dokkaversion  = '0.9.14'
 
     repositories {
         jcenter ()
