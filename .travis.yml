@@ -23,6 +23,7 @@ script:
 - ./gradlew dokka coverage
 
 after_success:
+- bash <(curl -s https://codecov.io/bash)
 
 deploy:
   - provider: script
