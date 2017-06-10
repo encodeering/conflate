@@ -20,9 +20,9 @@ env:
 
 script:
 - ./gradlew clean build
+- ./gradlew dokka coverage
 
 after_success:
-- ./gradlew dokka
 
 deploy:
   - provider: script
