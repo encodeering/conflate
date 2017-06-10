@@ -1,7 +1,5 @@
-package com.encodeering.conflate.experimental.android.co
+package com.encodeering.conflate.experimental.co
 
-import com.encodeering.conflate.experimental.co.RequeueContinuation
-import com.encodeering.conflate.experimental.co.RequeueException
 import com.encodeering.conflate.experimental.test.any
 import com.encodeering.conflate.experimental.test.mock
 import com.encodeering.conflate.experimental.test.whenever
