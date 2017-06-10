@@ -1,6 +1,5 @@
 package com.encodeering.conflate.experimental
 
-import com.encodeering.conflate.Codeblock
 import com.encodeering.conflate.experimental.api.Action
 import com.encodeering.conflate.experimental.api.Dispatcher
 import com.encodeering.conflate.experimental.api.Middleware
@@ -8,6 +7,7 @@ import com.encodeering.conflate.experimental.api.Reducer
 import com.encodeering.conflate.experimental.api.Storage
 import com.encodeering.conflate.experimental.api.await
 import com.encodeering.conflate.experimental.co.CycleDispatcher
+import com.encodeering.conflate.experimental.middleware.Codeblock
 import com.encodeering.conflate.experimental.util.trylog
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicReference

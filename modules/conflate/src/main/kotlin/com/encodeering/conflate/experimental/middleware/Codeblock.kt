@@ -1,4 +1,4 @@
-package com.encodeering.conflate
+package com.encodeering.conflate.experimental.middleware
 
 import com.encodeering.conflate.experimental.api.Action
 import com.encodeering.conflate.experimental.api.Middleware
