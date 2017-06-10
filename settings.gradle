@@ -1,13 +1,13 @@
 rootProject.name='conflate'
 
-include 'conflate'
+include 'conflate-jvm'
 include 'conflate-api'
 include 'conflate-android'
 include 'conflate-test'
 include 'conflate-jfx'
 include 'conflate-logging'
 
-project (":conflate").projectDir = file ("modules/conflate")
+project (":conflate-jvm").projectDir = file ("modules/conflate-jvm")
 project (":conflate-api").projectDir = file ("modules/conflate-api")
 project (":conflate-android").projectDir = file ("modules/conflate-android")
 project (":conflate-test").projectDir = file ("modules/conflate-test")
