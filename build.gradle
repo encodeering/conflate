@@ -1,6 +1,7 @@
 apply from: 'version.gradle'
 apply plugin: 'idea'
 apply plugin: 'org.jetbrains.dokka'
+apply plugin: 'jacoco'
 
 buildscript {
     ext.kotlinversion = '1.1.2'
@@ -36,6 +37,7 @@ subprojects {
     group 'com.encodeering.conflate'
     version versioncode ()
 
+    apply plugin: 'jacoco'
     apply plugin: 'maven'
     apply plugin: 'maven-publish'
     apply plugin: 'com.jfrog.bintray'
@@ -121,6 +123,22 @@ subprojects {
             }
         }
 
+        afterEvaluate {
+            task ("jacocoTestReport", dependsOn: "testReleaseUnitTest", type: JacocoReport, overwrite: true) {
+                executionData files ("${buildDir}/jacoco/testReleaseUnitTest.exec")
+                sourceDirectories = files ("$buildDir/src/main/kotlin")
+                classDirectories  = fileTree (
+                    dir: "$buildDir/intermediates/classes/release",
+                    excludes: ['**/BuildConfig.*', '**/Manifest*.*']
+                )
+
+                reports {
+                    xml.enabled = true
+                    xml.destination "${buildDir}/reports/jacoco/report.xml"
+                }
+            }
+        }
+
         task jaronly (type: Jar, dependsOn : [build]) {
             from "$buildDir/intermediates/classes/release"
             archiveName "${project.name}.jar"
@@ -160,6 +178,31 @@ subprojects {
             filters {
                 engines {
                     include 'spek'
+                }
+            }
+        }
+    }
+
+    plugins.withType (JacocoPlugin) {
+        afterEvaluate {
+            tasks.whenTaskAdded {
+                if (it.name == 'junitPlatformTest') {
+                    def junitPlatformTestTask = it
+
+                    jacoco {
+                        applyTo junitPlatformTestTask
+                    }
+
+                    task ("jacocoTestReport", dependsOn: "test", type: JacocoReport, overwrite: true) {
+                        executionData junitPlatformTestTask
+                        sourceDirectories = files ("$buildDir/src/main/kotlin")
+                        classDirectories  = files ("$buildDir/classes/main")
+
+                        reports {
+                            xml.enabled = true
+                            xml.destination "${buildDir}/reports/jacoco/report.xml"
+                        }
+                    }
                 }
             }
         }
@@ -269,6 +312,19 @@ task dokka (type: org.jetbrains.dokka.gradle.DokkaTask, overwrite: true) {
             return "$rootProject.rootDir/$path"
     })
 }
+
+task coverage (type: JacocoReport) {
+    executionData     = fileTree (project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+    sourceDirectories = files (subprojects.collect {  "modules/$it.name/src/main/kotlin" })
+    classDirectories  = files (subprojects.collect { ["modules/$it.name/build/classes/main", "modules/$it.name/build/intermediates/classes/release"] }.flatten ())
+
+    reports {
+        xml.enabled true
+        xml.destination "${buildDir}/reports/jacoco/report.xml"
+    }
+}
+
+coverage.dependsOn { subprojects*.jacocoTestReport }
 
 task wrapper (type: Wrapper) {
     gradleVersion = '3.1'
