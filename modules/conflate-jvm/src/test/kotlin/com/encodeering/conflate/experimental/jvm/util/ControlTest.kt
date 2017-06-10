@@ -1,4 +1,4 @@
-package com.encodeering.conflate.experimental.util
+package com.encodeering.conflate.experimental.jvm.util
 
 import com.encodeering.conflate.experimental.test.mock
 import com.encodeering.conflate.experimental.test.whenever

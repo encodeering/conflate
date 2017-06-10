@@ -1,4 +1,4 @@
-package com.encodeering.conflate.experimental
+package com.encodeering.conflate.experimental.jvm
 
 import com.encodeering.conflate.experimental.api.Action
 import com.encodeering.conflate.experimental.api.Dispatcher
@@ -6,9 +6,9 @@ import com.encodeering.conflate.experimental.api.Middleware
 import com.encodeering.conflate.experimental.api.Reducer
 import com.encodeering.conflate.experimental.api.Storage
 import com.encodeering.conflate.experimental.api.await
-import com.encodeering.conflate.experimental.co.CycleDispatcher
-import com.encodeering.conflate.experimental.middleware.Codeblock
-import com.encodeering.conflate.experimental.util.trylog
+import com.encodeering.conflate.experimental.jvm.co.CycleDispatcher
+import com.encodeering.conflate.experimental.jvm.middleware.Codeblock
+import com.encodeering.conflate.experimental.jvm.util.trylog
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicReference
 import kotlin.coroutines.experimental.CoroutineContext

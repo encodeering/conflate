@@ -1,4 +1,4 @@
-package com.encodeering.conflate.experimental.co
+package com.encodeering.conflate.experimental.jvm.co
 
 import com.encodeering.conflate.experimental.test.any
 import com.encodeering.conflate.experimental.test.co

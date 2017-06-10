@@ -1,4 +1,4 @@
-package com.encodeering.conflate.experimental.util
+package com.encodeering.conflate.experimental.jvm.util
 
 /**
  * Guards a call with a try-catch on [runtime-exception][java.lang.RuntimeException] and logs all errors using the provided [logger][log].

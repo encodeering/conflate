@@ -1,6 +1,6 @@
 package com.encodeering.conflate.experimental.jfx
 
-import com.encodeering.conflate.experimental.Conflate
+import com.encodeering.conflate.experimental.jvm.Conflate
 import com.encodeering.conflate.experimental.api.Middleware
 import com.encodeering.conflate.experimental.api.Reducer
 import com.encodeering.conflate.experimental.jfx.co.FxAT

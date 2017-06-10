@@ -1,7 +1,7 @@
-package com.encodeering.conflate.experimental.co
+package com.encodeering.conflate.experimental.jvm.co
 
 import com.encodeering.conflate.experimental.api.Completable
-import com.encodeering.conflate.experimental.util.trylog
+import com.encodeering.conflate.experimental.jvm.util.trylog
 import java.util.Queue
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.atomic.AtomicInteger
