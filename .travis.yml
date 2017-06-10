@@ -20,9 +20,10 @@ env:
 
 script:
 - ./gradlew clean build
+- ./gradlew dokka coverage
 
 after_success:
-- ./gradlew dokka
+- bash <(curl -s https://codecov.io/bash)
 
 deploy:
   - provider: script

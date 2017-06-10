@@ -1,10 +1,11 @@
 apply from: 'version.gradle'
 apply plugin: 'idea'
 apply plugin: 'org.jetbrains.dokka'
+apply plugin: 'jacoco'
 
 buildscript {
     ext.kotlinversion = '1.1.2'
-    ext.junitversion  = '1.0.0-M2'
+    ext.junitversion  = '1.0.0-M4'
     ext.dokkaversion  = '0.9.14'
 
     repositories {
@@ -36,6 +37,7 @@ subprojects {
     group 'com.encodeering.conflate'
     version versioncode ()
 
+    apply plugin: 'jacoco'
     apply plugin: 'maven'
     apply plugin: 'maven-publish'
     apply plugin: 'com.jfrog.bintray'
@@ -109,8 +111,8 @@ subprojects {
 
             testCompile "org.junit.platform:junit-platform-runner:$junitversion"
             testCompile "com.winterbe:expekt:0.5.0"
-            testCompile "org.jetbrains.spek:spek-api:1.0.89"
-            testCompile "org.jetbrains.spek:spek-junit-platform-engine:1.0.89"
+            testCompile "org.jetbrains.spek:spek-api:1.1.2"
+            testCompile "org.jetbrains.spek:spek-junit-platform-engine:1.1.2"
             testCompile "org.mockito:mockito-core:2.7.5"
         }
 
@@ -118,6 +120,22 @@ subprojects {
             sourceSets {
                 main.java.srcDirs += 'src/main/kotlin'
                 test.java.srcDirs += 'src/test/kotlin'
+            }
+        }
+
+        afterEvaluate {
+            task ("jacocoTestReport", dependsOn: "testReleaseUnitTest", type: JacocoReport, overwrite: true) {
+                executionData files ("${buildDir}/jacoco/testReleaseUnitTest.exec")
+                sourceDirectories = files ("$buildDir/src/main/kotlin")
+                classDirectories  = fileTree (
+                    dir: "$buildDir/intermediates/classes/release",
+                    excludes: ['**/BuildConfig.*', '**/Manifest*.*']
+                )
+
+                reports {
+                    xml.enabled = true
+                    xml.destination "${buildDir}/reports/jacoco/report.xml"
+                }
             }
         }
 
@@ -150,15 +168,42 @@ subprojects {
         dependencies {
             testCompile "org.junit.platform:junit-platform-runner:$junitversion"
             testCompile "com.winterbe:expekt:0.5.0"
-            testCompile "org.jetbrains.spek:spek-api:1.0.89"
-            testRuntime "org.jetbrains.spek:spek-junit-platform-engine:1.0.89"
+            testCompile "org.jetbrains.spek:spek-api:1.1.2"
+            testRuntime "org.jetbrains.spek:spek-junit-platform-engine:1.1.2"
             testCompile "org.mockito:mockito-core:2.7.5"
         }
 
         junitPlatform {
             platformVersion "$junitversion"
-            engines {
-                include 'spek'
+            filters {
+                engines {
+                    include 'spek'
+                }
+            }
+        }
+    }
+
+    plugins.withType (JacocoPlugin) {
+        afterEvaluate {
+            tasks.whenTaskAdded {
+                if (it.name == 'junitPlatformTest') {
+                    def junitPlatformTestTask = it
+
+                    jacoco {
+                        applyTo junitPlatformTestTask
+                    }
+
+                    task ("jacocoTestReport", dependsOn: "test", type: JacocoReport, overwrite: true) {
+                        executionData junitPlatformTestTask
+                        sourceDirectories = files ("$buildDir/src/main/kotlin")
+                        classDirectories  = files ("$buildDir/classes/main")
+
+                        reports {
+                            xml.enabled = true
+                            xml.destination "${buildDir}/reports/jacoco/report.xml"
+                        }
+                    }
+                }
             }
         }
     }
@@ -267,6 +312,19 @@ task dokka (type: org.jetbrains.dokka.gradle.DokkaTask, overwrite: true) {
             return "$rootProject.rootDir/$path"
     })
 }
+
+task coverage (type: JacocoReport) {
+    executionData     = fileTree (project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+    sourceDirectories = files (subprojects.collect {  "modules/$it.name/src/main/kotlin" })
+    classDirectories  = files (subprojects.collect { ["modules/$it.name/build/classes/main", "modules/$it.name/build/intermediates/classes/release"] }.flatten ())
+
+    reports {
+        xml.enabled true
+        xml.destination "${buildDir}/reports/jacoco/report.xml"
+    }
+}
+
+coverage.dependsOn { subprojects*.jacocoTestReport }
 
 task wrapper (type: Wrapper) {
     gradleVersion = '3.1'
