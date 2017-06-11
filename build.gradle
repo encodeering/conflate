@@ -1,4 +1,4 @@
-apply from: 'version.gradle'
+apply from: 'gradle/script/version.gradle'
 apply plugin: 'idea'
 apply plugin: 'org.jetbrains.dokka'
 apply plugin: 'jacoco'
