@@ -1,0 +1,125 @@
+buildscript {
+    ext.kotlinversion  = project.ext['kotlin.version']
+    ext.junitversion   = project.ext['junit.version']
+    ext.bintrayversion = project.ext['bintray.version']
+    ext.dokkaversion   = project.ext['dokka.version']
+    ext.androidgradleversion = project.ext['android.gradle.version']
+
+    repositories {
+        jcenter ()
+        mavenCentral ()
+    }
+
+    dependencies {
+        classpath "com.android.tools.build:gradle:$androidgradleversion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinversion"
+        classpath "org.junit.platform:junit-platform-gradle-plugin:$junitversion"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayversion"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokkaversion"
+        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:$dokkaversion"
+    }
+}
+
+subprojects {
+    apply plugin: 'maven'
+    apply plugin: 'maven-publish'
+    apply plugin: 'com.jfrog.bintray'
+
+    publishing {
+        publications {
+            maven (MavenPublication) {
+                pom.withXml {
+                    asNode ().appendNode ("description", "$project.description")
+                }
+            }
+        }
+    }
+
+    bintray {
+        user = System.getenv ('BINTRAY_USER')
+        key  = System.getenv ('BINTRAY_UKEY')
+        publications = ['maven']
+        pkg {
+            repo = 'maven'
+            name = rootProject.name
+            licenses = ['Apache-2.0']
+            labels   = ['redux']
+            websiteUrl      = 'http://www.encodeering.com'
+            issueTrackerUrl = 'https://github.com/encodeering/conflate/issues'
+            vcsUrl          = 'https://github.com/encodeering/conflate'
+            description     = 'An alternative redux implementation'
+            version {
+                name     = project.version
+                vcsTag   = project.version
+                released = new Date()
+            }
+        }
+    }
+
+    plugins.withType (JavaPlugin) {
+        publishing {
+            publications {
+                maven (MavenPublication) {
+                    artifactId jar.baseName
+                    from components.java
+                }
+            }
+        }
+    }
+
+    plugins.withType (com.android.build.gradle.LibraryPlugin) {
+        task jaronly (type: Jar, dependsOn : [build]) {
+            from "$buildDir/intermediates/classes/release"
+            archiveName "${project.name}.jar"
+        }
+
+        publishing {
+            publications {
+                maven (MavenPublication) {
+                    artifact jaronly
+
+                    pom.withXml {
+                        def dependencies = asNode ().appendNode ('dependencies')
+
+                        configurations.compile.allDependencies.each {
+                            def dependency = dependencies.appendNode ('dependency')
+                                dependency.appendNode ('groupId', it.group)
+                                dependency.appendNode ('artifactId', it.name)
+                                dependency.appendNode ('version', it.version)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    plugins.withType (org.jetbrains.dokka.gradle.DokkaPlugin) {
+        task dokkajar (type: Jar, dependsOn: dokka) {
+            classifier = 'javadoc'
+            from dokka.outputDirectory
+        }
+
+        publishing {
+            publications {
+                maven (MavenPublication) {
+                    artifact dokkajar
+                }
+            }
+        }
+    }
+
+    plugins.withType (org.jetbrains.dokka.gradle.DokkaAndroidPlugin) {
+        task dokkajar (type: Jar, dependsOn: dokka) {
+            classifier = 'javadoc'
+            from dokka.outputDirectory
+        }
+
+        publishing {
+            publications {
+                maven (MavenPublication) {
+                    artifact dokkajar
+                }
+            }
+        }
+    }
+}
