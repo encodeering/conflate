@@ -2,7 +2,7 @@ package com.encodeering.conflate.experimental.android.co
 
 import android.os.Handler
 import android.os.Looper
-import com.encodeering.conflate.experimental.co.RequeueContinuation
+import com.encodeering.conflate.experimental.jvm.co.RequeueContinuation
 import java.lang.Thread.currentThread
 import kotlin.coroutines.experimental.AbstractCoroutineContextElement
 import kotlin.coroutines.experimental.Continuation

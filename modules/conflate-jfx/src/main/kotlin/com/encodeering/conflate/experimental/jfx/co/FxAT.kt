@@ -1,6 +1,6 @@
 package com.encodeering.conflate.experimental.jfx.co
 
-import com.encodeering.conflate.experimental.co.RequeueContinuation
+import com.encodeering.conflate.experimental.jvm.co.RequeueContinuation
 import javafx.application.Platform
 import kotlin.coroutines.experimental.AbstractCoroutineContextElement
 import kotlin.coroutines.experimental.Continuation

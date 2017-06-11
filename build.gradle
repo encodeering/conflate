@@ -24,19 +24,17 @@ buildscript {
 }
 
 allprojects {
+    group 'com.encodeering.conflate'
+    version versioncode ()
 
     repositories {
         jcenter ()
         mavenCentral ()
         mavenLocal ()
     }
-
 }
 
 subprojects {
-    group 'com.encodeering.conflate'
-    version versioncode ()
-
     apply plugin: 'jacoco'
     apply plugin: 'maven'
     apply plugin: 'maven-publish'
@@ -325,6 +323,10 @@ task coverage (type: JacocoReport) {
 }
 
 coverage.dependsOn { subprojects*.jacocoTestReport }
+
+task clean {
+    delete "$buildDir"
+}
 
 task wrapper (type: Wrapper) {
     gradleVersion = '3.1'

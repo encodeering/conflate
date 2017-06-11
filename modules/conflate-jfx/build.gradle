@@ -4,7 +4,7 @@ apply plugin: 'org.jetbrains.dokka'
 apply plugin: 'org.junit.platform.gradle.plugin'
 
 dependencies {
-        compile project (":conflate")
+        compile project (":conflate-jvm")
         compile project (":conflate-api")
         compile project (":conflate-logging")
     testCompile project (":conflate-test")

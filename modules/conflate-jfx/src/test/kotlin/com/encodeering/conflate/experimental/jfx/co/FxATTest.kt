@@ -1,7 +1,5 @@
-package com.encodeering.conflate.experimental.android.co
+package com.encodeering.conflate.experimental.jfx.co
 
-import com.encodeering.conflate.experimental.jfx.co.FxAT
-import com.encodeering.conflate.experimental.jfx.co.FxATContinuation
 import com.encodeering.conflate.experimental.test.mock
 import com.winterbe.expekt.expect
 import org.jetbrains.spek.api.Spek

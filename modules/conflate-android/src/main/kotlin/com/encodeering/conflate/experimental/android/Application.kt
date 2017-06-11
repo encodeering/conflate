@@ -3,12 +3,12 @@ package com.encodeering.conflate.experimental.android
 import android.app.Application
 import android.content.pm.ApplicationInfo
 import android.util.Log
-import com.encodeering.conflate.experimental.Conflate
+import com.encodeering.conflate.experimental.jvm.Conflate
 import com.encodeering.conflate.experimental.android.co.Looper
 import com.encodeering.conflate.experimental.api.Middleware
 import com.encodeering.conflate.experimental.api.Reducer
 import com.encodeering.conflate.experimental.logging.Logging
-import com.encodeering.conflate.experimental.middleware.Noop
+import com.encodeering.conflate.experimental.jvm.middleware.Noop
 import kotlin.coroutines.experimental.CoroutineContext
 
 /**
