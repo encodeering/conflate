@@ -4,9 +4,11 @@ apply plugin: 'org.jetbrains.dokka'
 apply plugin: 'jacoco'
 
 buildscript {
-    ext.kotlinversion = '1.1.2'
-    ext.junitversion  = '1.0.0-M4'
-    ext.dokkaversion  = '0.9.14'
+    ext.kotlinversion  = project.ext['kotlin.version']
+    ext.junitversion   = project.ext['junit.version']
+    ext.bintrayversion = project.ext['bintray.version']
+    ext.dokkaversion   = project.ext['dokka.version']
+    ext.androidgradleversion = project.ext['android.gradle.version']
 
     repositories {
         jcenter ()
@@ -14,10 +16,10 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:2.2.2"
+        classpath "com.android.tools.build:gradle:$androidgradleversion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinversion"
         classpath "org.junit.platform:junit-platform-gradle-plugin:$junitversion"
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayversion"
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokkaversion"
         classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:$dokkaversion"
     }
