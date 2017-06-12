@@ -299,6 +299,7 @@ task dokka (type: org.jetbrains.dokka.gradle.DokkaTask, overwrite: true) {
     outputDirectory = "$buildDir/javadoc"
     outputFormat = "html"
     processConfigurations = ['dokkapath']
+    dokkaFatJar = "org.jetbrains.dokka:dokka-fatjar:$dokkaversion"
     sourceDirs = files (subprojects.findAll { ! it.name.contains ("test") }.collect {
         p ->
             def path = "modules/${p.name}/src/main/kotlin"
