@@ -38,15 +38,13 @@ allprojects {
     }
 }
 
-subprojects {
-    idea {
-        module {
-            downloadJavadoc = true
-            downloadSources = true
-        }
-        project {
-            languageLevel = 1.6
-        }
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+    project {
+        languageLevel = 1.6
     }
 }
 
