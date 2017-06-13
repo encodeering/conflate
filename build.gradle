@@ -1,7 +1,7 @@
+apply from: 'gradle/script/documentation.gradle'
 apply from: 'gradle/script/release.gradle'
 apply from: 'gradle/script/version.gradle'
 apply plugin: 'idea'
-apply plugin: 'org.jetbrains.dokka'
 apply plugin: 'jacoco'
 
 buildscript {
@@ -155,71 +155,6 @@ subprojects {
             }
         }
     }
-
-    plugins.withType (org.jetbrains.dokka.gradle.DokkaPlugin) {
-        dokka {
-            moduleName = project.name
-            outputFormat = 'javadoc'
-            outputDirectory = "$buildDir/javadoc"
-            sourceDirs = files ('src/main/kotlin')
-            linkMapping {
-                dir = "src/main/kotlin"
-                url = "https://github.com/encodeering/conflate/blob/master/modules/${project.name}/src/main/kotlin"
-                suffix = "#L"
-            }
-        }
-    }
-
-    plugins.withType (org.jetbrains.dokka.gradle.DokkaAndroidPlugin) {
-        dokka {
-            moduleName = project.name
-            outputFormat = 'javadoc'
-            outputDirectory = "$buildDir/javadoc"
-            sourceDirs = files ('src/main/kotlin')
-            linkMapping {
-                dir = "src/main/kotlin"
-                url = "https://github.com/encodeering/conflate/blob/master/modules/${project.name}/src/main/kotlin"
-                suffix = "#L"
-            }
-        }
-    }
-}
-
-repositories {
-    maven {
-        url "${System.getenv ("ANDROID_HOME")}/extras/android/m2repository/"
-    }
-}
-
-configurations {
-    dokkapath
-    dokkapath.description = "dokka project classpath"
-}
-
-dependencies {
-    subprojects.findAll { p -> dokkapath project (p.name) }
-
-    dokkapath fileTree (include: ['*.jar'], dir: "${System.getenv("ANDROID_HOME")}/platforms/android-${project.ext["android.platform"]}/")
-}
-
-task dokka (type: org.jetbrains.dokka.gradle.DokkaTask, overwrite: true) {
-    moduleName = "$rootProject.name"
-    outputDirectory = "$buildDir/javadoc"
-    outputFormat = "html"
-    processConfigurations = ['dokkapath']
-    dokkaFatJar = "org.jetbrains.dokka:dokka-fatjar:$dokkaversion"
-    sourceDirs = files (subprojects.findAll { ! it.name.contains ("test") }.collect {
-        p ->
-            def path = "modules/${p.name}/src/main/kotlin"
-
-            linkMapping {
-                dir = path
-                url = "https://github.com/encodeering/conflate/blob/master/$path"
-                suffix = "#L"
-            }
-
-            return "$rootProject.rootDir/$path"
-    })
 }
 
 task coverage (type: JacocoReport) {
