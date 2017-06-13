@@ -1,0 +1,79 @@
+buildscript {
+    ext.kotlinversion  = project.ext['kotlin.version']
+    ext.junitversion   = project.ext['junit.version']
+    ext.bintrayversion = project.ext['bintray.version']
+    ext.dokkaversion   = project.ext['dokka.version']
+    ext.androidgradleversion = project.ext['android.gradle.version']
+
+    repositories {
+        jcenter ()
+        mavenCentral ()
+    }
+
+    dependencies {
+        classpath "com.android.tools.build:gradle:$androidgradleversion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinversion"
+        classpath "org.junit.platform:junit-platform-gradle-plugin:$junitversion"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayversion"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokkaversion"
+        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:$dokkaversion"
+    }
+}
+
+subprojects {
+    plugins.withType (JavaPlugin) {
+        sourceCompatibility = 1.6
+        targetCompatibility = 1.6
+
+        dependencies {
+            compile "org.slf4j:slf4j-api:1.7.22"
+            compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinversion"
+            compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinversion"
+        }
+    }
+
+    plugins.withType (com.android.build.gradle.LibraryPlugin) {
+        dependencies {
+            compile "org.slf4j:slf4j-api:1.7.22"
+            compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinversion"
+            compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinversion"
+
+            testCompile "org.junit.platform:junit-platform-runner:$junitversion"
+            testCompile "com.winterbe:expekt:0.5.0"
+            testCompile "org.jetbrains.spek:spek-api:1.1.2"
+            testCompile "org.jetbrains.spek:spek-junit-platform-engine:1.1.2"
+            testCompile "org.mockito:mockito-core:2.7.5"
+        }
+
+        android {
+            sourceSets {
+                main.java.srcDirs += 'src/main/kotlin'
+                test.java.srcDirs += 'src/test/kotlin'
+            }
+        }
+    }
+
+    plugins.withType (org.junit.platform.gradle.plugin.JUnitPlatformPlugin) {
+        dependencies {
+            testCompile "org.junit.platform:junit-platform-runner:$junitversion"
+            testCompile "com.winterbe:expekt:0.5.0"
+            testCompile "org.jetbrains.spek:spek-api:1.1.2"
+            testRuntime "org.jetbrains.spek:spek-junit-platform-engine:1.1.2"
+            testCompile "org.mockito:mockito-core:2.7.5"
+        }
+    }
+
+    plugins.withType (org.jetbrains.kotlin.gradle.plugin.KotlinPlugin) {
+        sourceSets {
+            main.kotlin.srcDirs += 'src/main/kotlin'
+            test.kotlin.srcDirs += 'src/test/kotlin'
+        }
+
+        compileKotlin {
+            kotlinOptions {
+                apiVersion = '1.1'
+                languageVersion = '1.1'
+            }
+        }
+    }
+}

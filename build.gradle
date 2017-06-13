@@ -1,3 +1,4 @@
+apply from: 'gradle/script/compilation.gradle'
 apply from: 'gradle/script/documentation.gradle'
 apply from: 'gradle/script/release.gradle'
 apply from: 'gradle/script/test.gradle'
@@ -45,62 +46,6 @@ subprojects {
         }
         project {
             languageLevel = 1.6
-        }
-    }
-
-    plugins.withType (JavaPlugin) {
-        sourceCompatibility = 1.6
-        targetCompatibility = 1.6
-
-        dependencies {
-            compile "org.slf4j:slf4j-api:1.7.22"
-            compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinversion"
-            compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinversion"
-        }
-    }
-
-    plugins.withType (com.android.build.gradle.LibraryPlugin) {
-        dependencies {
-            compile "org.slf4j:slf4j-api:1.7.22"
-            compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinversion"
-            compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinversion"
-
-            testCompile "org.junit.platform:junit-platform-runner:$junitversion"
-            testCompile "com.winterbe:expekt:0.5.0"
-            testCompile "org.jetbrains.spek:spek-api:1.1.2"
-            testCompile "org.jetbrains.spek:spek-junit-platform-engine:1.1.2"
-            testCompile "org.mockito:mockito-core:2.7.5"
-        }
-
-        android {
-            sourceSets {
-                main.java.srcDirs += 'src/main/kotlin'
-                test.java.srcDirs += 'src/test/kotlin'
-            }
-        }
-    }
-
-    plugins.withType (org.junit.platform.gradle.plugin.JUnitPlatformPlugin) {
-        dependencies {
-            testCompile "org.junit.platform:junit-platform-runner:$junitversion"
-            testCompile "com.winterbe:expekt:0.5.0"
-            testCompile "org.jetbrains.spek:spek-api:1.1.2"
-            testRuntime "org.jetbrains.spek:spek-junit-platform-engine:1.1.2"
-            testCompile "org.mockito:mockito-core:2.7.5"
-        }
-    }
-
-    plugins.withType (org.jetbrains.kotlin.gradle.plugin.KotlinPlugin) {
-        sourceSets {
-            main.kotlin.srcDirs += 'src/main/kotlin'
-            test.kotlin.srcDirs += 'src/test/kotlin'
-        }
-
-        compileKotlin {
-            kotlinOptions {
-                apiVersion = '1.1'
-                languageVersion = '1.1'
-            }
         }
     }
 }
