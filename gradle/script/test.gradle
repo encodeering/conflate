@@ -1,0 +1,94 @@
+buildscript {
+    ext.kotlinversion  = project.ext['kotlin.version']
+    ext.junitversion   = project.ext['junit.version']
+    ext.bintrayversion = project.ext['bintray.version']
+    ext.dokkaversion   = project.ext['dokka.version']
+    ext.androidgradleversion = project.ext['android.gradle.version']
+
+    repositories {
+        jcenter ()
+        mavenCentral ()
+    }
+
+    dependencies {
+        classpath "com.android.tools.build:gradle:$androidgradleversion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinversion"
+        classpath "org.junit.platform:junit-platform-gradle-plugin:$junitversion"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayversion"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokkaversion"
+        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:$dokkaversion"
+    }
+}
+
+allprojects {
+    apply plugin: 'jacoco'
+}
+
+subprojects {
+    plugins.withType (org.junit.platform.gradle.plugin.JUnitPlatformPlugin) {
+        junitPlatform {
+            platformVersion "$junitversion"
+            filters {
+                engines {
+                    include 'spek'
+                }
+            }
+        }
+    }
+
+    plugins.withType (JacocoPlugin) {
+        afterEvaluate {
+            tasks.whenTaskAdded {
+                if (it.name == 'junitPlatformTest') {
+                    def junitPlatformTestTask = it
+
+                    jacoco {
+                        applyTo junitPlatformTestTask
+                    }
+
+                    task ("jacocoTestReport", dependsOn: "test", type: JacocoReport, overwrite: true) {
+                        executionData junitPlatformTestTask
+                        sourceDirectories = files ("$buildDir/src/main/kotlin")
+                        classDirectories  = files ("$buildDir/classes/main")
+
+                        reports {
+                            xml.enabled = true
+                            xml.destination "${buildDir}/reports/jacoco/report.xml"
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    plugins.withType (com.android.build.gradle.LibraryPlugin) {
+        afterEvaluate {
+            task ("jacocoTestReport", dependsOn: "testReleaseUnitTest", type: JacocoReport, overwrite: true) {
+                executionData files ("${buildDir}/jacoco/testReleaseUnitTest.exec")
+                sourceDirectories = files ("$buildDir/src/main/kotlin")
+                classDirectories  = fileTree (
+                    dir: "$buildDir/intermediates/classes/release",
+                    excludes: ['**/BuildConfig.*', '**/Manifest*.*']
+                )
+
+                reports {
+                    xml.enabled = true
+                    xml.destination "${buildDir}/reports/jacoco/report.xml"
+                }
+            }
+        }
+    }
+}
+
+task coverage (type: JacocoReport) {
+    executionData     = fileTree (project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+    sourceDirectories = files (subprojects.collect {  "modules/$it.name/src/main/kotlin" })
+    classDirectories  = files (subprojects.collect { ["modules/$it.name/build/classes/main", "modules/$it.name/build/intermediates/classes/release"] }.flatten ())
+
+    reports {
+        xml.enabled true
+        xml.destination "${buildDir}/reports/jacoco/report.xml"
+    }
+}
+
+coverage.dependsOn { subprojects*.jacocoTestReport }

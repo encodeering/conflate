@@ -1,8 +1,8 @@
 apply from: 'gradle/script/documentation.gradle'
 apply from: 'gradle/script/release.gradle'
+apply from: 'gradle/script/test.gradle'
 apply from: 'gradle/script/version.gradle'
 apply plugin: 'idea'
-apply plugin: 'jacoco'
 
 buildscript {
     ext.kotlinversion  = project.ext['kotlin.version']
@@ -38,8 +38,6 @@ allprojects {
 }
 
 subprojects {
-    apply plugin: 'jacoco'
-
     idea {
         module {
             downloadJavadoc = true
@@ -80,22 +78,6 @@ subprojects {
                 test.java.srcDirs += 'src/test/kotlin'
             }
         }
-
-        afterEvaluate {
-            task ("jacocoTestReport", dependsOn: "testReleaseUnitTest", type: JacocoReport, overwrite: true) {
-                executionData files ("${buildDir}/jacoco/testReleaseUnitTest.exec")
-                sourceDirectories = files ("$buildDir/src/main/kotlin")
-                classDirectories  = fileTree (
-                    dir: "$buildDir/intermediates/classes/release",
-                    excludes: ['**/BuildConfig.*', '**/Manifest*.*']
-                )
-
-                reports {
-                    xml.enabled = true
-                    xml.destination "${buildDir}/reports/jacoco/report.xml"
-                }
-            }
-        }
     }
 
     plugins.withType (org.junit.platform.gradle.plugin.JUnitPlatformPlugin) {
@@ -105,40 +87,6 @@ subprojects {
             testCompile "org.jetbrains.spek:spek-api:1.1.2"
             testRuntime "org.jetbrains.spek:spek-junit-platform-engine:1.1.2"
             testCompile "org.mockito:mockito-core:2.7.5"
-        }
-
-        junitPlatform {
-            platformVersion "$junitversion"
-            filters {
-                engines {
-                    include 'spek'
-                }
-            }
-        }
-    }
-
-    plugins.withType (JacocoPlugin) {
-        afterEvaluate {
-            tasks.whenTaskAdded {
-                if (it.name == 'junitPlatformTest') {
-                    def junitPlatformTestTask = it
-
-                    jacoco {
-                        applyTo junitPlatformTestTask
-                    }
-
-                    task ("jacocoTestReport", dependsOn: "test", type: JacocoReport, overwrite: true) {
-                        executionData junitPlatformTestTask
-                        sourceDirectories = files ("$buildDir/src/main/kotlin")
-                        classDirectories  = files ("$buildDir/classes/main")
-
-                        reports {
-                            xml.enabled = true
-                            xml.destination "${buildDir}/reports/jacoco/report.xml"
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -156,19 +104,6 @@ subprojects {
         }
     }
 }
-
-task coverage (type: JacocoReport) {
-    executionData     = fileTree (project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
-    sourceDirectories = files (subprojects.collect {  "modules/$it.name/src/main/kotlin" })
-    classDirectories  = files (subprojects.collect { ["modules/$it.name/build/classes/main", "modules/$it.name/build/intermediates/classes/release"] }.flatten ())
-
-    reports {
-        xml.enabled true
-        xml.destination "${buildDir}/reports/jacoco/report.xml"
-    }
-}
-
-coverage.dependsOn { subprojects*.jacocoTestReport }
 
 task clean {
     delete "$buildDir"
