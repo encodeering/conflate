@@ -9,6 +9,10 @@ apply plugin: 'idea'
 buildscript {
     ext.kotlinversion  = project.ext['kotlin.version']
     ext.junitversion   = project.ext['junit.version']
+    ext.slf4jversion   = project.ext['slf4j.version']
+    ext.spekversion    = project.ext['spek.version']
+    ext.mockitoversion = project.ext['mockito.version']
+    ext.expektversion  = project.ext['expekt.version']
     ext.bintrayversion = project.ext['bintray.version']
     ext.dokkaversion   = project.ext['dokka.version']
     ext.androidgradleversion = project.ext['android.gradle.version']
@@ -42,7 +46,7 @@ allprojects {
 subprojects {
     ifJava {
         dependencies {
-            compile "org.slf4j:slf4j-api:1.7.22"
+            compile "org.slf4j:slf4j-api:$slf4jversion"
             compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinversion"
             compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinversion"
         }
@@ -50,25 +54,25 @@ subprojects {
 
     ifAndroid {
         dependencies {
-            compile "org.slf4j:slf4j-api:1.7.22"
+            compile "org.slf4j:slf4j-api:$slf4jversion"
             compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinversion"
             compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinversion"
 
             testCompile "org.junit.platform:junit-platform-runner:$junitversion"
-            testCompile "com.winterbe:expekt:0.5.0"
-            testCompile "org.jetbrains.spek:spek-api:1.1.2"
-            testCompile "org.jetbrains.spek:spek-junit-platform-engine:1.1.2"
-            testCompile "org.mockito:mockito-core:2.7.5"
+            testCompile "com.winterbe:expekt:$expektversion"
+            testCompile "org.jetbrains.spek:spek-api:$spekversion"
+            testCompile "org.jetbrains.spek:spek-junit-platform-engine:$spekversion"
+            testCompile "org.mockito:mockito-core:$mockitoversion"
         }
     }
 
     ifJUnit {
         dependencies {
             testCompile "org.junit.platform:junit-platform-runner:$junitversion"
-            testCompile "com.winterbe:expekt:0.5.0"
-            testCompile "org.jetbrains.spek:spek-api:1.1.2"
-            testRuntime "org.jetbrains.spek:spek-junit-platform-engine:1.1.2"
-            testCompile "org.mockito:mockito-core:2.7.5"
+            testCompile "com.winterbe:expekt:$expektversion"
+            testCompile "org.jetbrains.spek:spek-api:$spekversion"
+            testRuntime "org.jetbrains.spek:spek-junit-platform-engine:$spekversion"
+            testCompile "org.mockito:mockito-core:$mockitoversion"
         }
     }
 
