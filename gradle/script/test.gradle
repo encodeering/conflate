@@ -38,11 +38,11 @@ subprojects {
                     task ("jacocoTestReport", dependsOn: "test", type: JacocoReport, overwrite: true) {
                         executionData junitPlatformTestTask
                         sourceDirectories = files ("$projectDir/src/main/kotlin")
-                        classDirectories  = files (analyze ("$buildDir/classes/main"))
+                        classDirectories  = files (analyze ("$buildDir/classes/java/main"))
 
                         reports {
                             xml.enabled = true
-                            xml.destination "$buildDir/reports/jacoco/report.xml"
+                            xml.destination file ("$buildDir/reports/jacoco/report.xml")
                         }
                     }
                 }
@@ -59,7 +59,7 @@ subprojects {
 
                 reports {
                     xml.enabled = true
-                    xml.destination "$buildDir/reports/jacoco/report.xml"
+                    xml.destination file ("$buildDir/reports/jacoco/report.xml")
                 }
             }
         }
@@ -69,11 +69,11 @@ subprojects {
 task coverage (type: JacocoReport) {
     executionData     = fileTree (project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
     sourceDirectories = files (subprojects.collect {  "$it.projectDir/src/main/kotlin" })
-    classDirectories  = files (subprojects.collect { ["$it.buildDir/classes/main", "$it.buildDir/intermediates/classes/release"] }.flatten ().collect (analyze))
+    classDirectories  = files (subprojects.collect { ["$it.buildDir/classes/java/main", "$it.buildDir/intermediates/classes/release"] }.flatten ().collect (analyze))
 
     reports {
         xml.enabled true
-        xml.destination "$buildDir/reports/jacoco/report.xml"
+        xml.destination file ("$buildDir/reports/jacoco/report.xml")
     }
 }
 
