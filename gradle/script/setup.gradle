@@ -1,0 +1,44 @@
+buildscript {
+    ext.kotlinversion  = project.ext['kotlin.version']
+    ext.junitversion   = project.ext['junit.version']
+    ext.bintrayversion = project.ext['bintray.version']
+    ext.dokkaversion   = project.ext['dokka.version']
+    ext.androidgradleversion = project.ext['android.gradle.version']
+
+    repositories {
+        jcenter ()
+        mavenCentral ()
+    }
+
+    dependencies {
+        classpath "com.android.tools.build:gradle:$androidgradleversion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinversion"
+        classpath "org.junit.platform:junit-platform-gradle-plugin:$junitversion"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayversion"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokkaversion"
+        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:$dokkaversion"
+    }
+}
+
+allprojects {
+[
+    ["Android", [com.android.build.gradle.LibraryPlugin]],
+    ["Bintray", [com.jfrog.bintray.gradle.BintrayPlugin]],
+    ["Dokka",   [org.jetbrains.dokka.gradle.DokkaPlugin, org.jetbrains.dokka.gradle.DokkaAndroidPlugin]],
+    ["Kotlin",  [org.jetbrains.kotlin.gradle.plugin.KotlinPlugin, org.jetbrains.kotlin.gradle.plugin.KotlinAndroidPlugin]],
+    ["Java",    [org.gradle.api.plugins.JavaPlugin]],
+    ["Jacoco",  [org.gradle.testing.jacoco.plugins.JacocoPlugin]],
+    ["JUnit",   [org.junit.platform.gradle.plugin.JUnitPlatformPlugin]],
+].forEach {
+                                  list ->
+        def (name, plugintypes) = list
+
+        ext["if$name"] = { Closure closure ->
+
+            plugintypes.forEach {
+                plugins.withType (it, closure)
+            }
+
+        }
+    }
+}
