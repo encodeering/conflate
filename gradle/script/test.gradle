@@ -26,12 +26,12 @@ subprojects {
 
                     task ("jacocoTestReport", dependsOn: "test", type: JacocoReport, overwrite: true) {
                         executionData junitPlatformTestTask
-                        sourceDirectories = files ("$buildDir/src/main/kotlin")
+                        sourceDirectories = files ("$projectDir/src/main/kotlin")
                         classDirectories  = files ("$buildDir/classes/main")
 
                         reports {
                             xml.enabled = true
-                            xml.destination "${buildDir}/reports/jacoco/report.xml"
+                            xml.destination "$buildDir/reports/jacoco/report.xml"
                         }
                     }
                 }
@@ -42,8 +42,8 @@ subprojects {
     ifAndroid {
         afterEvaluate {
             task ("jacocoTestReport", dependsOn: "testReleaseUnitTest", type: JacocoReport, overwrite: true) {
-                executionData files ("${buildDir}/jacoco/testReleaseUnitTest.exec")
-                sourceDirectories = files ("$buildDir/src/main/kotlin")
+                executionData files ("$buildDir/jacoco/testReleaseUnitTest.exec")
+                sourceDirectories = files ("$projectDir/src/main/kotlin")
                 classDirectories  = fileTree (
                     dir: "$buildDir/intermediates/classes/release",
                     excludes: ['**/BuildConfig.*', '**/Manifest*.*']
@@ -51,7 +51,7 @@ subprojects {
 
                 reports {
                     xml.enabled = true
-                    xml.destination "${buildDir}/reports/jacoco/report.xml"
+                    xml.destination "$buildDir/reports/jacoco/report.xml"
                 }
             }
         }
@@ -61,11 +61,11 @@ subprojects {
 task coverage (type: JacocoReport) {
     executionData     = fileTree (project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
     sourceDirectories = files (subprojects.collect {  "$it.projectDir/src/main/kotlin" })
-    classDirectories  = files (subprojects.collect { ["$it.projectDir/build/classes/main", "$it.projectDir/build/intermediates/classes/release"] }.flatten ())
+    classDirectories  = files (subprojects.collect { ["$it.buildDir/classes/main", "$it.buildDir/intermediates/classes/release"] }.flatten ())
 
     reports {
         xml.enabled true
-        xml.destination "${buildDir}/reports/jacoco/report.xml"
+        xml.destination "$buildDir/reports/jacoco/report.xml"
     }
 }
 
