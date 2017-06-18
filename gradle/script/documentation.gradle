@@ -69,7 +69,7 @@ dependencies {
     dokkapath fileTree (include: ['*.jar'], dir: "${System.getenv("ANDROID_HOME")}/platforms/android-${project.ext["android.platform"]}/")
 }
 
-task dokka (type: org.jetbrains.dokka.gradle.DokkaTask, overwrite: true) {
+dokka {
     moduleName = "$rootProject.name"
     outputDirectory = "$buildDir/javadoc"
     outputFormat = "html"
