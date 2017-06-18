@@ -39,6 +39,76 @@ allprojects {
     }
 }
 
+subprojects {
+    ifJava {
+        dependencies {
+            compile "org.slf4j:slf4j-api:1.7.22"
+            compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinversion"
+            compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinversion"
+        }
+    }
+
+    ifAndroid {
+        dependencies {
+            compile "org.slf4j:slf4j-api:1.7.22"
+            compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinversion"
+            compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinversion"
+
+            testCompile "org.junit.platform:junit-platform-runner:$junitversion"
+            testCompile "com.winterbe:expekt:0.5.0"
+            testCompile "org.jetbrains.spek:spek-api:1.1.2"
+            testCompile "org.jetbrains.spek:spek-junit-platform-engine:1.1.2"
+            testCompile "org.mockito:mockito-core:2.7.5"
+        }
+    }
+
+    ifJUnit {
+        dependencies {
+            testCompile "org.junit.platform:junit-platform-runner:$junitversion"
+            testCompile "com.winterbe:expekt:0.5.0"
+            testCompile "org.jetbrains.spek:spek-api:1.1.2"
+            testRuntime "org.jetbrains.spek:spek-junit-platform-engine:1.1.2"
+            testCompile "org.mockito:mockito-core:2.7.5"
+        }
+    }
+
+    ifBintray {
+        bintray {
+            pkg {
+                repo = 'maven'
+                licenses = ['Apache-2.0']
+                labels   = ['redux']
+                websiteUrl      = 'http://www.encodeering.com'
+                issueTrackerUrl = 'https://github.com/encodeering/conflate/issues'
+                vcsUrl          = 'https://github.com/encodeering/conflate'
+                description     = 'An alternative redux implementation'
+            }
+        }
+    }
+
+    ifDokka {
+        dokka {
+            linkMapping {
+                dir = "src/main/kotlin"
+                url = "https://github.com/encodeering/${rootProject.name}/blob/master/modules/${project.name}/src/main/kotlin"
+                suffix = "#L"
+            }
+        }
+    }
+}
+
+ifDokka {
+    dokka {
+        subprojects.forEach { project ->
+            linkMapping {
+                dir = "modules/${project.name}/src/main/kotlin"
+                url = "https://github.com/encodeering/${rootProject.name}/blob/master/modules/${project.name}/src/main/kotlin"
+                suffix = "#L"
+            }
+        }
+    }
+}
+
 idea {
     module {
         downloadJavadoc = true

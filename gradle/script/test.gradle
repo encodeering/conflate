@@ -60,8 +60,8 @@ subprojects {
 
 task coverage (type: JacocoReport) {
     executionData     = fileTree (project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
-    sourceDirectories = files (subprojects.collect {  "modules/$it.name/src/main/kotlin" })
-    classDirectories  = files (subprojects.collect { ["modules/$it.name/build/classes/main", "modules/$it.name/build/intermediates/classes/release"] }.flatten ())
+    sourceDirectories = files (subprojects.collect {  "$it.projectDir/src/main/kotlin" })
+    classDirectories  = files (subprojects.collect { ["$it.projectDir/build/classes/main", "$it.projectDir/build/intermediates/classes/release"] }.flatten ())
 
     reports {
         xml.enabled true

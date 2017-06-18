@@ -18,14 +18,7 @@ subprojects {
         key  = System.getenv ('BINTRAY_UKEY')
         publications = ['maven']
         pkg {
-            repo = 'maven'
             name = rootProject.name
-            licenses = ['Apache-2.0']
-            labels   = ['redux']
-            websiteUrl      = 'http://www.encodeering.com'
-            issueTrackerUrl = 'https://github.com/encodeering/conflate/issues'
-            vcsUrl          = 'https://github.com/encodeering/conflate'
-            description     = 'An alternative redux implementation'
             version {
                 name     = project.version
                 vcsTag   = project.version

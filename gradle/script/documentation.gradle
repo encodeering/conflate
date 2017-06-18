@@ -5,11 +5,6 @@ subprojects {
             outputFormat = 'javadoc'
             outputDirectory = "$buildDir/javadoc"
             sourceDirs = files ("$projectDir/src/main/kotlin")
-            linkMapping {
-                dir = "src/main/kotlin"
-                url = "https://github.com/encodeering/conflate/blob/master/modules/${project.name}/src/main/kotlin"
-                suffix = "#L"
-            }
         }
     }
 }
@@ -39,16 +34,5 @@ dokka {
     outputFormat = "html"
     processConfigurations = ['dokkapath']
     dokkaFatJar = "org.jetbrains.dokka:dokka-fatjar:$dokkaversion"
-    sourceDirs = files (subprojects.findAll { ! it.name.contains ("test") }.collect {
-        p ->
-            def path = "modules/${p.name}/src/main/kotlin"
-
-            linkMapping {
-                dir = path
-                url = "https://github.com/encodeering/conflate/blob/master/$path"
-                suffix = "#L"
-            }
-
-            return "$rootProject.rootDir/$path"
-    })
+    sourceDirs = files (subprojects.collect { "$it.projectDir/src/main/kotlin" })
 }
