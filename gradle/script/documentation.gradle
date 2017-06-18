@@ -1,41 +1,5 @@
-buildscript {
-    ext.kotlinversion  = project.ext['kotlin.version']
-    ext.junitversion   = project.ext['junit.version']
-    ext.bintrayversion = project.ext['bintray.version']
-    ext.dokkaversion   = project.ext['dokka.version']
-    ext.androidgradleversion = project.ext['android.gradle.version']
-
-    repositories {
-        jcenter ()
-        mavenCentral ()
-    }
-
-    dependencies {
-        classpath "com.android.tools.build:gradle:$androidgradleversion"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinversion"
-        classpath "org.junit.platform:junit-platform-gradle-plugin:$junitversion"
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayversion"
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokkaversion"
-        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:$dokkaversion"
-    }
-}
-
 subprojects {
-    plugins.withType (org.jetbrains.dokka.gradle.DokkaPlugin) {
-        dokka {
-            moduleName = project.name
-            outputFormat = 'javadoc'
-            outputDirectory = "$buildDir/javadoc"
-            sourceDirs = files ("$projectDir/src/main/kotlin")
-            linkMapping {
-                dir = "src/main/kotlin"
-                url = "https://github.com/encodeering/conflate/blob/master/modules/${project.name}/src/main/kotlin"
-                suffix = "#L"
-            }
-        }
-    }
-
-    plugins.withType (org.jetbrains.dokka.gradle.DokkaAndroidPlugin) {
+    ifDokka {
         dokka {
             moduleName = project.name
             outputFormat = 'javadoc'

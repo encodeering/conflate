@@ -1,25 +1,3 @@
-buildscript {
-    ext.kotlinversion  = project.ext['kotlin.version']
-    ext.junitversion   = project.ext['junit.version']
-    ext.bintrayversion = project.ext['bintray.version']
-    ext.dokkaversion   = project.ext['dokka.version']
-    ext.androidgradleversion = project.ext['android.gradle.version']
-
-    repositories {
-        jcenter ()
-        mavenCentral ()
-    }
-
-    dependencies {
-        classpath "com.android.tools.build:gradle:$androidgradleversion"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinversion"
-        classpath "org.junit.platform:junit-platform-gradle-plugin:$junitversion"
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayversion"
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokkaversion"
-        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:$dokkaversion"
-    }
-}
-
 subprojects {
     apply plugin: 'maven'
     apply plugin: 'maven-publish'
@@ -56,7 +34,7 @@ subprojects {
         }
     }
 
-    plugins.withType (JavaPlugin) {
+    ifJava {
         publishing {
             publications {
                 maven (MavenPublication) {
@@ -67,7 +45,7 @@ subprojects {
         }
     }
 
-    plugins.withType (com.android.build.gradle.LibraryPlugin) {
+    ifAndroid {
         task jaronly (type: Jar, dependsOn : [build]) {
             from "$buildDir/intermediates/classes/release"
             archiveName "${project.name}.jar"
@@ -93,22 +71,7 @@ subprojects {
         }
     }
 
-    plugins.withType (org.jetbrains.dokka.gradle.DokkaPlugin) {
-        task dokkajar (type: Jar, dependsOn: dokka) {
-            classifier = 'javadoc'
-            from dokka.outputDirectory
-        }
-
-        publishing {
-            publications {
-                maven (MavenPublication) {
-                    artifact dokkajar
-                }
-            }
-        }
-    }
-
-    plugins.withType (org.jetbrains.dokka.gradle.DokkaAndroidPlugin) {
+    ifDokka {
         task dokkajar (type: Jar, dependsOn: dokka) {
             classifier = 'javadoc'
             from dokka.outputDirectory

@@ -1,27 +1,5 @@
-buildscript {
-    ext.kotlinversion  = project.ext['kotlin.version']
-    ext.junitversion   = project.ext['junit.version']
-    ext.bintrayversion = project.ext['bintray.version']
-    ext.dokkaversion   = project.ext['dokka.version']
-    ext.androidgradleversion = project.ext['android.gradle.version']
-
-    repositories {
-        jcenter ()
-        mavenCentral ()
-    }
-
-    dependencies {
-        classpath "com.android.tools.build:gradle:$androidgradleversion"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinversion"
-        classpath "org.junit.platform:junit-platform-gradle-plugin:$junitversion"
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayversion"
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokkaversion"
-        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:$dokkaversion"
-    }
-}
-
 subprojects {
-    plugins.withType (JavaPlugin) {
+    ifJava {
         sourceCompatibility = 1.6
         targetCompatibility = 1.6
 
@@ -32,7 +10,7 @@ subprojects {
         }
     }
 
-    plugins.withType (com.android.build.gradle.LibraryPlugin) {
+    ifAndroid {
         dependencies {
             compile "org.slf4j:slf4j-api:1.7.22"
             compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinversion"
@@ -53,7 +31,7 @@ subprojects {
         }
     }
 
-    plugins.withType (org.junit.platform.gradle.plugin.JUnitPlatformPlugin) {
+    ifJUnit {
         dependencies {
             testCompile "org.junit.platform:junit-platform-runner:$junitversion"
             testCompile "com.winterbe:expekt:0.5.0"
@@ -63,7 +41,7 @@ subprojects {
         }
     }
 
-    plugins.withType (org.jetbrains.kotlin.gradle.plugin.KotlinPlugin) {
+    ifKotlin {
         sourceSets {
             main.kotlin.srcDirs += 'src/main/kotlin'
             test.kotlin.srcDirs += 'src/test/kotlin'

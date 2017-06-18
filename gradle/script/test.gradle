@@ -1,31 +1,9 @@
-buildscript {
-    ext.kotlinversion  = project.ext['kotlin.version']
-    ext.junitversion   = project.ext['junit.version']
-    ext.bintrayversion = project.ext['bintray.version']
-    ext.dokkaversion   = project.ext['dokka.version']
-    ext.androidgradleversion = project.ext['android.gradle.version']
-
-    repositories {
-        jcenter ()
-        mavenCentral ()
-    }
-
-    dependencies {
-        classpath "com.android.tools.build:gradle:$androidgradleversion"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinversion"
-        classpath "org.junit.platform:junit-platform-gradle-plugin:$junitversion"
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayversion"
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokkaversion"
-        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:$dokkaversion"
-    }
-}
-
 allprojects {
     apply plugin: 'jacoco'
 }
 
 subprojects {
-    plugins.withType (org.junit.platform.gradle.plugin.JUnitPlatformPlugin) {
+    ifJUnit {
         junitPlatform {
             platformVersion "$junitversion"
             filters {
@@ -36,7 +14,7 @@ subprojects {
         }
     }
 
-    plugins.withType (JacocoPlugin) {
+    ifJacoco {
         afterEvaluate {
             tasks.whenTaskAdded {
                 if (it.name == 'junitPlatformTest') {
@@ -61,7 +39,7 @@ subprojects {
         }
     }
 
-    plugins.withType (com.android.build.gradle.LibraryPlugin) {
+    ifAndroid {
         afterEvaluate {
             task ("jacocoTestReport", dependsOn: "testReleaseUnitTest", type: JacocoReport, overwrite: true) {
                 executionData files ("${buildDir}/jacoco/testReleaseUnitTest.exec")

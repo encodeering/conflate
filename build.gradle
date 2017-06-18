@@ -1,3 +1,4 @@
+apply from: 'gradle/script/setup.gradle'
 apply from: 'gradle/script/compilation.gradle'
 apply from: 'gradle/script/documentation.gradle'
 apply from: 'gradle/script/release.gradle'
