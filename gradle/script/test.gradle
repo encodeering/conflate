@@ -1,0 +1,80 @@
+def analyze = {
+    def generated = [
+        'android/**/*.*'
+    ]
+
+    fileTree (
+        dir: it,
+        excludes: generated
+    )
+}
+
+allprojects {
+    apply plugin: 'jacoco'
+}
+
+subprojects {
+    ifJUnit {
+        junitPlatform {
+            platformVersion "$junitversion"
+            filters {
+                engines {
+                    include 'spek'
+                }
+            }
+        }
+    }
+
+    ifJacoco {
+        afterEvaluate {
+            tasks.whenTaskAdded {
+                if (it.name == 'junitPlatformTest') {
+                    def junitPlatformTestTask = it
+
+                    jacoco {
+                        applyTo junitPlatformTestTask
+                    }
+
+                    task ("jacocoTestReport", dependsOn: "test", type: JacocoReport, overwrite: true) {
+                        executionData junitPlatformTestTask
+                        sourceDirectories = files ("$projectDir/src/main/kotlin")
+                        classDirectories  = files (analyze ("$buildDir/classes/java/main"))
+
+                        reports {
+                            xml.enabled = true
+                            xml.destination file ("$buildDir/reports/jacoco/report.xml")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    ifAndroid {
+        afterEvaluate {
+            task ("jacocoTestReport", dependsOn: "testReleaseUnitTest", type: JacocoReport, overwrite: true) {
+                executionData files ("$buildDir/jacoco/testReleaseUnitTest.exec")
+                sourceDirectories = files ("$projectDir/src/main/kotlin")
+                classDirectories  = files (analyze ("$buildDir/intermediates/classes/release"))
+
+                reports {
+                    xml.enabled = true
+                    xml.destination file ("$buildDir/reports/jacoco/report.xml")
+                }
+            }
+        }
+    }
+}
+
+task coverage (type: JacocoReport) {
+    executionData     = fileTree (project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+    sourceDirectories = files (subprojects.collect {  "$it.projectDir/src/main/kotlin" })
+    classDirectories  = files (subprojects.collect { ["$it.buildDir/classes/java/main", "$it.buildDir/intermediates/classes/release"] }.flatten ().collect (analyze))
+
+    reports {
+        xml.enabled true
+        xml.destination file ("$buildDir/reports/jacoco/report.xml")
+    }
+}
+
+coverage.dependsOn { subprojects*.jacocoTestReport }

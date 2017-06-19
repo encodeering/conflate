@@ -4,10 +4,10 @@ apply plugin: 'org.jetbrains.dokka-android'
 
 android {
     compileSdkVersion project.ext["android.platform"].toInteger ()
-    buildToolsVersion "24.0.0"
+    buildToolsVersion project.ext["android.platform.build"]
 
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion project.ext["android.platform.minimum"].toInteger ()
         targetSdkVersion project.ext["android.platform"].toInteger ()
         multiDexEnabled true
     }

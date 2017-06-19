@@ -1,12 +1,21 @@
-apply from: 'version.gradle'
+apply from: 'gradle/script/setup.gradle'
+apply from: 'gradle/script/compilation.gradle'
+apply from: 'gradle/script/documentation.gradle'
+apply from: 'gradle/script/release.gradle'
+apply from: 'gradle/script/test.gradle'
+apply from: 'gradle/script/version.gradle'
 apply plugin: 'idea'
-apply plugin: 'org.jetbrains.dokka'
-apply plugin: 'jacoco'
 
 buildscript {
-    ext.kotlinversion = '1.1.2'
-    ext.junitversion  = '1.0.0-M4'
-    ext.dokkaversion  = '0.9.14'
+    ext.kotlinversion  = project.ext['kotlin.version']
+    ext.junitversion   = project.ext['junit.version']
+    ext.slf4jversion   = project.ext['slf4j.version']
+    ext.spekversion    = project.ext['spek.version']
+    ext.mockitoversion = project.ext['mockito.version']
+    ext.expektversion  = project.ext['expekt.version']
+    ext.bintrayversion = project.ext['bintray.version']
+    ext.dokkaversion   = project.ext['dokka.version']
+    ext.androidgradleversion = project.ext['android.gradle.version']
 
     repositories {
         jcenter ()
@@ -14,10 +23,10 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:2.2.2"
+        classpath "com.android.tools.build:gradle:$androidgradleversion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinversion"
         classpath "org.junit.platform:junit-platform-gradle-plugin:$junitversion"
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayversion"
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokkaversion"
         classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:$dokkaversion"
     }
@@ -35,299 +44,89 @@ allprojects {
 }
 
 subprojects {
-    apply plugin: 'jacoco'
-    apply plugin: 'maven'
-    apply plugin: 'maven-publish'
-    apply plugin: 'com.jfrog.bintray'
-
-    idea {
-        module {
-            downloadJavadoc = true
-            downloadSources = true
-        }
-        project {
-            languageLevel = 1.6
-        }
-    }
-
-    publishing {
-        publications {
-            maven (MavenPublication) {
-                pom.withXml {
-                    asNode ().appendNode ("description", "$project.description")
-                }
-            }
-        }
-    }
-
-    bintray {
-        user = System.getenv ('BINTRAY_USER')
-        key  = System.getenv ('BINTRAY_UKEY')
-        publications = ['maven']
-        pkg {
-            repo = 'maven'
-            name = rootProject.name
-            licenses = ['Apache-2.0']
-            labels   = ['redux']
-            websiteUrl      = 'http://www.encodeering.com'
-            issueTrackerUrl = 'https://github.com/encodeering/conflate/issues'
-            vcsUrl          = 'https://github.com/encodeering/conflate'
-            description     = 'An alternative redux implementation'
-            version {
-                name     = project.version
-                vcsTag   = project.version
-                released = new Date()
-            }
-        }
-    }
-
-    plugins.withType (JavaPlugin) {
-        sourceCompatibility = 1.6
-        targetCompatibility = 1.6
-
+    ifJava {
         dependencies {
-            compile "org.slf4j:slf4j-api:1.7.22"
+            compile "org.slf4j:slf4j-api:$slf4jversion"
             compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinversion"
             compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinversion"
         }
-
-        publishing {
-            publications {
-                maven (MavenPublication) {
-                    artifactId jar.baseName
-                    from components.java
-                }
-            }
-        }
     }
 
-    plugins.withType (com.android.build.gradle.LibraryPlugin) {
+    ifAndroid {
         dependencies {
-            compile "org.slf4j:slf4j-api:1.7.22"
+            compile "org.slf4j:slf4j-api:$slf4jversion"
             compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinversion"
             compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinversion"
 
             testCompile "org.junit.platform:junit-platform-runner:$junitversion"
-            testCompile "com.winterbe:expekt:0.5.0"
-            testCompile "org.jetbrains.spek:spek-api:1.1.2"
-            testCompile "org.jetbrains.spek:spek-junit-platform-engine:1.1.2"
-            testCompile "org.mockito:mockito-core:2.7.5"
-        }
-
-        android {
-            sourceSets {
-                main.java.srcDirs += 'src/main/kotlin'
-                test.java.srcDirs += 'src/test/kotlin'
-            }
-        }
-
-        afterEvaluate {
-            task ("jacocoTestReport", dependsOn: "testReleaseUnitTest", type: JacocoReport, overwrite: true) {
-                executionData files ("${buildDir}/jacoco/testReleaseUnitTest.exec")
-                sourceDirectories = files ("$buildDir/src/main/kotlin")
-                classDirectories  = fileTree (
-                    dir: "$buildDir/intermediates/classes/release",
-                    excludes: ['**/BuildConfig.*', '**/Manifest*.*']
-                )
-
-                reports {
-                    xml.enabled = true
-                    xml.destination "${buildDir}/reports/jacoco/report.xml"
-                }
-            }
-        }
-
-        task jaronly (type: Jar, dependsOn : [build]) {
-            from "$buildDir/intermediates/classes/release"
-            archiveName "${project.name}.jar"
-        }
-
-        publishing {
-            publications {
-                maven (MavenPublication) {
-                    artifact jaronly
-
-                    pom.withXml {
-                        def dependencies = asNode ().appendNode ('dependencies')
-
-                        configurations.compile.allDependencies.each {
-                            def dependency = dependencies.appendNode ('dependency')
-                                dependency.appendNode ('groupId', it.group)
-                                dependency.appendNode ('artifactId', it.name)
-                                dependency.appendNode ('version', it.version)
-                        }
-                    }
-                }
-            }
+            testCompile "com.winterbe:expekt:$expektversion"
+            testCompile "org.jetbrains.spek:spek-api:$spekversion"
+            testCompile "org.jetbrains.spek:spek-junit-platform-engine:$spekversion"
+            testCompile "org.mockito:mockito-core:$mockitoversion"
         }
     }
 
-    plugins.withType (org.junit.platform.gradle.plugin.JUnitPlatformPlugin) {
+    ifJUnit {
         dependencies {
             testCompile "org.junit.platform:junit-platform-runner:$junitversion"
-            testCompile "com.winterbe:expekt:0.5.0"
-            testCompile "org.jetbrains.spek:spek-api:1.1.2"
-            testRuntime "org.jetbrains.spek:spek-junit-platform-engine:1.1.2"
-            testCompile "org.mockito:mockito-core:2.7.5"
+            testCompile "com.winterbe:expekt:$expektversion"
+            testCompile "org.jetbrains.spek:spek-api:$spekversion"
+            testRuntime "org.jetbrains.spek:spek-junit-platform-engine:$spekversion"
+            testCompile "org.mockito:mockito-core:$mockitoversion"
         }
+    }
 
-        junitPlatform {
-            platformVersion "$junitversion"
-            filters {
-                engines {
-                    include 'spek'
-                }
+    ifBintray {
+        bintray {
+            pkg {
+                repo = 'maven'
+                licenses = ['Apache-2.0']
+                labels   = ['redux']
+                websiteUrl      = 'http://www.encodeering.com'
+                issueTrackerUrl = 'https://github.com/encodeering/conflate/issues'
+                vcsUrl          = 'https://github.com/encodeering/conflate'
+                description     = 'An alternative redux implementation'
             }
         }
     }
 
-    plugins.withType (JacocoPlugin) {
-        afterEvaluate {
-            tasks.whenTaskAdded {
-                if (it.name == 'junitPlatformTest') {
-                    def junitPlatformTestTask = it
-
-                    jacoco {
-                        applyTo junitPlatformTestTask
-                    }
-
-                    task ("jacocoTestReport", dependsOn: "test", type: JacocoReport, overwrite: true) {
-                        executionData junitPlatformTestTask
-                        sourceDirectories = files ("$buildDir/src/main/kotlin")
-                        classDirectories  = files ("$buildDir/classes/main")
-
-                        reports {
-                            xml.enabled = true
-                            xml.destination "${buildDir}/reports/jacoco/report.xml"
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    plugins.withType (org.jetbrains.kotlin.gradle.plugin.KotlinPlugin) {
-        sourceSets {
-            main.kotlin.srcDirs += 'src/main/kotlin'
-            test.kotlin.srcDirs += 'src/test/kotlin'
-        }
-
-        compileKotlin {
-            kotlinOptions {
-                apiVersion = '1.1'
-                languageVersion = '1.1'
-            }
-        }
-    }
-
-    plugins.withType (org.jetbrains.dokka.gradle.DokkaPlugin) {
+    ifDokka {
         dokka {
-            moduleName = project.name
-            outputFormat = 'javadoc'
-            outputDirectory = "$buildDir/javadoc"
-            sourceDirs = files ('src/main/kotlin')
             linkMapping {
                 dir = "src/main/kotlin"
-                url = "https://github.com/encodeering/conflate/blob/master/modules/${project.name}/src/main/kotlin"
+                url = "https://github.com/encodeering/${rootProject.name}/blob/master/modules/${project.name}/src/main/kotlin"
                 suffix = "#L"
             }
         }
-
-        task dokkajar (type: Jar, dependsOn: dokka) {
-            classifier = 'javadoc'
-            from dokka.outputDirectory
-        }
-
-        publishing {
-            publications {
-                maven (MavenPublication) {
-                    artifact dokkajar
-                }
-            }
-        }
     }
+}
 
-    plugins.withType (org.jetbrains.dokka.gradle.DokkaAndroidPlugin) {
-        dokka {
-            moduleName = project.name
-            outputFormat = 'javadoc'
-            outputDirectory = "$buildDir/javadoc"
-            sourceDirs = files ('src/main/kotlin')
+ifDokka {
+    dokka {
+        subprojects.forEach { project ->
             linkMapping {
-                dir = "src/main/kotlin"
-                url = "https://github.com/encodeering/conflate/blob/master/modules/${project.name}/src/main/kotlin"
+                dir = "modules/${project.name}/src/main/kotlin"
+                url = "https://github.com/encodeering/${rootProject.name}/blob/master/modules/${project.name}/src/main/kotlin"
                 suffix = "#L"
             }
         }
-
-        task dokkajar (type: Jar, dependsOn: dokka) {
-            classifier = 'javadoc'
-            from dokka.outputDirectory
-        }
-
-        publishing {
-            publications {
-                maven (MavenPublication) {
-                    artifact dokkajar
-                }
-            }
-        }
     }
 }
 
-repositories {
-    maven {
-        url "${System.getenv ("ANDROID_HOME")}/extras/android/m2repository/"
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+    project {
+        languageLevel = 1.6
     }
 }
-
-configurations {
-    dokkapath
-    dokkapath.description = "dokka project classpath"
-}
-
-dependencies {
-    subprojects.findAll { p -> dokkapath project (p.name) }
-
-    dokkapath fileTree (include: ['*.jar'], dir: "${System.getenv("ANDROID_HOME")}/platforms/android-${project.ext["android.platform"]}/")
-}
-
-task dokka (type: org.jetbrains.dokka.gradle.DokkaTask, overwrite: true) {
-    moduleName = "$rootProject.name"
-    outputDirectory = "$buildDir/javadoc"
-    outputFormat = "html"
-    processConfigurations = ['dokkapath']
-    sourceDirs = files (subprojects.findAll { ! it.name.contains ("test") }.collect {
-        p ->
-            def path = "modules/${p.name}/src/main/kotlin"
-
-            linkMapping {
-                dir = path
-                url = "https://github.com/encodeering/conflate/blob/master/$path"
-                suffix = "#L"
-            }
-
-            return "$rootProject.rootDir/$path"
-    })
-}
-
-task coverage (type: JacocoReport) {
-    executionData     = fileTree (project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
-    sourceDirectories = files (subprojects.collect {  "modules/$it.name/src/main/kotlin" })
-    classDirectories  = files (subprojects.collect { ["modules/$it.name/build/classes/main", "modules/$it.name/build/intermediates/classes/release"] }.flatten ())
-
-    reports {
-        xml.enabled true
-        xml.destination "${buildDir}/reports/jacoco/report.xml"
-    }
-}
-
-coverage.dependsOn { subprojects*.jacocoTestReport }
 
 task clean {
     delete "$buildDir"
 }
 
 task wrapper (type: Wrapper) {
-    gradleVersion = '3.1'
+    gradleVersion = '4.0'
 }

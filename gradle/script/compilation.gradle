@@ -1,0 +1,24 @@
+subprojects {
+    ifJava {
+        sourceCompatibility = 1.6
+        targetCompatibility = 1.6
+    }
+
+    ifAndroid {
+        android {
+            sourceSets {
+                main.java.srcDirs += 'src/main/kotlin'
+                test.java.srcDirs += 'src/test/kotlin'
+            }
+        }
+    }
+
+    ifKotlin {
+        compileKotlin {
+            kotlinOptions {
+                apiVersion = '1.1'
+                languageVersion = '1.1'
+            }
+        }
+    }
+}
