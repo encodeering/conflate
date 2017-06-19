@@ -5,8 +5,8 @@ import android.content.pm.ApplicationInfo
 import com.encodeering.conflate.experimental.android.co.Looper
 import com.encodeering.conflate.experimental.api.Dispatcher
 import com.encodeering.conflate.experimental.jvm.co.CycleDispatcher
-import com.encodeering.conflate.experimental.logging.Logging
 import com.encodeering.conflate.experimental.jvm.middleware.Noop
+import com.encodeering.conflate.experimental.logging.Logging
 import com.encodeering.conflate.experimental.test.fixture.Reducers
 import com.encodeering.conflate.experimental.test.whenever
 import com.winterbe.expekt.expect

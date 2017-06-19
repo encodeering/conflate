@@ -1,8 +1,8 @@
 package com.encodeering.conflate.experimental.jfx
 
 import com.encodeering.conflate.experimental.api.Dispatcher
-import com.encodeering.conflate.experimental.jvm.co.CycleDispatcher
 import com.encodeering.conflate.experimental.jfx.co.FxAT
+import com.encodeering.conflate.experimental.jvm.co.CycleDispatcher
 import com.encodeering.conflate.experimental.logging.Logging
 import com.encodeering.conflate.experimental.test.fixture.Reducers
 import com.encodeering.conflate.experimental.test.mock

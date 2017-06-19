@@ -2,40 +2,57 @@ package com.encodeering.conflate.experimental.jvm
 
 import com.encodeering.conflate.experimental.api.Action
 import com.encodeering.conflate.experimental.api.Middleware
+import com.encodeering.conflate.experimental.api.Middleware.Connection
+import com.encodeering.conflate.experimental.api.Reducer
+import com.encodeering.conflate.experimental.test.any
+import com.encodeering.conflate.experimental.test.eq
+import com.encodeering.conflate.experimental.test.fixture.Add
+import com.encodeering.conflate.experimental.test.fixture.Middlewares
+import com.encodeering.conflate.experimental.test.fixture.Reducers
+import com.encodeering.conflate.experimental.test.mock
+import com.encodeering.conflate.experimental.test.whenever
+import com.winterbe.expekt.expect
+import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.xit
+import org.junit.platform.runner.JUnitPlatform
 import org.mockito.Mockito.inOrder
 import org.mockito.Mockito.never
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoMoreInteractions
+import java.util.Random
+import kotlin.coroutines.experimental.AbstractCoroutineContextElement
 import kotlin.coroutines.experimental.Continuation
+import kotlin.coroutines.experimental.ContinuationInterceptor
+import kotlin.coroutines.experimental.CoroutineContext
+import kotlin.coroutines.experimental.EmptyCoroutineContext
 
 /**
  * @author Michael Clausen - encodeering@gmail.com
  */
-@org.junit.runner.RunWith(org.junit.platform.runner.JUnitPlatform::class)
-class ConflateTest : org.jetbrains.spek.api.Spek({
+@org.junit.runner.RunWith(JUnitPlatform::class)
+class ConflateTest : Spek({
 
     describe ("Conflate") {
 
-        fun accumulator (spy : (com.encodeering.conflate.experimental.api.Action, Int) -> Unit = { _, _ -> Unit }) =
-                com.encodeering.conflate.experimental.test.fixture.Reducers.accumulator(spy)
+        fun accumulator (spy : (Action, Int) -> Unit = { _, _ -> Unit }) =
+                Reducers.accumulator(spy)
 
-        fun middleware (before : (com.encodeering.conflate.experimental.api.Action, com.encodeering.conflate.experimental.api.Middleware.Connection<Int>) -> Unit = { _, _ -> Unit },
-                        after  : (com.encodeering.conflate.experimental.api.Action, com.encodeering.conflate.experimental.api.Middleware.Connection<Int>) -> Unit = { _, _ -> Unit }) =
-                com.encodeering.conflate.experimental.test.fixture.Middlewares.middleware(before, after)
+        fun middleware (before : (Action, Connection<Int>) -> Unit = { _, _ -> Unit },
+                        after  : (Action, Connection<Int>) -> Unit = { _, _ -> Unit }) =
+                Middlewares.middleware(before, after)
 
-        fun interceptor (spy : (kotlin.coroutines.experimental.Continuation<*>) -> Unit = { }) =
-            object : kotlin.coroutines.experimental.AbstractCoroutineContextElement(kotlin.coroutines.experimental.ContinuationInterceptor), kotlin.coroutines.experimental.ContinuationInterceptor {
+        fun interceptor (spy : (Continuation<*>) -> Unit = { }) =
+            object : AbstractCoroutineContextElement(ContinuationInterceptor), ContinuationInterceptor {
 
-                override fun <T> interceptContinuation (continuation: kotlin.coroutines.experimental.Continuation<T>): kotlin.coroutines.experimental.Continuation<T> = continuation.apply { spy (this) }
+                override fun <T> interceptContinuation (continuation: Continuation<T>): Continuation<T> = continuation.apply { spy (this) }
 
             }
 
-        fun conflate (context : kotlin.coroutines.experimental.CoroutineContext = kotlin.coroutines.experimental.EmptyCoroutineContext, initial : Int = java.util.Random().nextInt (100), reducer : com.encodeering.conflate.experimental.api.Reducer<Int> = accumulator (), vararg middleware : com.encodeering.conflate.experimental.api.Middleware<Int>) =
-                com.encodeering.conflate.experimental.jvm.Conflate(
+        fun conflate (context : CoroutineContext = EmptyCoroutineContext, initial : Int = Random().nextInt (100), reducer : Reducer<Int> = accumulator (), vararg middleware : Middleware<Int>) =
+                Conflate(
                         context = context,
                         initial = initial,
                         reducer = reducer,
@@ -45,7 +62,7 @@ class ConflateTest : org.jetbrains.spek.api.Spek({
         describe ("construction") {
 
             it ("provides a context free solution") {
-                com.winterbe.expekt.expect(com.encodeering.conflate.experimental.jvm.Conflate(42, accumulator()).state).to.equal (42)
+                expect(Conflate(42, accumulator()).state).to.equal (42)
             }
 
         }
@@ -53,14 +70,14 @@ class ConflateTest : org.jetbrains.spek.api.Spek({
         describe ("state") {
 
             it ("should return the initial state") {
-                com.winterbe.expekt.expect(conflate(initial = 1337).state).to.equal (1337)
+                expect(conflate(initial = 1337).state).to.equal (1337)
             }
 
             it ("should return the new state after the reduction process") {
                 val conflate = conflate(initial = 1337)
-                    conflate.dispatcher.dispatch (com.encodeering.conflate.experimental.test.fixture.Add(42))
+                    conflate.dispatcher.dispatch (Add(42))
 
-                com.winterbe.expekt.expect(conflate.state).to.equal (1337 + 42)
+                expect(conflate.state).to.equal (1337 + 42)
             }
 
         }
@@ -68,29 +85,29 @@ class ConflateTest : org.jetbrains.spek.api.Spek({
         describe ("dispatcher") {
 
             it ("should start a cycle for each dispatch in order") {
-                val reducer = com.encodeering.conflate.experimental.test.mock<(Action, Int) -> Unit>()
+                val reducer = mock<(Action, Int) -> Unit>()
 
                 val conflate = conflate (initial = 1337, reducer = accumulator (reducer))
                     conflate.dispatcher.apply {
-                        dispatch (com.encodeering.conflate.experimental.test.fixture.Add(42))
-                        dispatch (com.encodeering.conflate.experimental.test.fixture.Add(43))
-                        dispatch (com.encodeering.conflate.experimental.test.fixture.Add(44))
+                        dispatch (Add(42))
+                        dispatch (Add(43))
+                        dispatch (Add(44))
                     }
 
                 val ordered = inOrder (reducer)
-                    ordered.verify (reducer).invoke (com.encodeering.conflate.experimental.test.eq(com.encodeering.conflate.experimental.test.fixture.Add(42)), com.encodeering.conflate.experimental.test.eq(1337))
-                    ordered.verify (reducer).invoke (com.encodeering.conflate.experimental.test.eq(com.encodeering.conflate.experimental.test.fixture.Add(43)), com.encodeering.conflate.experimental.test.eq(1337 + 42))
-                    ordered.verify (reducer).invoke (com.encodeering.conflate.experimental.test.eq(com.encodeering.conflate.experimental.test.fixture.Add(44)), com.encodeering.conflate.experimental.test.eq(1337 + 42 + 43))
+                    ordered.verify (reducer).invoke (eq(Add(42)), eq(1337))
+                    ordered.verify (reducer).invoke (eq(Add(43)), eq(1337 + 42))
+                    ordered.verify (reducer).invoke (eq(Add(44)), eq(1337 + 42 + 43))
                     ordered.verifyNoMoreInteractions ()
             }
 
             it ("should use the provided co-routine context") {
-                val context = com.encodeering.conflate.experimental.test.mock<(Continuation<*>) -> Unit>()
+                val context = mock<(Continuation<*>) -> Unit>()
 
                 val conflate = conflate (context = interceptor (context))
-                    conflate.dispatcher.dispatch (com.encodeering.conflate.experimental.test.fixture.Add(0))
+                    conflate.dispatcher.dispatch (Add(0))
 
-                verify (context).invoke (com.encodeering.conflate.experimental.test.any())
+                verify (context).invoke (any())
             }
 
             xit ("should support async beginnings") {
@@ -102,30 +119,30 @@ class ConflateTest : org.jetbrains.spek.api.Spek({
         describe ("middleware") {
 
             it ("should be called once a cycle") {
-                val spy = com.encodeering.conflate.experimental.test.mock<(Action, Middleware.Connection<Int>) -> Unit>()
+                val spy = mock<(Action, Connection<Int>) -> Unit>()
 
                 val conflate = conflate (middleware = middleware (before = spy))
 
-                conflate.dispatcher.dispatch (com.encodeering.conflate.experimental.test.fixture.Add(0))
+                conflate.dispatcher.dispatch (Add(0))
 
-                verify (spy).invoke  (com.encodeering.conflate.experimental.test.eq(com.encodeering.conflate.experimental.test.fixture.Add(0)), com.encodeering.conflate.experimental.test.any())
+                verify (spy).invoke  (eq(Add(0)), any())
                 verifyNoMoreInteractions (spy)
             }
 
             it ("should preserve the given middleware order") {
-                val first  = com.encodeering.conflate.experimental.test.mock<(Action, Middleware.Connection<Int>) -> Unit>()
-                val second = com.encodeering.conflate.experimental.test.mock<(Action, Middleware.Connection<Int>) -> Unit>()
+                val first  = mock<(Action, Connection<Int>) -> Unit>()
+                val second = mock<(Action, Connection<Int>) -> Unit>()
 
                 val conflate = conflate (middleware = * arrayOf (
                         middleware (before = first),
                         middleware (before = second)
                 ))
 
-                conflate.dispatcher.dispatch (com.encodeering.conflate.experimental.test.fixture.Add(0))
+                conflate.dispatcher.dispatch (Add(0))
 
                 val ordered = inOrder (first, second)
-                    ordered.verify (first).invoke  (com.encodeering.conflate.experimental.test.eq(com.encodeering.conflate.experimental.test.fixture.Add(0)), com.encodeering.conflate.experimental.test.any())
-                    ordered.verify (second).invoke (com.encodeering.conflate.experimental.test.eq(com.encodeering.conflate.experimental.test.fixture.Add(0)), com.encodeering.conflate.experimental.test.any())
+                    ordered.verify (first).invoke  (eq(Add(0)), any())
+                    ordered.verify (second).invoke (eq(Add(0)), any())
             }
 
         }
@@ -133,7 +150,7 @@ class ConflateTest : org.jetbrains.spek.api.Spek({
         describe ("subscription") {
 
             it ("should be called after a cycle only") {
-                val listener = com.encodeering.conflate.experimental.test.mock<() -> Unit>()
+                val listener = mock<() -> Unit>()
 
                 val conflate = conflate ()
                     conflate.subscribe (listener)
@@ -142,30 +159,30 @@ class ConflateTest : org.jetbrains.spek.api.Spek({
             }
 
             it ("should be called after the reduction process") {
-                val reducer  = com.encodeering.conflate.experimental.test.mock<(Action, Int) -> Unit>()
-                val listener = com.encodeering.conflate.experimental.test.mock<() -> Unit>()
+                val reducer  = mock<(Action, Int) -> Unit>()
+                val listener = mock<() -> Unit>()
 
                 val conflate = conflate (reducer = accumulator (reducer))
                     conflate.subscribe (listener)
-                    conflate.dispatcher.dispatch (com.encodeering.conflate.experimental.test.fixture.Add(0))
+                    conflate.dispatcher.dispatch (Add(0))
 
                 val ordered = inOrder (reducer, listener)
-                    ordered.verify (reducer).invoke (com.encodeering.conflate.experimental.test.any(), com.encodeering.conflate.experimental.test.any())
+                    ordered.verify (reducer).invoke (any (), any())
                     ordered.verify (listener).invoke ()
                     ordered.verifyNoMoreInteractions ()
             }
 
             it ("should provide an unsubscription handle") {
-                val one = com.encodeering.conflate.experimental.test.mock<() -> Unit>()
-                val two = com.encodeering.conflate.experimental.test.mock<() -> Unit>()
+                val one = mock<() -> Unit>()
+                val two = mock<() -> Unit>()
 
                 val              conflate = conflate ()
                 val unregister = conflate.subscribe (one)
                                  conflate.subscribe (two)
 
                 conflate.dispatcher.run {
-                    dispatch (com.encodeering.conflate.experimental.test.fixture.Add(0))
-                    dispatch (com.encodeering.conflate.experimental.test.fixture.Add(0))
+                    dispatch (Add(0))
+                    dispatch (Add(0))
                 }
 
                 verify (one, times (2)).invoke ()
@@ -174,8 +191,8 @@ class ConflateTest : org.jetbrains.spek.api.Spek({
                 unregister.run ()
 
                 conflate.dispatcher.run {
-                    dispatch (com.encodeering.conflate.experimental.test.fixture.Add(0))
-                    dispatch (com.encodeering.conflate.experimental.test.fixture.Add(0))
+                    dispatch (Add(0))
+                    dispatch (Add(0))
                 }
 
                 verifyNoMoreInteractions (one)
@@ -183,15 +200,15 @@ class ConflateTest : org.jetbrains.spek.api.Spek({
             }
 
             it ("should guard a listeners to prevent poison pills") {
-                val one = com.encodeering.conflate.experimental.test.mock<() -> Unit>()
-                val two = com.encodeering.conflate.experimental.test.mock<() -> Unit>()
+                val one = mock<() -> Unit>()
+                val two = mock<() -> Unit>()
 
-                com.encodeering.conflate.experimental.test.whenever(one.invoke()).thenThrow (IllegalStateException ())
+                whenever(one.invoke()).thenThrow (IllegalStateException ())
 
                 val conflate = conflate ()
                     conflate.subscribe (one)
                     conflate.subscribe (two)
-                    conflate.dispatcher.dispatch (com.encodeering.conflate.experimental.test.fixture.Add(0))
+                    conflate.dispatcher.dispatch (Add(0))
 
                 verify (one).invoke ()
                 verify (two).invoke ()
