@@ -1,3 +1,14 @@
+def analyze = {
+    def generated = [
+        'android/**/*.*'
+    ]
+
+    fileTree (
+        dir: it,
+        excludes: generated
+    )
+}
+
 allprojects {
     apply plugin: 'jacoco'
 }
@@ -27,7 +38,7 @@ subprojects {
                     task ("jacocoTestReport", dependsOn: "test", type: JacocoReport, overwrite: true) {
                         executionData junitPlatformTestTask
                         sourceDirectories = files ("$projectDir/src/main/kotlin")
-                        classDirectories  = files ("$buildDir/classes/main")
+                        classDirectories  = files (analyze ("$buildDir/classes/main"))
 
                         reports {
                             xml.enabled = true
@@ -44,10 +55,7 @@ subprojects {
             task ("jacocoTestReport", dependsOn: "testReleaseUnitTest", type: JacocoReport, overwrite: true) {
                 executionData files ("$buildDir/jacoco/testReleaseUnitTest.exec")
                 sourceDirectories = files ("$projectDir/src/main/kotlin")
-                classDirectories  = fileTree (
-                    dir: "$buildDir/intermediates/classes/release",
-                    excludes: ['**/BuildConfig.*', '**/Manifest*.*']
-                )
+                classDirectories  = files (analyze ("$buildDir/intermediates/classes/release"))
 
                 reports {
                     xml.enabled = true
@@ -61,7 +69,7 @@ subprojects {
 task coverage (type: JacocoReport) {
     executionData     = fileTree (project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
     sourceDirectories = files (subprojects.collect {  "$it.projectDir/src/main/kotlin" })
-    classDirectories  = files (subprojects.collect { ["$it.buildDir/classes/main", "$it.buildDir/intermediates/classes/release"] }.flatten ())
+    classDirectories  = files (subprojects.collect { ["$it.buildDir/classes/main", "$it.buildDir/intermediates/classes/release"] }.flatten ().collect (analyze))
 
     reports {
         xml.enabled true
