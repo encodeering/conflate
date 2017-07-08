@@ -3,6 +3,7 @@ buildscript {
     ext.junitversion   = project.ext['junit.version']
     ext.bintrayversion = project.ext['bintray.version']
     ext.dokkaversion   = project.ext['dokka.version']
+    ext.benmanesversion = project.ext['benmanes.version']
     ext.androidgradleversion = project.ext['android.gradle.version']
 
     repositories {
@@ -17,6 +18,7 @@ buildscript {
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayversion"
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokkaversion"
         classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:$dokkaversion"
+        classpath "com.github.ben-manes:gradle-versions-plugin:$benmanesversion"
     }
 }
 
