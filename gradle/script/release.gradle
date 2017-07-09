@@ -27,12 +27,19 @@ subprojects {
         }
     }
 
+    task sourcejar (type: Jar) {
+        from "src/main/kotlin"
+        classifier "sources"
+    }
+
     ifJava {
         publishing {
             publications {
                 maven (MavenPublication) {
                     artifactId jar.baseName
                     from components.java
+
+                    artifact sourcejar
                 }
             }
         }
@@ -48,6 +55,7 @@ subprojects {
             publications {
                 maven (MavenPublication) {
                     artifact jar
+                    artifact sourcejar
 
                     pom.withXml {
                         def dependencies = asNode ().appendNode ('dependencies')
