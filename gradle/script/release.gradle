@@ -39,7 +39,7 @@ subprojects {
     }
 
     ifAndroid {
-        task jaronly (type: Jar, dependsOn : [build]) {
+        task jar (type: Jar, dependsOn : [build]) {
             from "$buildDir/intermediates/classes/release"
             archiveName "${project.name}.jar"
         }
@@ -47,7 +47,7 @@ subprojects {
         publishing {
             publications {
                 maven (MavenPublication) {
-                    artifact jaronly
+                    artifact jar
 
                     pom.withXml {
                         def dependencies = asNode ().appendNode ('dependencies')
