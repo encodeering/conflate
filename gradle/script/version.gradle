@@ -16,8 +16,8 @@ ext.versioncode = { String defver = '0.0.0' ->
               (fields[1] ? "-" : "") +
                fields[1] +
                fields[2].collect {
-                  def    v = (int) it - (int) 'a' + (int) '0'
-                  return v > 0 ? v : '0' + it
+                  def    v = (int) it - (int) 'a'
+                  return v < 0 ? '0' + it : '1' + v
               }.join ("")
     } catch (e) {
         return defver
