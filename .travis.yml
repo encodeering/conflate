@@ -26,16 +26,17 @@ after_success:
 - bash <(curl -s https://codecov.io/bash)
 
 deploy:
-  - provider: script
-    skip_cleanup: true
-    script: ./gradlew bintrayUpload
-    on:
-      tags: true
-      all_branches: true
+  # any subsequent gradle task may delete artifacts. they should be called at the end
   - provider: pages
     skip_cleanup: true
     local_dir: ./build/javadoc
     github_token: $GITHUB_TOKEN
+    on:
+      tags: true
+      all_branches: true
+  - provider: script
+    skip_cleanup: true
+    script: ./gradlew bintrayUpload
     on:
       tags: true
       all_branches: true
