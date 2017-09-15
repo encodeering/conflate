@@ -35,9 +35,9 @@ class EpicTest : Spek ({
         fun story (daemon : Boolean = false, configure : (Action) -> Observable<out Happening>) =
             mock<Story<Unit>> ().apply {
                 whenever (this.endless).thenReturn (daemon)
-                whenever (this.embellish (any<Observable<Aspect<Unit>>> ())).thenAnswer {
+                whenever (this.embellish (any())).thenAnswer {
                     @Suppress("UNCHECKED_CAST")
-                    val value = it.arguments[0] as Observable<Aspect<Unit>>
+                    val value = it.arguments[0] as Observable<Aspect<Action, Unit>>
                         value.flatMap { configure (it.action) }
                 }
             }

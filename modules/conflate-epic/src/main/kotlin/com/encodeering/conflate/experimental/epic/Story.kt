@@ -8,8 +8,8 @@ import io.reactivex.Observable
  */
 interface Story<State> {
 
-    data class Aspect<out State> (
-        val action : Action,
+    data class Aspect<out A : Action, out State> (
+        val action : A,
         val state  : State
     )
 
@@ -22,10 +22,10 @@ interface Story<State> {
 
     val endless : Boolean
 
-    fun embellish (aspects : Aspects<State>) : Happenings
+    fun embellish (aspects : Aspects<Action, State>) : Happenings
 
 }
 
-typealias Aspects<State> = Observable<Story.Aspect<State>>
+typealias Aspects<A, State> = Observable<Story.Aspect<A, State>>
 
 typealias Happenings = Observable<Story.Happening>

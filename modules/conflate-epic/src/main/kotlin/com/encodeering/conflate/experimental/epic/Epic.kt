@@ -42,7 +42,7 @@ class Epic<State> (
                     it
                 }
 
-                val               aspects = PublishSubject.create<Aspect<State>> ()!!
+                val               aspects = PublishSubject.create<Aspect<Action, State>> ()!!
                 return Raconteur (aspects, story.embellish (aspects).async (forward, context))
             }
 
@@ -56,7 +56,7 @@ class Epic<State> (
         }
     }
 
-    private fun Iterable<Raconteur<State>>.tell (aspect : Aspect<State>, finish : Boolean) {
+    private fun Iterable<Raconteur<State>>.tell (aspect : Aspect<Action, State>, finish : Boolean) {
         forEach {
             try {
                 it.tell (aspect)
@@ -68,9 +68,9 @@ class Epic<State> (
         }
     }
 
-    private class Raconteur<in State> (private val aspects : Subject<Aspect<State>>, val happenings : Observable<Happening>) {
+    private class Raconteur<in State> (private val aspects : Subject<Aspect<Action, State>>, val happenings : Observable<Happening>) {
 
-        fun tell (aspect : Aspect<State>) = aspects.onNext (aspect)
+        fun tell (aspect : Aspect<Action, State>) = aspects.onNext (aspect)
 
         fun abort (e : Exception)         = aspects.onError (e)
 

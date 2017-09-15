@@ -1,5 +1,6 @@
 package com.encodeering.conflate.experimental.epic.rx
 
+import com.encodeering.conflate.experimental.api.Action
 import com.encodeering.conflate.experimental.epic.Aspects
 import com.encodeering.conflate.experimental.epic.Happenings
 import com.encodeering.conflate.experimental.epic.Story.Aspect
@@ -31,7 +32,7 @@ class BookTest : Spek({
 
     describe ("Book") {
 
-        fun book  (f : (Aspects<Int>) -> Happenings) = Book.anecdote (f)
+        fun book  (f : (Aspects<Action, Int>) -> Happenings) = Book.anecdote (f)
 
         describe ("Anecdote") {
 
@@ -80,7 +81,7 @@ class BookTest : Spek({
         it ("should be independent of a previous writing") {
             val cb = spy ()
 
-            val       factory = mock<(Observable<Aspect<Int>>) -> Observable<Happening>> ()
+            val       factory = mock<(Observable<Aspect<Action, Int>>) -> Observable<Happening>> ()
             whenever (factory.invoke (any ())).thenAnswer {
                 just (it.arguments[0]).doOnNext { cb () }
             }
