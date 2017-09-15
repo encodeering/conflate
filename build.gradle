@@ -90,6 +90,10 @@ subprojects {
                 issueTrackerUrl = 'https://github.com/encodeering/conflate/issues'
                 vcsUrl          = 'https://github.com/encodeering/conflate'
                 description     = 'An alternative redux implementation'
+                version {
+                    name   = project.version
+                    vcsTag = project.version
+                }
             }
         }
     }

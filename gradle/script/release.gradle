@@ -20,8 +20,6 @@ subprojects {
         pkg {
             name = rootProject.name
             version {
-                name     = project.version
-                vcsTag   = project.version
                 released = new Date()
             }
         }
