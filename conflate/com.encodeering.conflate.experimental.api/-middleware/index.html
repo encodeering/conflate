@@ -1,0 +1,129 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Middleware - conflate</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">conflate</a>&nbsp;/&nbsp;<a href="../index.html">com.encodeering.conflate.experimental.api</a>&nbsp;/&nbsp;<a href=".">Middleware</a><br/>
+<br/>
+<h1>Middleware</h1>
+<code><span class="keyword">interface </span><span class="identifier">Middleware</span><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<span class="identifier">State</span><span class="symbol">&gt;</span></code>
+<p>A middleware defines an extension mechanism to integrate business services or to provide platform specific services
+and might therefore provide custom actions or other building blocks to specify the behaviour of the middleware component.</p>
+<p>As mentioned by the process of a <a href="../-dispatcher/index.html">dispatch</a> Cycle, a middleware component should state, whether and under what conditions</p>
+<ul><li>Linearization</li>
+<li>Thread-Safety</li>
+</ul>
+<p>is supported.</p>
+<p>A platform or technology specific middleware may freely choose to adhere to the rules of the target platform only, as stated by the <a href="../-storage/index.html">Storage</a>,
+but any other middleware is encouraged to implement a thread-safe behaviour, if they target multiple platforms.</p>
+<p>Please consult the platform specific middleware documentation here.</p>
+<h3>Linearization</h3>
+<p>A middleware is considered to support linearization, if the incoming action and all internally derived actions have been processed by</p>
+<ul><li>this middleware component</li>
+<li>subsequent middleware components - including <a href="-connection/next.html">Connection.next</a> and <a href="-connection/initial.html">Connection.initial</a></li>
+</ul>
+<p>and return can be safely given back to the caller.</p>
+<h3>Sample</h3>
+<pre><code>class Http&lt;in State&gt; : Middleware&lt;State&gt; {
+
+    data class Get (val url : String, val content : String = "") : Action
+
+    override fun interceptor (connection : Middleware.Connection&lt;State&gt;) : Middleware.Interceptor {
+        return object : Middleware.Interceptor {
+
+            suspend override fun dispatch     (action : Action) {
+                return when                   (action) {
+                    is Get -&gt; connection.next (action.copy (content = get (action.url)))
+                    else   -&gt; connection.next (action)
+                }
+            }
+
+            suspend fun get (url : String) : String {
+                // suspendable async computation
+            }
+
+        }
+    }
+
+}
+</code></pre>
+<h3>Official documentation:</h3>
+<ul><li>It provides a third-party extension point between dispatching an action, and the moment it reaches the reducer.
+People use Redux middleware for logging, crash reporting, talking to an asynchronous API, routing, and more. <a href="http//redux.js.org/docs/advanced/Middleware.html">http//redux.js.org/docs/advanced/Middleware.html</a></li>
+</ul>
+<h3>Parameters</h3>
+<p><a name="State"></a>
+<code>State</code> - defines the type of the state container</p>
+<p><strong>Author</strong><br/>
+Michael Clausen - encodeering@gmail.com</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-connection/index.html">Connection</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">Connection</span><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<span class="identifier">State</span><span class="symbol">&gt;</span></code>
+<p>A connection arranges the communication between a middleware component and the outer environment.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-interceptor/index.html">Interceptor</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">Interceptor</span></code>
+<p>An interceptor defines the extension logic of a middleware component.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="interceptor.html">interceptor</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">interceptor</span><span class="symbol">(</span><span class="identifier" id="com.encodeering.conflate.experimental.api.Middleware$interceptor(com.encodeering.conflate.experimental.api.Middleware.Connection((com.encodeering.conflate.experimental.api.Middleware.State)))/connection">connection</span><span class="symbol">:</span>&nbsp;<a href="-connection/index.html"><span class="identifier">Connection</span></a><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="-interceptor/index.html"><span class="identifier">Interceptor</span></a></code>
+<p>Derives an interceptor from this middleware component.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../../com.encodeering.conflate.experimental.epic/-epic/index.html">Epic</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">Epic</span><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Middleware</span><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.encodeering.conflate.experimental.logging/-logging/index.html">Logging</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">Logging</span><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<span class="identifier">State</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Middleware</span><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span></code>
+<p>A logging middleware for debugging purposes.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.encodeering.conflate.experimental.jvm.middleware/-noop/index.html">Noop</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">Noop</span><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<span class="identifier">State</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Middleware</span><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span></code>
+<p>A no-operation middleware that simply delegates any action to the next middleware component.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

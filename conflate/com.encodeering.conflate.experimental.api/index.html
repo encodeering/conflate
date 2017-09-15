@@ -1,0 +1,100 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.encodeering.conflate.experimental.api - conflate</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">conflate</a>&nbsp;/&nbsp;<a href=".">com.encodeering.conflate.experimental.api</a><br/>
+<br/>
+<h2>Package com.encodeering.conflate.experimental.api</h2>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-action.html">Action</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">Action</span></code>
+<p>An action usually describes an intent that something should happen and may or may not cause other intents to be raised
+along the way to the storage, which is usually managed by chained middleware components.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-completable/index.html">Completable</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">Completable</span><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<span class="identifier">Scope</span><span class="symbol">, </span><span class="keyword">out</span>&nbsp;<span class="identifier">V</span><span class="symbol">&gt;</span></code>
+<p>A Completable wraps a computational process, whose final state can be inspected using callbacks.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-dispatcher/index.html">Dispatcher</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">Dispatcher</span></code>
+<p>A dispatcher is connected to exactly one <a href="-storage/index.html">storage</a> and starts a mutation cycle for every <a href="-dispatcher/dispatch.html">passing</a> action intent.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-middleware/index.html">Middleware</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">Middleware</span><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<span class="identifier">State</span><span class="symbol">&gt;</span></code>
+<p>A middleware defines an extension mechanism to integrate business services or to provide platform specific services
+and might therefore provide custom actions or other building blocks to specify the behaviour of the middleware component.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-reducer/index.html">Reducer</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">Reducer</span><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span></code>
+<p>A reducer conflates the payload of an action with the given state into a state object, and shall not
+perform any kind of side-effect, that influences the outcome of the returned state object.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-storage/index.html">Storage</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">Storage</span><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<span class="identifier">State</span><span class="symbol">&gt;</span></code>
+<p>A storage acts as only provider to <a href="-storage/state.html">access</a> and <a href="-storage/dispatcher.html">mutate</a> the predefined state container.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="await.html">await</a></p>
+</td>
+<td>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">Scope</span><span class="symbol">, </span><span class="identifier">V</span><span class="symbol">&gt;</span> <a href="-completable/index.html"><span class="identifier">Completable</span></a><span class="symbol">&lt;</span><span class="identifier">Scope</span><span class="symbol">,</span>&nbsp;<span class="identifier">V</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">await</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Suspends this coroutine until the final state of this completable has been reached, which will then resume this coroutine in
+either case.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="unbox.html">unbox</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span> <a href="-storage/index.html"><span class="identifier">Storage</span></a><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">unbox</span><span class="symbol">(</span><span class="identifier" id="com.encodeering.conflate.experimental.api$unbox(com.encodeering.conflate.experimental.api.Storage((com.encodeering.conflate.experimental.api.unbox.State)), kotlin.Function2((com.encodeering.conflate.experimental.api.unbox.State, com.encodeering.conflate.experimental.api.Dispatcher, kotlin.Unit)))/r">r</span><span class="symbol">:</span>&nbsp;<span class="identifier">State</span><span class="symbol">.</span><span class="symbol">(</span><a href="-dispatcher/index.html"><span class="identifier">Dispatcher</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Creates a view on the state container.</p>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">, </span><span class="identifier">Part</span><span class="symbol">&gt;</span> <a href="-storage/index.html"><span class="identifier">Storage</span></a><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">unbox</span><span class="symbol">(</span><span class="identifier" id="com.encodeering.conflate.experimental.api$unbox(com.encodeering.conflate.experimental.api.Storage((com.encodeering.conflate.experimental.api.unbox.State)), kotlin.Function1((com.encodeering.conflate.experimental.api.unbox.State, com.encodeering.conflate.experimental.api.unbox.Part)), kotlin.Function2((com.encodeering.conflate.experimental.api.unbox.Part, com.encodeering.conflate.experimental.api.Dispatcher, kotlin.Unit)))/t">t</span><span class="symbol">:</span>&nbsp;<span class="identifier">State</span><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<span class="identifier">Part</span><span class="symbol">, </span><span class="identifier" id="com.encodeering.conflate.experimental.api$unbox(com.encodeering.conflate.experimental.api.Storage((com.encodeering.conflate.experimental.api.unbox.State)), kotlin.Function1((com.encodeering.conflate.experimental.api.unbox.State, com.encodeering.conflate.experimental.api.unbox.Part)), kotlin.Function2((com.encodeering.conflate.experimental.api.unbox.Part, com.encodeering.conflate.experimental.api.Dispatcher, kotlin.Unit)))/r">r</span><span class="symbol">:</span>&nbsp;<span class="identifier">Part</span><span class="symbol">.</span><span class="symbol">(</span><a href="-dispatcher/index.html"><span class="identifier">Dispatcher</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Creates a view on a subset of the state container.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

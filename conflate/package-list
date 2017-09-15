@@ -1,0 +1,27 @@
+$dokka.format:html
+$dokka.linkExtension:html
+$dokka.location:com.encodeering.conflate.experimental.android$conflate(android.app.Application, com.encodeering.conflate.experimental.android.conflate.State, com.encodeering.conflate.experimental.api.Reducer((com.encodeering.conflate.experimental.android.conflate.State)), kotlin.Array((com.encodeering.conflate.experimental.api.Middleware((com.encodeering.conflate.experimental.android.conflate.State)))))com.encodeering.conflate.experimental.android/android.app.-application/conflate.html
+$dokka.location:com.encodeering.conflate.experimental.android$conflate(android.app.Application, com.encodeering.conflate.experimental.android.conflate.State, com.encodeering.conflate.experimental.api.Reducer((com.encodeering.conflate.experimental.android.conflate.State)), kotlin.coroutines.experimental.CoroutineContext, kotlin.Array((com.encodeering.conflate.experimental.api.Middleware((com.encodeering.conflate.experimental.android.conflate.State)))))com.encodeering.conflate.experimental.android/android.app.-application/conflate.html
+$dokka.location:com.encodeering.conflate.experimental.android$debuggable(android.app.Application)com.encodeering.conflate.experimental.android/android.app.-application/debuggable.html
+$dokka.location:com.encodeering.conflate.experimental.android$logging(android.app.Application, kotlin.String)com.encodeering.conflate.experimental.android/android.app.-application/logging.html
+$dokka.location:com.encodeering.conflate.experimental.epic.rx$async(io.reactivex.Observable((com.encodeering.conflate.experimental.epic.rx.async.T)), kotlin.SuspendFunction1((com.encodeering.conflate.experimental.epic.rx.async.T, com.encodeering.conflate.experimental.epic.rx.async.R)), kotlin.coroutines.experimental.CoroutineContext)com.encodeering.conflate.experimental.epic.rx/io.reactivex.-observable/async.html
+$dokka.location:com.encodeering.conflate.experimental.epic.rx$await(io.reactivex.Observable((com.encodeering.conflate.experimental.epic.rx.await.T)), kotlin.Function1((com.encodeering.conflate.experimental.epic.rx.await.T, kotlin.Unit)))com.encodeering.conflate.experimental.epic.rx/io.reactivex.-observable/await.html
+$dokka.location:com.encodeering.conflate.experimental.epic.rx$combine(kotlin.collections.Iterable((io.reactivex.Observable((com.encodeering.conflate.experimental.epic.rx.combine.T)))), kotlin.Boolean)com.encodeering.conflate.experimental.epic.rx/kotlin.collections.-iterable/combine.html
+$dokka.location:com.encodeering.conflate.experimental.jfx$conflate(javafx.application.Application, com.encodeering.conflate.experimental.jfx.conflate.State, com.encodeering.conflate.experimental.api.Reducer((com.encodeering.conflate.experimental.jfx.conflate.State)), kotlin.Array((com.encodeering.conflate.experimental.api.Middleware((com.encodeering.conflate.experimental.jfx.conflate.State)))))com.encodeering.conflate.experimental.jfx/javafx.application.-application/conflate.html
+$dokka.location:com.encodeering.conflate.experimental.jfx$conflate(javafx.application.Application, com.encodeering.conflate.experimental.jfx.conflate.State, com.encodeering.conflate.experimental.api.Reducer((com.encodeering.conflate.experimental.jfx.conflate.State)), kotlin.coroutines.experimental.CoroutineContext, kotlin.Array((com.encodeering.conflate.experimental.api.Middleware((com.encodeering.conflate.experimental.jfx.conflate.State)))))com.encodeering.conflate.experimental.jfx/javafx.application.-application/conflate.html
+$dokka.location:com.encodeering.conflate.experimental.jfx$logging(javafx.application.Application, kotlin.String)com.encodeering.conflate.experimental.jfx/javafx.application.-application/logging.html
+com.encodeering.conflate.experimental.android
+com.encodeering.conflate.experimental.android.co
+com.encodeering.conflate.experimental.api
+com.encodeering.conflate.experimental.epic
+com.encodeering.conflate.experimental.epic.rx
+com.encodeering.conflate.experimental.epic.story
+com.encodeering.conflate.experimental.jfx
+com.encodeering.conflate.experimental.jfx.co
+com.encodeering.conflate.experimental.jvm
+com.encodeering.conflate.experimental.jvm.co
+com.encodeering.conflate.experimental.jvm.middleware
+com.encodeering.conflate.experimental.jvm.util
+com.encodeering.conflate.experimental.logging
+com.encodeering.conflate.experimental.test
+com.encodeering.conflate.experimental.test.fixture

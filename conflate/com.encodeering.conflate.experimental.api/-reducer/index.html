@@ -1,0 +1,77 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Reducer - conflate</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">conflate</a>&nbsp;/&nbsp;<a href="../index.html">com.encodeering.conflate.experimental.api</a>&nbsp;/&nbsp;<a href=".">Reducer</a><br/>
+<br/>
+<h1>Reducer</h1>
+<code><span class="keyword">interface </span><span class="identifier">Reducer</span><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span></code>
+<p>A reducer conflates the payload of an action with the given state into a state object, and shall not
+perform any kind of side-effect, that influences the outcome of the returned state object.</p>
+<p>An implementation must guarantee, that he following conditions are met:</p>
+<ul><li>
+<p>Invocations with same arguments lead to same results, regardless of the invocation or execution time.</p>
+  <pre><code>  assert reduce (A0, S0) == reduce (A0, S0)
+</code></pre></li>
+<li>
+<p>Modifications to any state do not affect other states, regardless of the invocation or execution time.</p>
+  <pre><code>  assert reduce (A0, S0) != reduce (A0, S0).apply { this.p += 1 }
+    assert reduce (A0, S0) != reduce (A0, S0.apply  { this.p += 1 })
+</code></pre></li>
+</ul>
+<p>Any of the following items may cause a side-effect, that contravenes one of the stated condition:</p>
+<ul><li>I/O</li>
+<li>Service-Computation</li>
+<li>Date/Time</li>
+<li>Seeding</li>
+<li>...</li>
+</ul>
+<p>Any part of the previous state may be freely recycled, as long as the related parts to do not violate the contract or
+prevent any form of memory cleanup.</p>
+<h3>Official documentation:</h3>
+<ul><li>Actions describe the fact that something happened, but don't specify how the application's state changes in response.
+This is the job of reducers. <a href="http//redux.js.org/docs/basics/Reducers.html">http//redux.js.org/docs/basics/Reducers.html</a></li>
+
+<li>Given the same arguments, it should calculate the next state and return it. No surprises. No side effects. No API calls. No mutations.
+Just a calculation. <a href="http//redux.js.org/docs/basics/Reducers.html">http//redux.js.org/docs/basics/Reducers.html</a></li>
+</ul>
+<h3>Sample</h3>
+<pre><code>data class Sub (val number : Int) : Action
+data class Add (val number : Int) : Action
+
+object : Reducer&lt;Int&gt; {
+
+    override fun reduce (action : Action, state : Int) : Int {
+        return when     (action) {
+            is Sub -&gt;    action.number - state
+            is Add -&gt;    action.number + state
+            else   -&gt;                    state
+        }
+    }
+
+}
+</code></pre>
+<h3>Parameters</h3>
+<p><a name="State"></a>
+<code>State</code> - defines the type of the state container</p>
+<p><strong>Author</strong><br/>
+Michael Clausen - encodeering@gmail.com</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="reduce.html">reduce</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">reduce</span><span class="symbol">(</span><span class="identifier" id="com.encodeering.conflate.experimental.api.Reducer$reduce(com.encodeering.conflate.experimental.api.Action, com.encodeering.conflate.experimental.api.Reducer.State)/action">action</span><span class="symbol">:</span>&nbsp;<a href="../-action.html"><span class="identifier">Action</span></a><span class="symbol">, </span><span class="identifier" id="com.encodeering.conflate.experimental.api.Reducer$reduce(com.encodeering.conflate.experimental.api.Action, com.encodeering.conflate.experimental.api.Reducer.State)/state">state</span><span class="symbol">:</span>&nbsp;<span class="identifier">State</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">State</span></code>
+<p>Defines the actual conflation strategy.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>CycleDispatcher - conflate</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">conflate</a>&nbsp;/&nbsp;<a href="../index.html">com.encodeering.conflate.experimental.jvm.co</a>&nbsp;/&nbsp;<a href=".">CycleDispatcher</a><br/>
+<br/>
+<h1>CycleDispatcher</h1>
+<code><span class="keyword">class </span><span class="identifier">CycleDispatcher</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.encodeering.conflate.experimental.api/-dispatcher/index.html"><span class="identifier">Dispatcher</span></a></code>
+<p><strong>Author</strong><br/>
+Michael Clausen - encodeering@gmail.com</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">CycleDispatcher</span><span class="symbol">(</span><span class="identifier" id="com.encodeering.conflate.experimental.jvm.co.CycleDispatcher$<init>(kotlin.coroutines.experimental.CoroutineContext, kotlin.SuspendFunction1((com.encodeering.conflate.experimental.api.Action, kotlin.Unit)))/context">context</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines.experimental/-coroutine-context/index.html"><span class="identifier">CoroutineContext</span></a><span class="symbol">, </span><span class="identifier" id="com.encodeering.conflate.experimental.jvm.co.CycleDispatcher$<init>(kotlin.coroutines.experimental.CoroutineContext, kotlin.SuspendFunction1((com.encodeering.conflate.experimental.api.Action, kotlin.Unit)))/f">f</span><span class="symbol">:</span>&nbsp;<span class="keyword">suspend </span><span class="symbol">(</span><a href="../../com.encodeering.conflate.experimental.api/-action.html"><span class="identifier">Action</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="dispatch.html">dispatch</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">dispatch</span><span class="symbol">(</span><span class="identifier" id="com.encodeering.conflate.experimental.jvm.co.CycleDispatcher$dispatch(com.encodeering.conflate.experimental.api.Action)/action">action</span><span class="symbol">:</span>&nbsp;<a href="../../com.encodeering.conflate.experimental.api/-action.html"><span class="identifier">Action</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.encodeering.conflate.experimental.api/-completable/index.html"><span class="identifier">Completable</span></a><span class="symbol">&lt;</span><span class="identifier">CycleDispatcher</span><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">&gt;</span></code>
+<p>Starts a mutation cycle and returns an observable (future-like) to watch this process.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

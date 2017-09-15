@@ -1,0 +1,22 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Cycle.then - conflate</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">conflate</a>&nbsp;/&nbsp;<a href="../index.html">com.encodeering.conflate.experimental.jvm.co</a>&nbsp;/&nbsp;<a href="index.html">Cycle</a>&nbsp;/&nbsp;<a href=".">then</a><br/>
+<br/>
+<h1>then</h1>
+<a name="com.encodeering.conflate.experimental.jvm.co.Cycle$then(kotlin.Function2((com.encodeering.conflate.experimental.jvm.co.Cycle.Scope, kotlin.Throwable, kotlin.Unit)), kotlin.Function2((com.encodeering.conflate.experimental.jvm.co.Cycle.Scope, com.encodeering.conflate.experimental.jvm.co.Cycle.V, kotlin.Unit)))"></a>
+<code><span class="keyword">fun </span><span class="identifier">then</span><span class="symbol">(</span><span class="identifier" id="com.encodeering.conflate.experimental.jvm.co.Cycle$then(kotlin.Function2((com.encodeering.conflate.experimental.jvm.co.Cycle.Scope, kotlin.Throwable, kotlin.Unit)), kotlin.Function2((com.encodeering.conflate.experimental.jvm.co.Cycle.Scope, com.encodeering.conflate.experimental.jvm.co.Cycle.V, kotlin.Unit)))/fail">fail</span><span class="symbol">:</span>&nbsp;<span class="identifier">Scope</span><span class="symbol">.</span><span class="symbol">(</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html"><span class="identifier">Throwable</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">, </span><span class="identifier" id="com.encodeering.conflate.experimental.jvm.co.Cycle$then(kotlin.Function2((com.encodeering.conflate.experimental.jvm.co.Cycle.Scope, kotlin.Throwable, kotlin.Unit)), kotlin.Function2((com.encodeering.conflate.experimental.jvm.co.Cycle.Scope, com.encodeering.conflate.experimental.jvm.co.Cycle.V, kotlin.Unit)))/ok">ok</span><span class="symbol">:</span>&nbsp;<span class="identifier">Scope</span><span class="symbol">.</span><span class="symbol">(</span><span class="identifier">V</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Registers callbacks at this completable that get notified, as soon as the computation reaches a final state.</p>
+<p>A callback can be registered at any time, even if the process has already finished.
+Lately registered callback will be invoked immediately with the known outcome of the completable.</p>
+<h3>Parameters</h3>
+<p><a name="fail"></a>
+<code>fail</code> - specifies a mandatory callback to observe the error state</p>
+<p><a name="ok"></a>
+<code>ok</code> - specifies an optional callback to observer the success state; a noop by default</p>
+</BODY>
+</HTML>

@@ -1,0 +1,84 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Logging - conflate</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">conflate</a>&nbsp;/&nbsp;<a href="../index.html">com.encodeering.conflate.experimental.logging</a>&nbsp;/&nbsp;<a href=".">Logging</a><br/>
+<br/>
+<h1>Logging</h1>
+<code><span class="keyword">class </span><span class="identifier">Logging</span><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<span class="identifier">State</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.encodeering.conflate.experimental.api/-middleware/index.html"><span class="identifier">Middleware</span></a><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span></code>
+<p>A logging middleware for debugging purposes.</p>
+<p>Middleware is <code>thread-safe</code>, if the underlying callbacks are thread-safe, and supports <code>linearization</code>.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">Logging</span><span class="symbol">(</span><span class="identifier" id="com.encodeering.conflate.experimental.logging.Logging$<init>(kotlin.Function2((kotlin.String, com.encodeering.conflate.experimental.api.Action, kotlin.Unit)), kotlin.Function0((kotlin.Boolean)), kotlin.Function0((kotlin.Boolean)), kotlin.Function0((kotlin.Boolean)))/log">log</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="../../com.encodeering.conflate.experimental.api/-action.html"><span class="identifier">Action</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">, </span><span class="identifier" id="com.encodeering.conflate.experimental.logging.Logging$<init>(kotlin.Function2((kotlin.String, com.encodeering.conflate.experimental.api.Action, kotlin.Unit)), kotlin.Function0((kotlin.Boolean)), kotlin.Function0((kotlin.Boolean)), kotlin.Function0((kotlin.Boolean)))/before">before</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;{ true  }<span class="symbol">, </span><span class="identifier" id="com.encodeering.conflate.experimental.logging.Logging$<init>(kotlin.Function2((kotlin.String, com.encodeering.conflate.experimental.api.Action, kotlin.Unit)), kotlin.Function0((kotlin.Boolean)), kotlin.Function0((kotlin.Boolean)), kotlin.Function0((kotlin.Boolean)))/after">after</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;{ false }<span class="symbol">, </span><span class="identifier" id="com.encodeering.conflate.experimental.logging.Logging$<init>(kotlin.Function2((kotlin.String, com.encodeering.conflate.experimental.api.Action, kotlin.Unit)), kotlin.Function0((kotlin.Boolean)), kotlin.Function0((kotlin.Boolean)), kotlin.Function0((kotlin.Boolean)))/exception">exception</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;{ true  }<span class="symbol">)</span></code>
+<p>A logging middleware for debugging purposes.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="after.html">after</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">after</span><span class="symbol">: </span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>specifies if a log statement shall be made after a call to the next middleware, default if <code>false</code></p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="before.html">before</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">before</span><span class="symbol">: </span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>specifies if a log statement shall be made before any call to the next middleware, default is <code>true</code></p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="exception.html">exception</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">exception</span><span class="symbol">: </span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>specifies if a log statement shall be made if an exception occurred, default is <code>true</code></p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="log.html">log</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">log</span><span class="symbol">: </span><span class="symbol">(</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="../../com.encodeering.conflate.experimental.api/-action.html"><span class="identifier">Action</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>specifies the logging facility</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="interceptor.html">interceptor</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">interceptor</span><span class="symbol">(</span><span class="identifier" id="com.encodeering.conflate.experimental.logging.Logging$interceptor(com.encodeering.conflate.experimental.api.Middleware.Connection((com.encodeering.conflate.experimental.logging.Logging.State)))/connection">connection</span><span class="symbol">:</span>&nbsp;<a href="../../com.encodeering.conflate.experimental.api/-middleware/-connection/index.html"><span class="identifier">Connection</span></a><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.encodeering.conflate.experimental.api/-middleware/-interceptor/index.html"><span class="identifier">Interceptor</span></a></code>
+<p>Derives an interceptor from this middleware component.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

@@ -1,0 +1,112 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Storage - conflate</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">conflate</a>&nbsp;/&nbsp;<a href="../index.html">com.encodeering.conflate.experimental.api</a>&nbsp;/&nbsp;<a href=".">Storage</a><br/>
+<br/>
+<h1>Storage</h1>
+<code><span class="keyword">interface </span><span class="identifier">Storage</span><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<span class="identifier">State</span><span class="symbol">&gt;</span></code>
+<p>A storage acts as only provider to <a href="state.html">access</a> and <a href="dispatcher.html">mutate</a> the predefined state container.</p>
+<p>An uni-directional workflow can be described as follows:</p>
+<ul><li>A user-interaction or service-schedule will dispatch an action intent</li>
+<li>A dispatched intent can be changed or serviced by zero or more participating middleware components</li>
+<li>Any passing intent will be applied to the state container by the reducer eventually</li>
+<li>All listeners will be notified about an occurring change</li>
+</ul>
+<p>The invocation order for listeners is unspecified and may not stay in the perceived order.</p>
+<h3>Concurrency</h3>
+<p>Asynchronicity will be handled by <a href="../-middleware/index.html">middleware</a> components, which means that the order, in which intents get applied by the reducer, is unspecified.
+However, environments and platforms might already define strategies and rules with respect to:</p>
+<ul><li>Memory visibility</li>
+<li>Threading behaviour</li>
+<li>Stack execution</li>
+</ul>
+<p>An implementation must adhere to the rules of the target platform.</p>
+<p>Please consult the platform specific documentation here.</p>
+<h3>Official documentation:</h3>
+<ul><li>
+<p>The Store is the object that brings them together. The store has the following responsibilities: <a href="http//redux.js.org/docs/basics/Store.html">http//redux.js.org/docs/basics/Store.html</a></p>
+  <ul><li>Holds application state</li>
+  <li>Allows access to state</li>
+  <li>Allows state to be updated</li>
+  <li>Registers listeners via subscribe</li>
+</ul>
+</li>
+</ul>
+<h3>Parameters</h3>
+<p><a name="State"></a>
+<code>State</code> - defines the type of the state container</p>
+<p><strong>Author</strong><br/>
+Michael Clausen - encodeering@gmail.com</p>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="dispatcher.html">dispatcher</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">dispatcher</span><span class="symbol">: </span><a href="../-dispatcher/index.html"><span class="identifier">Dispatcher</span></a></code>
+<p>Provides access to the connected action dispatcher.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="state.html">state</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">state</span><span class="symbol">: </span><span class="identifier">State</span></code>
+<p>Provides access to the last known state container, which differs for subsequent calls.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="subscribe.html">subscribe</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">subscribe</span><span class="symbol">(</span><span class="identifier" id="com.encodeering.conflate.experimental.api.Storage$subscribe(kotlin.Function0((kotlin.Unit)))/listener">listener</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Runnable.html"><span class="identifier">Runnable</span></a></code>
+<p>Attaches a listener that will be notified on every state change.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Extension Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../unbox.html">unbox</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span> <span class="identifier">Storage</span><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">unbox</span><span class="symbol">(</span><span class="identifier" id="com.encodeering.conflate.experimental.api$unbox(com.encodeering.conflate.experimental.api.Storage((com.encodeering.conflate.experimental.api.unbox.State)), kotlin.Function2((com.encodeering.conflate.experimental.api.unbox.State, com.encodeering.conflate.experimental.api.Dispatcher, kotlin.Unit)))/r">r</span><span class="symbol">:</span>&nbsp;<span class="identifier">State</span><span class="symbol">.</span><span class="symbol">(</span><a href="../-dispatcher/index.html"><span class="identifier">Dispatcher</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Creates a view on the state container.</p>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">, </span><span class="identifier">Part</span><span class="symbol">&gt;</span> <span class="identifier">Storage</span><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">unbox</span><span class="symbol">(</span><span class="identifier" id="com.encodeering.conflate.experimental.api$unbox(com.encodeering.conflate.experimental.api.Storage((com.encodeering.conflate.experimental.api.unbox.State)), kotlin.Function1((com.encodeering.conflate.experimental.api.unbox.State, com.encodeering.conflate.experimental.api.unbox.Part)), kotlin.Function2((com.encodeering.conflate.experimental.api.unbox.Part, com.encodeering.conflate.experimental.api.Dispatcher, kotlin.Unit)))/t">t</span><span class="symbol">:</span>&nbsp;<span class="identifier">State</span><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<span class="identifier">Part</span><span class="symbol">, </span><span class="identifier" id="com.encodeering.conflate.experimental.api$unbox(com.encodeering.conflate.experimental.api.Storage((com.encodeering.conflate.experimental.api.unbox.State)), kotlin.Function1((com.encodeering.conflate.experimental.api.unbox.State, com.encodeering.conflate.experimental.api.unbox.Part)), kotlin.Function2((com.encodeering.conflate.experimental.api.unbox.Part, com.encodeering.conflate.experimental.api.Dispatcher, kotlin.Unit)))/r">r</span><span class="symbol">:</span>&nbsp;<span class="identifier">Part</span><span class="symbol">.</span><span class="symbol">(</span><a href="../-dispatcher/index.html"><span class="identifier">Dispatcher</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Creates a view on a subset of the state container.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../../com.encodeering.conflate.experimental.jvm/-conflate/index.html">Conflate</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">Conflate</span><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<span class="identifier">State</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Storage</span><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span></code>
+<p>A storage implementation of Redux</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

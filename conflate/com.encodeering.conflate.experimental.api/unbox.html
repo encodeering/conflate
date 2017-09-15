@@ -1,0 +1,34 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>unbox - conflate</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">conflate</a>&nbsp;/&nbsp;<a href="index.html">com.encodeering.conflate.experimental.api</a>&nbsp;/&nbsp;<a href=".">unbox</a><br/>
+<br/>
+<h1>unbox</h1>
+<a name="com.encodeering.conflate.experimental.api$unbox(com.encodeering.conflate.experimental.api.Storage((com.encodeering.conflate.experimental.api.unbox.State)), kotlin.Function2((com.encodeering.conflate.experimental.api.unbox.State, com.encodeering.conflate.experimental.api.Dispatcher, kotlin.Unit)))"></a>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span> <a href="-storage/index.html"><span class="identifier">Storage</span></a><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">unbox</span><span class="symbol">(</span><span class="identifier" id="com.encodeering.conflate.experimental.api$unbox(com.encodeering.conflate.experimental.api.Storage((com.encodeering.conflate.experimental.api.unbox.State)), kotlin.Function2((com.encodeering.conflate.experimental.api.unbox.State, com.encodeering.conflate.experimental.api.Dispatcher, kotlin.Unit)))/r">r</span><span class="symbol">:</span>&nbsp;<span class="identifier">State</span><span class="symbol">.</span><span class="symbol">(</span><a href="-dispatcher/index.html"><span class="identifier">Dispatcher</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Creates a view on the state container.</p>
+<p>Usually used by components that read values from the state container.</p>
+<h3>Parameters</h3>
+<p><a name="r"></a>
+<code>r</code> - specifies a view function</p>
+<p><a name="State"></a>
+<code>State</code> - specifies the context reference to the last known state container</p>
+<a name="com.encodeering.conflate.experimental.api$unbox(com.encodeering.conflate.experimental.api.Storage((com.encodeering.conflate.experimental.api.unbox.State)), kotlin.Function1((com.encodeering.conflate.experimental.api.unbox.State, com.encodeering.conflate.experimental.api.unbox.Part)), kotlin.Function2((com.encodeering.conflate.experimental.api.unbox.Part, com.encodeering.conflate.experimental.api.Dispatcher, kotlin.Unit)))"></a>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">, </span><span class="identifier">Part</span><span class="symbol">&gt;</span> <a href="-storage/index.html"><span class="identifier">Storage</span></a><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">unbox</span><span class="symbol">(</span><span class="identifier" id="com.encodeering.conflate.experimental.api$unbox(com.encodeering.conflate.experimental.api.Storage((com.encodeering.conflate.experimental.api.unbox.State)), kotlin.Function1((com.encodeering.conflate.experimental.api.unbox.State, com.encodeering.conflate.experimental.api.unbox.Part)), kotlin.Function2((com.encodeering.conflate.experimental.api.unbox.Part, com.encodeering.conflate.experimental.api.Dispatcher, kotlin.Unit)))/t">t</span><span class="symbol">:</span>&nbsp;<span class="identifier">State</span><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<span class="identifier">Part</span><span class="symbol">, </span><span class="identifier" id="com.encodeering.conflate.experimental.api$unbox(com.encodeering.conflate.experimental.api.Storage((com.encodeering.conflate.experimental.api.unbox.State)), kotlin.Function1((com.encodeering.conflate.experimental.api.unbox.State, com.encodeering.conflate.experimental.api.unbox.Part)), kotlin.Function2((com.encodeering.conflate.experimental.api.unbox.Part, com.encodeering.conflate.experimental.api.Dispatcher, kotlin.Unit)))/r">r</span><span class="symbol">:</span>&nbsp;<span class="identifier">Part</span><span class="symbol">.</span><span class="symbol">(</span><a href="-dispatcher/index.html"><span class="identifier">Dispatcher</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Creates a view on a subset of the state container.</p>
+<p>Usually used by components that read values from the state container.</p>
+<h3>Parameters</h3>
+<p><a name="t"></a>
+<code>t</code> - specifies a transform function to retrieve the subset</p>
+<p><a name="r"></a>
+<code>r</code> - specifies a view function</p>
+<p><a name="Part"></a>
+<code>Part</code> - specifies the context reference to the last known subset container</p>
+<p><a name="State"></a>
+<code>State</code> - specifies the context reference to the last known state container</p>
+</BODY>
+</HTML>

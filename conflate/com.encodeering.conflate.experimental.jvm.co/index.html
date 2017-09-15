@@ -1,0 +1,55 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.encodeering.conflate.experimental.jvm.co - conflate</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">conflate</a>&nbsp;/&nbsp;<a href=".">com.encodeering.conflate.experimental.jvm.co</a><br/>
+<br/>
+<h2>Package com.encodeering.conflate.experimental.jvm.co</h2>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-cycle/index.html">Cycle</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">Cycle</span><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<span class="identifier">Scope</span><span class="symbol">, </span><span class="identifier">V</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../com.encodeering.conflate.experimental.api/-completable/index.html"><span class="identifier">Completable</span></a><span class="symbol">&lt;</span><span class="identifier">Scope</span><span class="symbol">,</span>&nbsp;<span class="identifier">V</span><span class="symbol">&gt;</span><span class="symbol">, </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines.experimental/-continuation/index.html"><span class="identifier">Continuation</span></a><span class="symbol">&lt;</span><span class="identifier">V</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-cycle-dispatcher/index.html">CycleDispatcher</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">CycleDispatcher</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../com.encodeering.conflate.experimental.api/-dispatcher/index.html"><span class="identifier">Dispatcher</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-requeue-continuation/index.html">RequeueContinuation</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">RequeueContinuation</span><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<span class="identifier">T</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines.experimental/-continuation/index.html"><span class="identifier">Continuation</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code>
+<p>A requeue continuation tries to resume the continuation on the current <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Thread.html">thread</a>, but would delay execution
+otherwise and requeue with respect to the target platform.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Exceptions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-requeue-exception/index.html">RequeueException</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">RequeueException</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-runtime-exception/index.html"><span class="identifier">RuntimeException</span></a></code>
+<p>A runtime exception to indicate a serious problem with the platform-coroutine interaction.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

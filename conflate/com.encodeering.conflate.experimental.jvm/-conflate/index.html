@@ -1,0 +1,83 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Conflate - conflate</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">conflate</a>&nbsp;/&nbsp;<a href="../index.html">com.encodeering.conflate.experimental.jvm</a>&nbsp;/&nbsp;<a href=".">Conflate</a><br/>
+<br/>
+<h1>Conflate</h1>
+<code><span class="keyword">class </span><span class="identifier">Conflate</span><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<span class="identifier">State</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.encodeering.conflate.experimental.api/-storage/index.html"><span class="identifier">Storage</span></a><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span></code>
+<p>A storage implementation of Redux</p>
+<p><strong>Author</strong><br/>
+Michael Clausen - encodeering@gmail.com</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">Conflate</span><span class="symbol">(</span><span class="identifier" id="com.encodeering.conflate.experimental.jvm.Conflate$<init>(com.encodeering.conflate.experimental.jvm.Conflate.State, com.encodeering.conflate.experimental.api.Reducer((com.encodeering.conflate.experimental.jvm.Conflate.State)), kotlin.Array((com.encodeering.conflate.experimental.api.Middleware((com.encodeering.conflate.experimental.jvm.Conflate.State)))))/initial">initial</span><span class="symbol">:</span>&nbsp;<span class="identifier">State</span><span class="symbol">, </span><span class="identifier" id="com.encodeering.conflate.experimental.jvm.Conflate$<init>(com.encodeering.conflate.experimental.jvm.Conflate.State, com.encodeering.conflate.experimental.api.Reducer((com.encodeering.conflate.experimental.jvm.Conflate.State)), kotlin.Array((com.encodeering.conflate.experimental.api.Middleware((com.encodeering.conflate.experimental.jvm.Conflate.State)))))/reducer">reducer</span><span class="symbol">:</span>&nbsp;<a href="../../com.encodeering.conflate.experimental.api/-reducer/index.html"><span class="identifier">Reducer</span></a><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="com.encodeering.conflate.experimental.jvm.Conflate$<init>(com.encodeering.conflate.experimental.jvm.Conflate.State, com.encodeering.conflate.experimental.api.Reducer((com.encodeering.conflate.experimental.jvm.Conflate.State)), kotlin.Array((com.encodeering.conflate.experimental.api.Middleware((com.encodeering.conflate.experimental.jvm.Conflate.State)))))/middleware">middleware</span><span class="symbol">:</span>&nbsp;<a href="../../com.encodeering.conflate.experimental.api/-middleware/index.html"><span class="identifier">Middleware</span></a><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span><span class="symbol">)</span></code><code><span class="identifier">Conflate</span><span class="symbol">(</span><span class="identifier" id="com.encodeering.conflate.experimental.jvm.Conflate$<init>(com.encodeering.conflate.experimental.jvm.Conflate.State, com.encodeering.conflate.experimental.api.Reducer((com.encodeering.conflate.experimental.jvm.Conflate.State)), kotlin.coroutines.experimental.CoroutineContext, kotlin.Array((com.encodeering.conflate.experimental.api.Middleware((com.encodeering.conflate.experimental.jvm.Conflate.State)))))/initial">initial</span><span class="symbol">:</span>&nbsp;<span class="identifier">State</span><span class="symbol">, </span><span class="identifier" id="com.encodeering.conflate.experimental.jvm.Conflate$<init>(com.encodeering.conflate.experimental.jvm.Conflate.State, com.encodeering.conflate.experimental.api.Reducer((com.encodeering.conflate.experimental.jvm.Conflate.State)), kotlin.coroutines.experimental.CoroutineContext, kotlin.Array((com.encodeering.conflate.experimental.api.Middleware((com.encodeering.conflate.experimental.jvm.Conflate.State)))))/reducer">reducer</span><span class="symbol">:</span>&nbsp;<a href="../../com.encodeering.conflate.experimental.api/-reducer/index.html"><span class="identifier">Reducer</span></a><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.encodeering.conflate.experimental.jvm.Conflate$<init>(com.encodeering.conflate.experimental.jvm.Conflate.State, com.encodeering.conflate.experimental.api.Reducer((com.encodeering.conflate.experimental.jvm.Conflate.State)), kotlin.coroutines.experimental.CoroutineContext, kotlin.Array((com.encodeering.conflate.experimental.api.Middleware((com.encodeering.conflate.experimental.jvm.Conflate.State)))))/context">context</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines.experimental/-coroutine-context/index.html"><span class="identifier">CoroutineContext</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="com.encodeering.conflate.experimental.jvm.Conflate$<init>(com.encodeering.conflate.experimental.jvm.Conflate.State, com.encodeering.conflate.experimental.api.Reducer((com.encodeering.conflate.experimental.jvm.Conflate.State)), kotlin.coroutines.experimental.CoroutineContext, kotlin.Array((com.encodeering.conflate.experimental.api.Middleware((com.encodeering.conflate.experimental.jvm.Conflate.State)))))/middleware">middleware</span><span class="symbol">:</span>&nbsp;<a href="../../com.encodeering.conflate.experimental.api/-middleware/index.html"><span class="identifier">Middleware</span></a><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span><span class="symbol">)</span></code>
+<p>A storage implementation of Redux</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="dispatcher.html">dispatcher</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">dispatcher</span><span class="symbol">: </span><a href="../../com.encodeering.conflate.experimental.api/-dispatcher/index.html"><span class="identifier">Dispatcher</span></a></code>
+<p>Provides access to the connected action dispatcher.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="state.html">state</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">state</span><span class="symbol">: </span><span class="identifier">State</span></code>
+<p>Provides access to the last known state container, which differs for subsequent calls.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="subscribe.html">subscribe</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">subscribe</span><span class="symbol">(</span><span class="identifier" id="com.encodeering.conflate.experimental.jvm.Conflate$subscribe(kotlin.Function0((kotlin.Unit)))/listener">listener</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Runnable.html"><span class="identifier">Runnable</span></a></code>
+<p>Attaches a listener that will be notified on every state change.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Extension Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../../com.encodeering.conflate.experimental.api/unbox.html">unbox</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span> <a href="../../com.encodeering.conflate.experimental.api/-storage/index.html"><span class="identifier">Storage</span></a><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">unbox</span><span class="symbol">(</span><span class="identifier" id="com.encodeering.conflate.experimental.api$unbox(com.encodeering.conflate.experimental.api.Storage((com.encodeering.conflate.experimental.api.unbox.State)), kotlin.Function2((com.encodeering.conflate.experimental.api.unbox.State, com.encodeering.conflate.experimental.api.Dispatcher, kotlin.Unit)))/r">r</span><span class="symbol">:</span>&nbsp;<span class="identifier">State</span><span class="symbol">.</span><span class="symbol">(</span><a href="../../com.encodeering.conflate.experimental.api/-dispatcher/index.html"><span class="identifier">Dispatcher</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Creates a view on the state container.</p>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">, </span><span class="identifier">Part</span><span class="symbol">&gt;</span> <a href="../../com.encodeering.conflate.experimental.api/-storage/index.html"><span class="identifier">Storage</span></a><span class="symbol">&lt;</span><span class="identifier">State</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">unbox</span><span class="symbol">(</span><span class="identifier" id="com.encodeering.conflate.experimental.api$unbox(com.encodeering.conflate.experimental.api.Storage((com.encodeering.conflate.experimental.api.unbox.State)), kotlin.Function1((com.encodeering.conflate.experimental.api.unbox.State, com.encodeering.conflate.experimental.api.unbox.Part)), kotlin.Function2((com.encodeering.conflate.experimental.api.unbox.Part, com.encodeering.conflate.experimental.api.Dispatcher, kotlin.Unit)))/t">t</span><span class="symbol">:</span>&nbsp;<span class="identifier">State</span><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<span class="identifier">Part</span><span class="symbol">, </span><span class="identifier" id="com.encodeering.conflate.experimental.api$unbox(com.encodeering.conflate.experimental.api.Storage((com.encodeering.conflate.experimental.api.unbox.State)), kotlin.Function1((com.encodeering.conflate.experimental.api.unbox.State, com.encodeering.conflate.experimental.api.unbox.Part)), kotlin.Function2((com.encodeering.conflate.experimental.api.unbox.Part, com.encodeering.conflate.experimental.api.Dispatcher, kotlin.Unit)))/r">r</span><span class="symbol">:</span>&nbsp;<span class="identifier">Part</span><span class="symbol">.</span><span class="symbol">(</span><a href="../../com.encodeering.conflate.experimental.api/-dispatcher/index.html"><span class="identifier">Dispatcher</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Creates a view on a subset of the state container.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

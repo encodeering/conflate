@@ -1,0 +1,51 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Middleware.Connection - conflate</title>
+<link rel="stylesheet" href="../../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../../index.html">conflate</a>&nbsp;/&nbsp;<a href="../../index.html">com.encodeering.conflate.experimental.api</a>&nbsp;/&nbsp;<a href="../index.html">Middleware</a>&nbsp;/&nbsp;<a href=".">Connection</a><br/>
+<br/>
+<h1>Connection</h1>
+<code><span class="keyword">interface </span><span class="identifier">Connection</span><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<span class="identifier">State</span><span class="symbol">&gt;</span></code>
+<p>A connection arranges the communication between a middleware component and the outer environment.</p>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="state.html">state</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">state</span><span class="symbol">: </span><span class="identifier">State</span></code>
+<p>Provides access to the last known state container, which differs for subsequent calls.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="initial.html">initial</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">initial</span><span class="symbol">(</span><span class="identifier" id="com.encodeering.conflate.experimental.api.Middleware.Connection$initial(com.encodeering.conflate.experimental.api.Action)/action">action</span><span class="symbol">:</span>&nbsp;<a href="../../-action.html"><span class="identifier">Action</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Dispatches the action to the initial middleware component</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="next.html">next</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">next</span><span class="symbol">(</span><span class="identifier" id="com.encodeering.conflate.experimental.api.Middleware.Connection$next(com.encodeering.conflate.experimental.api.Action)/action">action</span><span class="symbol">:</span>&nbsp;<a href="../../-action.html"><span class="identifier">Action</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Dispatches the action to the next middleware component</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

@@ -1,0 +1,77 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Action - conflate</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">conflate</a>&nbsp;/&nbsp;<a href="index.html">com.encodeering.conflate.experimental.api</a>&nbsp;/&nbsp;<a href=".">Action</a><br/>
+<br/>
+<h1>Action</h1>
+<code><span class="keyword">interface </span><span class="identifier">Action</span></code>
+<p>An action usually describes an intent that something should happen and may or may not cause other intents to be raised
+along the way to the storage, which is usually managed by chained middleware components.</p>
+<p>Intents should be designed with immutability in mind, or at least be effectively final.
+Even though mutable properties are acceptable for cases with no adequate default value,
+they should be used sparingly and never be mutated, as there will be no implicit synchronization mechanism implemented.
+It's further recommended to use serializable payloads, as they make the intents more reasonable and debug friendly.</p>
+<p>As a short reminder:</p>
+<ul><li>Intents should <em>never</em> be mutated</li>
+<li>Intents interacting with the store <em>must</em> be serializable, but those being processed by middleware components only <em>are not</em> required to be fully serializable</li>
+</ul>
+<h3>Official documentation:</h3>
+<ul><li>Actions are payloads of information that send data from your application to your store.
+They are the only source of information for the store. <a href="http//redux.js.org/docs/basics/Actions.html">http//redux.js.org/docs/basics/Actions.html</a></li>
+
+<li>As with state, serializable actions enable several of Redux's defining features, such as time travel debugging, and recording and replaying actions. <a href="http//redux.js.org/docs/faq/Actions.html#actions">http//redux.js.org/docs/faq/Actions.html#actions</a></li>
+</ul>
+<h3>Sample</h3>
+<h4>Intent with default parameters</h4>
+<pre><code>data class Toast (
+    val message  : String,
+    val duration : Int = LENGTH_SHORT
+) : Action
+
+dispatch (Toast ("welcome $user"))
+</code></pre>
+<h4>Intent with a UI toggle to display a progress indicator</h4>
+<pre><code>data class SearchAccommodation (
+    val city           : String,                      // title and query parameter
+    val accommodations : List&lt;String&gt; = emptyList (), // result
+    val searching      : Boolean      = true          // progress indicator
+) : Action
+
+val       search = SearchAccommodation ("Berlin")
+dispatch (search)
+dispatch (search.copy (accommodations = listOf ("Hotel XYZ"), searching = false))
+</code></pre>
+<p><strong>Author</strong><br/>
+Michael Clausen - encodeering@gmail.com</p>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../com.encodeering.conflate.experimental.test.fixture/-act/index.html">Act</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Act</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Action</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../com.encodeering.conflate.experimental.test.fixture/-add/index.html">Add</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Add</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Action</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../com.encodeering.conflate.experimental.test.fixture/-sub/index.html">Sub</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Sub</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Action</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>
